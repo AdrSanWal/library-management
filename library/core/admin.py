@@ -10,7 +10,7 @@ class BookAdmin(admin.ModelAdmin):
     readonly_fields = ('created', 'updated')
 
 
-class SeriesAdmin(admin.ModelAdmin):
+class SerieAdmin(admin.ModelAdmin):
     list_fields = ('name',)
     search_fields = ('name',)
     readonly_fields = ('created', 'updated')
@@ -30,5 +30,5 @@ class CategoryAdmin(admin.ModelAdmin):
 
 admin.site.register(models.Author, AuthorAdmin)
 admin.site.register(models.Category, CategoryAdmin)
-admin.site.register(models.Series, SeriesAdmin)
+admin.site.register(models.Serie, SerieAdmin)
 admin.site.register(models.Book, BookAdmin)

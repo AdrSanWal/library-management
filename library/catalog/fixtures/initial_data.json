@@ -135,7 +135,7 @@
     }
   },
   {
-    "model": "core.series",
+    "model": "core.serie",
     "pk": 1,
     "fields": {
       "name": "Mistborn",
@@ -144,7 +144,7 @@
     }
   },
   {
-    "model": "core.series",
+    "model": "core.serie",
     "pk": 2,
     "fields": {
       "name": "Ender's game",
@@ -153,7 +153,7 @@
     }
   },
   {
-    "model": "core.series",
+    "model": "core.serie",
     "pk": 3,
     "fields": {
       "name": "The legend of Drizzt",
@@ -162,7 +162,7 @@
     }
   },
   {
-    "model": "core.series",
+    "model": "core.serie",
     "pk": 4,
     "fields": {
       "name": "Sherlock Holmes series",
@@ -171,7 +171,7 @@
     }
   },
   {
-    "model": "core.series",
+    "model": "core.serie",
     "pk": 5,
     "fields": {
       "name": "Old man's war",
@@ -180,7 +180,7 @@
     }
   },
   {
-    "model": "core.series",
+    "model": "core.serie",
     "pk": 6,
     "fields": {
       "name": "The death gate cycle",

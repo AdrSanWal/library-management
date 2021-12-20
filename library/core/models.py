@@ -33,7 +33,7 @@ class Category(models.Model):
         return self.name
 
 
-class Series(models.Model):
+class Serie(models.Model):
     name = models.CharField(max_length=255)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
@@ -55,7 +55,7 @@ class Book(models.Model):
     author = models.ManyToManyField(Author, related_name='rel_author')
     description = models.CharField(max_length=1000, blank=True)
     categories = models.ManyToManyField(Category, related_name='rel_category')
-    series = models.ForeignKey(Series, on_delete=models.CASCADE, blank=True, null=True)
+    series = models.ForeignKey(Serie, on_delete=models.CASCADE, blank=True, null=True)
     series_order = models.IntegerField(blank=True, null=True)
     available = models.BooleanField(default=True)
     loan_date = models.DateField(blank=True, null=True)
