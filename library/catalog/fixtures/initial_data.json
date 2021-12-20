@@ -1,0 +1,614 @@
+[
+    {
+      "model": "core.category",
+      "pk": 1,
+      "fields": {
+        "name": "Fantasy",
+        "description": "Usually set in a fictional imagined world. Fantasy books include prominent elements of magic, mythology, or the supernatural.",
+        "created": "2021-12-01T11:30:44.767594-06:00",
+        "updated": "2021-12-01T11:30:44.767594-06:00"
+    }
+    },
+    {
+      "model": "core.category",
+      "pk": 2,
+      "fields": {
+        "name": "Detective and Mystery",
+        "created": "2021-12-01T11:30:44.767594-06:00",
+        "updated": "2021-12-01T11:30:44.767594-06:00"
+      }
+    },
+    {
+      "model": "core.category",
+      "pk": 3,
+      "fields": {
+        "name": "Action and Adventure",
+        "description": "Action and adventure books constantly have you on the edge of your seat with excitement, as your fave main character repeatedly finds themselves in high stakes situations. The protagonist has an ultimate goal to achieve and is always put in risky, often dangerous situations.",
+        "created": "2021-12-01T11:30:44.767594-06:00",
+        "updated": "2021-12-01T11:30:44.767594-06:00"
+      }
+    },
+    {
+      "model": "core.category",
+      "pk": 4,
+      "fields": {
+        "name": "Science Fiction",
+        "description": "Though they're often thought of in the same vein as fantasy, what distinguishes science fiction stories is that they lean heavily on themes of technology and future science. You'll find apocalyptic and dystopian novels in the sci-fi genre as well.",
+        "created": "2021-12-01T11:30:44.767594-06:00",
+        "updated": "2021-12-01T11:30:44.767594-06:00"
+      }
+    },
+    {
+        "model": "core.category",
+        "pk": 5,
+        "fields": {
+          "name": "Dystopian Fiction",
+          "description": "Dystopian fiction offers a vision of the future. Dystopias are societies in cataclysmic decline, with characters who battle environmental ruin, technological control, and government oppression. Dystopian novels can challenge readers to think differently about current social and political climates, and in some instances can even inspire action.",
+          "created": "2021-12-01T11:30:44.767594-06:00",
+          "updated": "2021-12-01T11:30:44.767594-06:00"
+        }
+      },
+  {
+    "model": "core.author",
+    "pk": 1,
+    "fields": {
+      "full_name": "Brandon Sanderson",
+      "born": "1975-12-03",
+      "created": "2021-12-01T11:30:44.767594-06:00",
+      "updated": "2021-12-01T11:30:44.767594-06:00"
+    }
+  },
+  {
+    "model": "core.author",
+    "pk": 2,
+    "fields": {
+      "full_name": "Orson Scott Card",
+      "pseudonym": "Brian Green",
+      "born": "1951-08-24",
+      "created": "2021-12-01T11:30:44.767594-06:00",
+      "updated": "2021-12-01T11:30:44.767594-06:00"
+    }
+  },
+  {
+    "model": "core.author",
+    "pk": 3,
+    "fields": {
+      "full_name": "Robert Anthony Salvatore",
+      "pseudonym": "R. A. Salvatore",
+      "born": "1959-01-20",
+      "created": "2021-12-01T11:30:44.767594-06:00",
+      "updated": "2021-12-01T11:30:44.767594-06:00"
+    }
+  },
+  {
+    "model": "core.author",
+    "pk": 4,
+    "fields": {
+      "full_name": "Arthur Conan Doyle",
+      "born": "1859-05-22",
+      "died": "1930-07-07",
+      "created": "2021-12-01T11:30:44.767594-06:00",
+      "updated": "2021-12-01T11:30:44.767594-06:00"
+    }
+  },
+  {
+    "model": "core.author",
+    "pk": 5,
+    "fields": {
+      "full_name": "John Michael Scalzi",
+      "pseudonym": "John Scalzi",
+      "born": "1969-05-10",
+      "created": "2021-12-01T11:30:44.767594-06:00",
+      "updated": "2021-12-01T11:30:44.767594-06:00"
+    }
+  },
+  {
+    "model": "core.author",
+    "pk": 6,
+    "fields": {
+      "full_name": "George Orwell",
+      "born": "1903-06-25",
+      "died": "1950-01-21",
+      "created": "2021-12-01T11:30:44.767594-06:00",
+      "updated": "2021-12-01T11:30:44.767594-06:00"
+    }
+  },
+  {
+    "model": "core.author",
+    "pk": 7,
+    "fields": {
+      "full_name": "Margaret Weis",
+      "born": "1948-03-16",
+      "created": "2021-12-01T11:30:44.767594-06:00",
+      "updated": "2021-12-01T11:30:44.767594-06:00"
+    }
+  },
+  {
+    "model": "core.author",
+    "pk": 8,
+    "fields": {
+      "full_name": "Tracy Raye Hickman",
+      "pseudonym": "Tracy Hickman",
+      "born": "1955-11-26",
+      "created": "2021-12-01T11:30:44.767594-06:00",
+      "updated": "2021-12-01T11:30:44.767594-06:00"
+    }
+  },
+  {
+    "model": "core.series",
+    "pk": 1,
+    "fields": {
+      "name": "Mistborn",
+      "created": "2021-12-01T11:30:44.767594-06:00",
+      "updated": "2021-12-01T11:30:44.767594-06:00"
+    }
+  },
+  {
+    "model": "core.series",
+    "pk": 2,
+    "fields": {
+      "name": "Ender's game",
+      "created": "2021-12-01T11:30:44.767594-06:00",
+      "updated": "2021-12-01T11:30:44.767594-06:00"
+    }
+  },
+  {
+    "model": "core.series",
+    "pk": 3,
+    "fields": {
+      "name": "The legend of Drizzt",
+      "created": "2021-12-01T11:30:44.767594-06:00",
+      "updated": "2021-12-01T11:30:44.767594-06:00"
+    }
+  },
+  {
+    "model": "core.series",
+    "pk": 4,
+    "fields": {
+      "name": "Sherlock Holmes series",
+      "created": "2021-12-01T11:30:44.767594-06:00",
+      "updated": "2021-12-01T11:30:44.767594-06:00"
+    }
+  },
+  {
+    "model": "core.series",
+    "pk": 5,
+    "fields": {
+      "name": "Old man's war",
+      "created": "2021-12-01T11:30:44.767594-06:00",
+      "updated": "2021-12-01T11:30:44.767594-06:00"
+    }
+  },
+  {
+    "model": "core.series",
+    "pk": 6,
+    "fields": {
+      "name": "The death gate cycle",
+      "created": "2021-12-01T11:30:44.767594-06:00",
+      "updated": "2021-12-01T11:30:44.767594-06:00"
+    }
+  },
+  {
+    "model": "core.book",
+    "pk": 1,
+    "fields": {
+      "isbn": "978-92-95055-02-5",
+      "title": "Mistborn",
+      "cover": "https://pictures.abebooks.com/inventory/30792006497.jpg",
+      "author": [1],
+      "description": "A thousand years ago, the prophesied hero from lore rose up to overthrow a great and terrible evil. Only, he lost, and the Dark Lord took over and has been ruling with an iron fist for a thousand years. Ash falls from the sky in this barren land, and mists come every night, deep and mysterious. In this setting, a gang of thieves decides that the prophecies were all lies and that they can’t trust in some fabled hero to save them. They decide to take matters into their own hands, and plan a daring heist of the dark lord himself, planning to use the emperor’s own wealth to bribe his armies away from him and take over the empire.",
+      "categories": [1, 3],
+      "series": 1,
+      "series_order": 1,
+      "available": 1,
+      "created": "2021-12-01T11:30:44.767594-06:00",
+      "updated": "2021-12-01T11:30:44.767594-06:00"
+    }
+  },
+  {
+    "model": "core.book",
+    "pk": 2,
+    "fields": {
+      "isbn": "979-9892-055-02-3",
+      "title": "The well of ascension",
+      "cover": "https://pictures.abebooks.com/isbn/9780575089938-es.jpg",
+      "author": [1],
+      "description": "Elend Venture, the scholarly new Lord Ruler of Luthadel, clings to power while Luthadel's aristocrats and merchants grumble and two enemy armies—one led by Elend's father, Lord Straff—camp outside the city gates. Fortunately, Elend can rely on help from his lover and unofficial court assassin, the young allomancer Vin, but her magical metal-using ability makes her a target. An orphan of decidedly low origins, Vin is also having trouble adapting to her position as royal consort, especially since the underclass skaa, newly freed by Elend, look to her as their protector. Meanwhile, the ancient evil known as the Deepness is rising once again.",
+      "categories": [1, 3],
+      "series": 1,
+      "series_order": 2,
+      "available": 1,
+      "created": "2021-12-01T11:30:44.767594-06:00",
+      "updated": "2021-12-01T11:30:44.767594-06:00"
+    }
+  },
+  {
+    "model": "core.book",
+    "pk": 3,
+    "fields": {
+      "isbn": "978-2-059005-02-2",
+      "title": "The hero of ages",
+      "cover": "https://pictures.abebooks.com/inventory/30044017264.jpg",
+      "author": [1],
+      "description": "The heroes have discovered that what they thought was the problem all along was not the true danger, and now they’re fighting for not only their own survival but that of the world they live in. The mists are killing people and staying out much longer than they should. The Ashmounts are spewing more and more choking ash into the sky, burying the crops that everyone needs to eat to live. And Ruin, the creature Vin was tricked into freeing from its prison of a millennium, is loose to wreak havoc upon the land. Life under the Lord Ruler is starting to look like paradise in comparison.",
+      "categories": [1, 3],
+      "series": 1,
+      "series_order": 3,
+      "available": 1,
+      "created": "2021-12-01T11:30:44.767594-06:00",
+      "updated": "2021-12-01T11:30:44.767594-06:00"
+    }
+  },
+  {
+    "model": "core.book",
+    "pk": 4,
+    "fields": {
+      "isbn": "978-562-900-012-3",
+      "title": "Ender's game",
+      "cover": "https://pictures.abebooks.com/isbn/9781857237207-es.jpg",
+      "author": [2],
+      "description": "The novel tells the story of a young boy, Ender Wiggin, who is sent to a training academy named Battle School, located in orbit above the Earth, built to train people to become soldiers that will one day battle against a vast alien race known as 'Buggers'.",
+      "categories": [4],
+      "series": 2,
+      "series_order": 1,
+      "available": 1,
+      "created": "2021-12-01T11:30:44.767594-06:00",
+      "updated": "2021-12-01T11:30:44.767594-06:00"
+    }
+  },
+  {
+    "model": "core.book",
+    "pk": 5,
+    "fields": {
+      "isbn": "979-532-90012-2-9",
+      "title": "Homeland",
+      "cover": "https://m.media-amazon.com/images/P/B002DOSBMK.01._SCLZZZZZZZ_SX500_.jpg",
+      "author": [3],
+      "description": "Homeland follows the story of Drizzt from around the time and circumstances of his birth and his upbringing amongst the drow (dark elves). The book takes the reader into Menzoberranzan, the drow home city. From here, the reader follows Drizzt on his quest to follow his principles in a land where such feelings are threatened by all his family including his mother Matron Malice.",
+      "categories": [1, 3],
+      "series": 3,
+      "series_order": 1,
+      "available": 1,
+      "created": "2021-12-01T11:30:44.767594-06:00",
+      "updated": "2021-12-01T11:30:44.767594-06:00"
+    }
+  },
+  {
+    "model": "core.book",
+    "pk": 6,
+    "fields": {
+      "isbn": "978-41532-12-02-9",
+      "title": "Exile",
+      "cover": "https://m.media-amazon.com/images/P/B002CCNA1K.01._SCLZZZZZZZ_SX500_.jpg",
+      "author": [3],
+      "description": "Exile tells the story of Drizzt outside of the drow cities in the open wilderness of the Underdark. For the ten years following his abandoning his house, he is left with no one but his faithful Guenhwyvar, a magical panther he had acquired in Homeland. Drizzt is also met with great dangers that he meets with the business ends of his scimitars. Struggling with conflicting emotions, which involve his failure in Menzoberranzan and a deep grief for his father and friend Zaknafein, he makes his way to the surface to face newer dangers.",
+      "categories": [1, 3],
+      "series": 3,
+      "series_order": 2,
+      "available": 1,
+      "created": "2021-12-01T11:30:44.767594-06:00",
+      "updated": "2021-12-01T11:30:44.767594-06:00"
+    }
+  },
+  {
+    "model": "core.book",
+    "pk": 7,
+    "fields": {
+      "isbn": "978-4532-121-12-5",
+      "title": "Sojourn",
+      "cover": "https://images-na.ssl-images-amazon.com/images/I/81KnVEiXfUL.jpg",
+      "author": [3],
+      "description": "Sojourn is the story of Drizzt coming to the surface of the world and facing adversity due to the infamy of his kin. It follows him trying to find his place among the humans that live between the city of Sundabar and Citadel Adbar. He is rejected, and hunted, before meeting and living with an elderly blind man known as Montolio DeBrouchee. Montolio teaches Drizzt what it means to become a ranger and together they defend Mooshie's home against a raid by local orcs. Drizzt ultimately leaves the Sundabar area and makes his way to Icewind Dale where he befriends Catti-brie and Bruenor Battlehammer and finds a place to call home.",
+      "categories": [1, 3],
+      "series": 3,
+      "series_order": 3,
+      "available": 1,
+      "created": "2021-12-01T11:30:44.767594-06:00",
+      "updated": "2021-12-01T11:30:44.767594-06:00"
+    }
+  },
+  {
+    "model": "core.book",
+    "pk": 8,
+    "fields": {
+      "isbn": "979-1234-891-12-8",
+      "title": "A study in scarlet",
+      "cover": "https://m.media-amazon.com/images/I/41zV5nEnEEL.jpg",
+      "author": [4],
+      "description": "A Study in Scarlet begins with Dr. John Watson, the narrator, settling in London to recover from a wound and illness he sustained while acting as a military doctor during the Second Afghan War. One day he runs into an acquaintance, Stamford, while at a bar. Watson confides in his friend that he needs a new living arrangement, as his previous one was too expensive. Stamford responds that another friend of his has also expressed this desire, and takes Watson to the university laboratory where his friend –Sherlock Holmes –is working on an experiment.",
+      "categories": [2],
+      "series": 4,
+      "series_order": 1,
+      "available": 1,
+      "created": "2021-12-01T11:30:44.767594-06:00",
+      "updated": "2021-12-01T11:30:44.767594-06:00"
+    }
+  },
+  {
+    "model": "core.book",
+    "pk": 9,
+    "fields": {
+      "isbn": "978-222-8791-12-8",
+      "title": "The sign of the four",
+      "cover": "https://m.media-amazon.com/images/I/41btXWzoUVL.jpg",
+      "author": [4],
+      "description": "Miss Mary Morstan arrives at 221B, Baker Street to request help with the mystery of her missing father, her anonymous gifts of pearls and a letter requesting her to meet an unknown person that evening. Holmes takes on her case and the adventure begins.",
+      "categories": [2],
+      "series": 4,
+      "series_order": 2,
+      "available": 1,
+      "created": "2021-12-01T11:30:44.767594-06:00",
+      "updated": "2021-12-01T11:30:44.767594-06:00"
+    }
+  },
+  {
+    "model": "core.book",
+    "pk": 10,
+    "fields": {
+      "isbn": "978-2358-8-1472-2",
+      "title": "The hound of the Baskervilles",
+      "cover": "https://m.media-amazon.com/images/I/41Y9xbU6syL.jpg",
+      "author": [4],
+      "description": "Sherlock Holmes and Dr Watson investigate the legend of a supernatural hound, a beast that may be stalking a young heir on the fog-shrouded moorland that makes up his estate.",
+      "categories": [2],
+      "series": 4,
+      "series_order": 3,
+      "available": 1,
+      "created": "2021-12-01T11:30:44.767594-06:00",
+      "updated": "2021-12-01T11:30:44.767594-06:00"
+    }
+  },
+  {
+    "model": "core.book",
+    "pk": 11,
+    "fields": {
+      "isbn": "979-235-08-0402-6",
+      "title": "The allow of law",
+      "cover": "https://images-na.ssl-images-amazon.com/images/I/81mLlkbToxL.jpg",
+      "author": [1],
+      "description": "Three hundred years after the events of the Mistborn trilogy, Scadrial is on the verge of modernity, with railroads to supplement the canals, electric lighting in the streets and the homes of the wealthy, and the first steel-framed skyscrapers racing for the clouds.",
+      "categories": [1],
+      "series": 1,
+      "series_order": 4,
+      "available": 1,
+      "created": "2021-12-01T11:30:44.767594-06:00",
+      "updated": "2021-12-01T11:30:44.767594-06:00"
+    }
+  },
+  {
+    "model": "core.book",
+    "pk": 12,
+    "fields": {
+      "isbn": "978-125-08-2202-6",
+      "title": "Old man’s war",
+      "cover": "https://images-na.ssl-images-amazon.com/images/I/51v7w9LknlL.SX250.jpg",
+      "author": [5],
+      "description": "John Perry did two things on his 75th birthday. First he visited his wife’s grave. Then he joined the army. With his wife dead and buried, and life nearly over at 75, John Perry takes the only logical course of action left: he joins the army. Now better known as the Colonial Defense Force (CDF), Perry’s service-of-choice has extended its reach into interstellar space to pave the way for human colonization of other planets while fending off marauding aliens.",
+      "categories": [4],
+      "series": 5,
+      "series_order": 1,
+      "available": 1,
+      "created": "2021-12-01T11:30:44.767594-06:00",
+      "updated": "2021-12-01T11:30:44.767594-06:00"
+    }
+  },
+  {
+    "model": "core.book",
+    "pk": 13,
+    "fields": {
+      "isbn": "979-15-088-6542-2",
+      "title": "The ghost brigades",
+      "cover": "https://images-na.ssl-images-amazon.com/images/I/41knACNr0oL.SX250.jpg",
+      "author": [5],
+      "description": "The Ghost Brigades are the Special Forces of the Colonial Defense Forces, elite troops created from the DNA of the dead and turned into the perfect soldiers for the CDF’s toughest operations. They’re young, they’re fast and strong, and they’re totally without normal human qualms.",
+      "categories": [4],
+      "series": 5,
+      "series_order": 2,
+      "available": 1,
+      "created": "2021-12-01T11:30:44.767594-06:00",
+      "updated": "2021-12-01T11:30:44.767594-06:00"
+    }
+  },
+  {
+    "model": "core.book",
+    "pk": 14,
+    "fields": {
+      "isbn": "979-00-0448-962-1",
+      "title": "The last colony",
+      "cover": "https://images-na.ssl-images-amazon.com/images/I/51njwgV2IOL.SX250.jpg",
+      "author": [5],
+      "description": "Retired from his fighting days, John Perry is now village ombudsman for a human colony on distant Huckleberry. He has at last found peace in a violent universe, living quietly with his family in one of humanity’s many colonies. With his wife, former Special Forces warrior Jane Sagan, he farms several acres, adjudicates local disputes, and enjoys watching his adopted daughter grow up.",
+      "categories": [4],
+      "series": 5,
+      "series_order": 3,
+      "available": 1,
+      "created": "2021-12-01T11:30:44.767594-06:00",
+      "updated": "2021-12-01T11:30:44.767594-06:00"
+    }
+  },
+  {
+    "model": "core.book",
+    "pk": 15,
+    "fields": {
+      "isbn": "979-0044-01-933-1",
+      "title": "Zoe’s tale",
+      "cover": "https://images-na.ssl-images-amazon.com/images/I/519ZROiTrEL.SX250.jpg",
+      "author": [5],
+      "description": "How do you tell your part in the biggest tale in history?. I ask because it’s what I have to do. I’m Zoe Boutin Perry: A colonist stranded on a deadly pioneer world. Holy icon to a race of aliens. A player (and a pawn) in a interstellar chess match to save humanity, or to see it fall. Witness to history. Friend. Daughter. Human. Seventeen years old.",
+      "categories": [4],
+      "series": 5,
+      "series_order": 4,
+      "available": 1,
+      "created": "2021-12-01T11:30:44.767594-06:00",
+      "updated": "2021-12-01T11:30:44.767594-06:00"
+    }
+  },
+  {
+    "model": "core.book",
+    "pk": 16,
+    "fields": {
+      "isbn": "979-0-01478-932-2",
+      "title": "The human division",
+      "cover": "https://images-na.ssl-images-amazon.com/images/I/519UQhwIdIL.SX250.jpg",
+      "author": [5],
+      "description": "The people of Earth now know that the human Colonial Union has kept them ignorant of the dangerous universe around them. For generations the CU had defended humanity against hostile aliens, deliberately keeping Earth an ignorant backwater and a source of military recruits. Now the CU’s secrets are known to all. Other alien races have come on the scene and formed a new alliance—an alliance against the Colonial Union. And they’ve invited the people of Earth to join them. For a shaken and betrayed Earth, the choice isn’t obvious or easy.",
+      "categories": [4],
+      "series": 5,
+      "series_order": 5,
+      "available": 1,
+      "created": "2021-12-01T11:30:44.767594-06:00",
+      "updated": "2021-12-01T11:30:44.767594-06:00"
+    }
+  },
+  {
+    "model": "core.book",
+    "pk": 17,
+    "fields": {
+      "isbn": "978-03-018-9472-0",
+      "title": "The end of all things",
+      "cover": "https://images-na.ssl-images-amazon.com/images/I/51sSLLecxwL.SX250.jpg",
+      "author": [5],
+      "description": "Humans expanded into space…only to find a universe populated with multiple alien species bent on their destruction. Thus was the Colonial Union formed, to help protect us from a hostile universe. The Colonial Union used the Earth and its excess population for colonists and soldiers. It was a good arrangement…for the Colonial Union. Then the Earth said: no more.",
+      "categories": [4],
+      "series": 5,
+      "series_order": 6,
+      "available": 1,
+      "created": "2021-12-01T11:30:44.767594-06:00",
+      "updated": "2021-12-01T11:30:44.767594-06:00"
+    }
+  },
+  {
+    "model": "core.book",
+    "pk": 18,
+    "fields": {
+      "isbn": "979-0003-8-9592-0",
+      "title": "1984",
+      "cover": "https://images.booksense.com/images/935/262/9780452262935.jpg",
+      "author": [6],
+      "description": "Winston Smith is a low-ranking member of the ruling Party in London, in the nation of Oceania. Everywhere Winston goes, even his own home, the Party watches him through telescreens; everywhere he looks he sees the face of the Party’s seemingly omniscient leader, a figure known only as Big Brother. The Party controls everything in Oceania, even the people’s history and language. Currently, the Party is forcing the implementation of an invented language called Newspeak, which attempts to prevent political rebellion by eliminating all words related to it. Even thinking rebellious thoughts is illegal. Such thoughtcrime is, in fact, the worst of all crimes.",
+      "categories": [4, 5],
+      "available": 1,
+      "created": "2021-12-01T11:30:44.767594-06:00",
+      "updated": "2021-12-01T11:30:44.767594-06:00"
+    }
+  },
+  {
+    "model": "core.book",
+    "pk": 19,
+    "fields": {
+      "isbn": "979-0553-43-952-5",
+      "title": "Dragon wing",
+      "cover": "https://images-na.ssl-images-amazon.com/images/I/51gB2+BOB1L.jpg",
+      "author": [7, 8],
+      "description": "Ages ago, sorcerers of unmatched power sundered a world into four realms--sky, stone, fire, and water--then vanished. Over time, magicians learned to work spells only in their own realms and forgot the others. Now only the few who have survived the Labyrinth and crossed the Death Gate know of the presence of all four realms--and even they have yet to unravel the mysteries of their severed world. . . . In Arianus, Realm of Sky, humans, elves, and dwarves battle for control of precious water--traversing a world of airborne islands on currents of elven magic and the backs of mammoth dragons. But soon great magical forces will begin to rend the fabric of this delicate land. An assassin will be hired to kill a royal prince--by the king himself. A dwarf will challenge the beliefs of his people--and lead them in rebellion. And a sinister wizard will enact his plan to rule Arianus--a plan that may be felt far beyond the Realm of Sky and into the Death Gate itself.",
+      "categories": [1, 3],
+      "series": 6,
+      "series_order": 1,
+      "available": 1,
+      "created": "2021-12-01T11:30:44.767594-06:00",
+      "updated": "2021-12-01T11:30:44.767594-06:00"
+    }
+  },
+  {
+    "model": "core.book",
+    "pk": 20,
+    "fields": {
+      "isbn": "978-05-1473-953-5",
+      "title": "Elven star",
+      "cover": "https://images-na.ssl-images-amazon.com/images/I/51-tRyFq63L.jpg",
+      "author": [7, 8],
+      "description": "On steamy Pryan, never-ending sunlight and plentiful rain have created a jungle so vast that humans and elves dwell high in the trees and only dwarves live anywhere near the ground. From the treetops the aristocratic elves sell weapons to the other races, whose incessant warfare sends a steady steam of profits and essential resources skyward. Now, generations of dissent and race hatred will not heal -- not even under the threat of annihilation at the hands of legendary Titans. Armed with little more than their wits and prophecy, an elf, a human, and a dwarf must unite to try to save the world from destruction.",
+      "categories": [1, 3],
+      "series": 6,
+      "series_order": 2,
+      "available": 1,
+      "created": "2021-12-01T11:30:44.767594-06:00",
+      "updated": "2021-12-01T11:30:44.767594-06:00"
+    }
+  },
+  {
+    "model": "core.book",
+    "pk": 21,
+    "fields": {
+      "isbn": "978-0254-3-6566-6",
+      "title": "Fire sea",
+      "cover": "https://images-na.ssl-images-amazon.com/images/I/51HMcrYMm0L.jpg",
+      "author": [7, 8],
+      "description": "Abarrach, the Realm of stone. Here, on a barren world of underground caverns built around a core of molten lava, the lesser races (humans, elves, and dwarves) seem to have all died off. Here, too, what may well be the last remnants of the once powerful Sartan still struggle to survive. For Haplo and Alfred (enemies by heritage, traveling companions by necessity) Abarrach may reveal more than either dares to discover about the history of Sartan... and the future of all their descendants.",
+      "categories": [1, 3],
+      "series": 6,
+      "series_order": 3,
+      "available": 1,
+      "created": "2021-12-01T11:30:44.767594-06:00",
+      "updated": "2021-12-01T11:30:44.767594-06:00"
+    }
+  },
+  {
+    "model": "core.book",
+    "pk": 22,
+    "fields": {
+      "isbn": "979-35-6983-651-1",
+      "title": "Serpent mage",
+      "cover": "https://images-na.ssl-images-amazon.com/images/I/51CDw0Cj8PL.jpg",
+      "author": [7, 8],
+      "description": "After the four worlds Alfred has at last found his people on Chelstra, the realm of sea. But his travels have taught him to be cautious... and Alfred soon realizes his caution is justified, even among his own kind. The one person Alfred can trust is, strangely, Haplo the Patryn. But Haplo's lord has decreed all Sartan to be the enemy, and Haplo dares not go against his lord. Now the companions have arrived in a land where humans, elves, and dwarves have learned to live in peace. Unaware of an even greater threat to all the realms, it is Sartan and Patryn who will disrupt this alliance of the lesser races in their struggle to gain control of all four worlds. Only Alfred and Haplo realize that they have a much older (and more powerful) enemy than each other.",
+      "categories": [1, 3],
+      "series": 6,
+      "series_order": 4,
+      "available": 1,
+      "created": "2021-12-01T11:30:44.767594-06:00",
+      "updated": "2021-12-01T11:30:44.767594-06:00"
+    }
+  },
+  {
+    "model": "core.book",
+    "pk": 23,
+    "fields": {
+      "isbn": "978-145-1183-91-9",
+      "title": "The hand of chaos",
+      "cover": "https://images-na.ssl-images-amazon.com/images/I/51grb5TXEQL.jpg",
+      "author": [7, 8],
+      "description": "Chaos is everywhere as the Lord of the Nexus orders his servant Haplo and the human child known as Bane to further their master's work on Arianus, the realm of air. But their one time companion Alfred has been cast into the deadly Labyrinth. And somehow the assassin Hugh the Hand has been resurrected to complete his dark mission. More important, the evil force that Haplo and Alfred discovered on Arianus has escaped. As Haplo's doubts about his master grow deeper, he must decide whether to obey the Lord of the Nexus or betray the powerful Patryn...and endeavor to bring peace to the universe.",
+      "categories": [1, 3],
+      "series": 6,
+      "series_order": 5,
+      "available": 1,
+      "created": "2021-12-01T11:30:44.767594-06:00",
+      "updated": "2021-12-01T11:30:44.767594-06:00"
+    }
+  },
+  {
+    "model": "core.book",
+    "pk": 23,
+    "fields": {
+      "isbn": "978-1-23-456784-3",
+      "title": "Into the labyrinth",
+      "cover": "https://images-na.ssl-images-amazon.com/images/I/51EthpYUuzL.jpg",
+      "author": [7, 8],
+      "description": "From his army of the undead, Xar, Lord of the Nexus, learns of the existence of the mysterious Seventh Gate. It is said that this gate grants whoever enters it the power to create worlds--or destroy them. Only Haplo knows its location (but he doesn't know he knows it). Now an ex-lover has been sent to betray Haplo and bring back his corpse. Meanwhile, the assassin Hugh the Hand is also after Haplo, wielding the Accursed Blade. With his old companion Alfred, Haplo must seek sanctuary in the Labyrinth (a deadly prison maze whose inhabitants are condemned to death). Millennia ago a battle raged between the Sartan and the Patryn, and the Sartan sundered the world into four realms (air, fire, stone, and water) and then vanished. But now the two races have rediscovered each other through the magic of the Death Gate and war is about to erupt anew.",
+      "categories": [1, 3],
+      "series": 6,
+      "series_order": 6,
+      "available": 1,
+      "created": "2021-12-01T11:30:44.767594-06:00",
+      "updated": "2021-12-01T11:30:44.767594-06:00"
+    }
+  },
+  {
+    "model": "core.book",
+    "pk": 23,
+    "fields": {
+      "isbn": "979-100-8-72557-6",
+      "title": "The seventh gate",
+      "cover": "https://images-na.ssl-images-amazon.com/images/I/51EdEleQGOL.jpg",
+      "author": [7, 8],
+      "description": "The Seventh Gate is the thrilling conclusion to the New York Times bestselling Death Gate Cycle by Margaret Weis and Tracy Hickman. In this tale of treachery, power, and heroism, Alfred, Haplo, and Marit embark on a journey of death and discovery as they seek to enter the dreaded Seventh Gate. Encountering enemies both old and new, they unleash a magic no power can control, damning themselves to an apocalypse of unimagined proportion in a final struggle between good and evil.",
+      "categories": [1, 3],
+      "series": 6,
+      "series_order": 7,
+      "available": 1,
+      "created": "2021-12-01T11:30:44.767594-06:00",
+      "updated": "2021-12-01T11:30:44.767594-06:00"
+    }
+  }
+]

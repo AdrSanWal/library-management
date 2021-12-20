@@ -69,4 +69,4 @@ venv.bak/
 /site
 
 # database
-libdb
+dblib
