@@ -1,0 +1,32 @@
+version: "3"
+   
+services:
+  db:
+    image: mysql:8.0
+    restart: always
+    command: --default-authentication-plugin=mysql_native_password
+    environment:
+      MYSQL_DATABASE: 'librarydb'
+      MYSQL_USER: "${USER}"
+      MYSQL_PASSWORD: "${PASSWORD}"
+      MYSQL_ROOT_PASSWORD: "${PASSWORD}"
+    ports:
+      - '3306:3306'
+    expose:
+      - '3306'
+    volumes:
+      - ./libdb:/var/lib/mysql
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+  django:
+    build: .
+    command: bash -c "python3 library/manage.py migrate &&
+                      python3 library/manage.py runserver 0.0.0.0:8000"
+    restart: on-failure
+    volumes:
+      - .:/code
+    ports:
+      - "8000:8000"
+    depends_on: #links:
+      - db
+volumes:
+    libdb:
