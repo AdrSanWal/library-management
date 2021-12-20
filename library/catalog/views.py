@@ -1,3 +1,7 @@
-from django.shortcuts import render
+from django.views.generic import ListView
 
-# Create your views here.
+# from core import models
+
+
+# class AuthorView(ListView):
+#     model = models.Author
