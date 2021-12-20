@@ -1,0 +1,3 @@
+CREATE DATABASE IF NOT EXISTS librarydb;
+CREATE USER IF NOT EXISTS
+    user IDENTIFIED BY 'password' WITH auth_plugin;
