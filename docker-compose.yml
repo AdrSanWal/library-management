@@ -15,7 +15,7 @@ services:
     expose:
       - '3306'
     volumes:
-      - ./libdb:/var/lib/mysql
+      - ./dblib:/var/lib/mysql
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
   django:
     build: .

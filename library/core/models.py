@@ -33,10 +33,13 @@ class Category(models.Model):
         return self.name
 
 
-class Series(models.Model):
-    series_name = models.CharField(max_length=255)
+class Serie(models.Model):
+    name = models.CharField(max_length=255)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.name
 
 
 class Book(models.Model):
@@ -52,7 +55,7 @@ class Book(models.Model):
     author = models.ManyToManyField(Author, related_name='rel_author')
     description = models.CharField(max_length=1000, blank=True)
     categories = models.ManyToManyField(Category, related_name='rel_category')
-    series = models.ForeignKey(Series, on_delete=models.CASCADE)
+    series = models.ForeignKey(Serie, on_delete=models.CASCADE, blank=True, null=True)
     series_order = models.IntegerField(blank=True, null=True)
     available = models.BooleanField(default=True)
     loan_date = models.DateField(blank=True, null=True)
@@ -64,5 +67,10 @@ class Book(models.Model):
         verbose_name = "book"
         verbose_name_plural = "books"
 
+    def list_authors(self):
+        queryset = self.author.values('full_name')
+        list_qs = [_['full_name'] for _ in queryset]
+        return list_qs
+
     def __str__(self):
-        return f'{self.isbn}, {self.title}, {self.author}'
+        return f'{self.isbn}, {self.title}, {self.list_authors()}'
