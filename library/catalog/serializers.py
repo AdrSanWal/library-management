@@ -73,9 +73,6 @@ class SerieSerializer(serializers.ModelSerializer):
 class BookSerializer(serializers.ModelSerializer):
     """Serializer of book model"""
     available = serializers.BooleanField(initial=True)
-    # authors = serializers.StringRelatedField(many=True)
-    # categories = serializers.StringRelatedField(many=True)
-    # serie = serializers.StringRelatedField()
 
     class Meta:
 
@@ -124,4 +121,3 @@ class BookSerializer(serializers.ModelSerializer):
     def update(self, instance, validated_data):
         """Update a book instance"""
         return super().update(instance, validated_data)
-

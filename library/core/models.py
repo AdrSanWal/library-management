@@ -85,7 +85,7 @@ class Book(models.Model):
     authors = models.ManyToManyField(Author, related_name='rel_author')
     description = models.CharField(max_length=1000, blank=True)
     categories = models.ManyToManyField(Category, related_name='rel_category')
-    serie = models.ForeignKey(Serie, 
+    serie = models.ForeignKey(Serie,
                               on_delete=models.CASCADE,
                               blank=True,
                               null=True,
