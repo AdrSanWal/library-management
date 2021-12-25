@@ -4,6 +4,8 @@ from rest_framework.routers import DefaultRouter
 from .views import BookViewSet, AuthorViewSet, CategoryViewSet, SerieViewSet
 
 
+app_name = 'catalog'  # namespace
+
 router = DefaultRouter()
 router.register('books', BookViewSet)
 router.register('authors', AuthorViewSet)

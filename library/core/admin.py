@@ -4,9 +4,9 @@ from . import models
 
 
 class BookAdmin(admin.ModelAdmin):
-    list_fields = ('title', 'author')
-    search_fields = ('author',)
-    list_filter = ('author', 'categories')
+    list_fields = ('title', 'authors')
+    search_fields = ('authors',)
+    list_filter = ('authors', 'categories')
     readonly_fields = ('created', 'updated')
 
 
