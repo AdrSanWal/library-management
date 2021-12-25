@@ -69,6 +69,29 @@ class ModelTest(TestCase):
 
         self.assertEqual(request.status_code, status.HTTP_204_NO_CONTENT)
 
+    def test_get_author_successfully(self):
+        """Get an author and check that the ids are the same in the queryset
+        and in the data of the request
+        """
+        id_to_filter = 1
+        queryset = Author.objects.get(id=id_to_filter)
+        url = reverse('catalog:author-detail', args=[id_to_filter])
+        request = self.client.get(url)
+
+        self.assertEqual(request.status_code, status.HTTP_200_OK)
+        self.assertEqual(request.data['id'], queryset.id)
+
+    def test_update_author_successfully(self):
+        """Test if Update author successfully"""
+        id_to_update = self.test_author['id']
+        instance_before = Author.objects.get(id=id_to_update)
+        url = reverse('catalog:author-detail', args=[id_to_update])
+        request = self.client.patch(url, self.test_author)
+        instance_after = Author.objects.get(id=id_to_update)
+
+        self.assertEqual(request.status_code, status.HTTP_200_OK)
+        self.assertNotEquals(vars(instance_before), vars(instance_after))
+
     def test_date_death_prior_birth(self):
         """Test fail when date of death is prior to date of birth"""
         test_author = self.test_author.copy()
@@ -109,6 +132,31 @@ class ModelTest(TestCase):
         self.assertEqual(self.init_books - 1, Book.objects.count())
         self.assertEqual(request.status_code, status.HTTP_204_NO_CONTENT)
 
+    def test_get_book_successfully(self):
+        """Get a book and check that the ids are the same in the queryset
+        and in the data of the request
+        """
+        id_to_filter = 1
+        queryset = Book.objects.get(id=id_to_filter)
+        url = reverse('catalog:book-detail', args=[id_to_filter])
+        request = self.client.get(url)
+
+        self.assertEqual(request.status_code, status.HTTP_200_OK)
+        self.assertEqual(request.data['id'], queryset.id)
+
+    # def test_update_book_successfully(self):
+    #     """Test if Update book successfully"""
+    #     id_to_update = self.test_book['id']
+    #     instance_before = Book.objects.get(id=id_to_update)
+    #     dict_instance_before = instance_before.__dict__
+    #     dict_instance_before['title'] = "Test Title"
+    #     url = reverse('catalog:book-detail', args=[id_to_update])
+    #     request = self.client.patch(url, dict_instance_before)
+    #     instance_after = Book.objects.get(id=id_to_update)
+
+        # self.assertEqual(request.status_code, status.HTTP_200_OK)
+        # self.assertNotEquals(vars(instance_before), vars(instance_after))
+
     def test_book_wrong_control_digit(self):
         """Test if fails creating book with wrong control digit"""
         test_book = self.test_book.copy()
@@ -125,7 +173,7 @@ class ModelTest(TestCase):
 
         self.assertEqual(request.status_code, status.HTTP_400_BAD_REQUEST)
 
-    def test_serie_but_not_serie_order(self):
+    def test_book_serie_but_not_serie_order(self):
         """Test if fails creating book with serie field but serie_order empty"""
         test_book = self.test_book.copy()
         test_book.pop('serie_order')
@@ -133,7 +181,7 @@ class ModelTest(TestCase):
 
         self.assertEqual(request.status_code, status.HTTP_400_BAD_REQUEST)
 
-    def test_serie_order_already_exist(self):
+    def test_book_serie_order_already_exist(self):
         """Test if fails creating book with an existing serie_order"""
         test_book = self.test_book.copy()
         test_book['serie_order'] = 1  # For the serie 1 serie_order = 1 already exists
@@ -157,6 +205,29 @@ class ModelTest(TestCase):
         self.assertEqual(self.init_categories - 1, Category.objects.count())
         self.assertEqual(request.status_code, status.HTTP_204_NO_CONTENT)
 
+    def test_get_category_successfully(self):
+        """Get a category and check that the ids are the same in the queryset
+        and in the data of the request
+        """
+        id_to_filter = 1
+        queryset = Category.objects.get(id=id_to_filter)
+        url = reverse('catalog:category-detail', args=[id_to_filter])
+        request = self.client.get(url)
+
+        self.assertEqual(request.status_code, status.HTTP_200_OK)
+        self.assertEqual(request.data['id'], queryset.id)
+
+    def test_update_category_successfully(self):
+        """Test if Update category successfully"""
+        id_to_update = self.test_category['id']
+        instance_before = Category.objects.get(id=id_to_update)
+        url = reverse('catalog:category-detail', args=[id_to_update])
+        request = self.client.patch(url, self.test_category)
+        instance_after = Category.objects.get(id=id_to_update)
+
+        self.assertEqual(request.status_code, status.HTTP_200_OK)
+        self.assertNotEquals(vars(instance_before), vars(instance_after))
+
 # Serie tests -------------------------------------------------------------------------------- #
 
     def test_create_serie_successfully(self):
@@ -172,3 +243,26 @@ class ModelTest(TestCase):
 
         self.assertEqual(self.init_series - 1, Serie.objects.count())
         self.assertEqual(request.status_code, status.HTTP_204_NO_CONTENT)
+
+    def test_get_serie_successfully(self):
+        """Get a serie and check that the ids are the same in the queryset
+        and in the data of the request
+        """
+        id_to_filter = 1
+        queryset = Serie.objects.get(id=id_to_filter)
+        url = reverse('catalog:serie-detail', args=[id_to_filter])
+        request = self.client.get(url)
+
+        self.assertEqual(request.status_code, status.HTTP_200_OK)
+        self.assertEqual(request.data['id'], queryset.id)
+
+    def test_update_serie_successfully(self):
+        """Test if Update serie successfully"""
+        id_to_update = self.test_serie['id']
+        instance_before = Serie.objects.get(id=id_to_update)
+        url = reverse('catalog:serie-detail', args=[id_to_update])
+        request = self.client.patch(url, self.test_serie)
+        instance_after = Serie.objects.get(id=id_to_update)
+
+        self.assertEqual(request.status_code, status.HTTP_200_OK)
+        self.assertNotEquals(vars(instance_before), vars(instance_after))

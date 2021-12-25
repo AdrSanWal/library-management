@@ -13,23 +13,25 @@ class AuthorSerializer(serializers.ModelSerializer):
         model = Author
         fields = '__all__'
 
-    def create(self, validated_data):
-        """Create and return a new Author instance,
-        given the validated data. Gets the error of validate the model
-        """
-        instance = Author(**validated_data)
-        try:
-            instance.clean()
-            instance.save()
-        except ValidationError as error:
-            raise serializers.ValidationError(serializers.as_serializer_error(error))
-        return instance
-
     def delete(self, pk):
         """Delete a Author instance"""
         author = self.get_object(pk)
         author.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+    def create(self, validated_data):
+        """Create and return a new Author instance,
+        given the validated data. Gets the error of validate the model
+        """
+        return Author.objects.create(**validated_data)
+
+    def validate(self, attrs):
+        instance = Author(**dict(attrs))
+        try:
+            instance.clean()
+            return attrs
+        except ValidationError as error:
+            raise serializers.ValidationError(serializers.as_serializer_error(error))
 
 
 class CategorySerializer(serializers.ModelSerializer):
@@ -90,27 +92,58 @@ class BookSerializer(serializers.ModelSerializer):
             'available',
         ]
 
+    def validate(self, attrs):
+        # Pops authors and categories because they are many to many field
+        # and store them in self.authors and self.categories
+        self.authors = attrs.pop('authors')
+        self.categories = attrs.pop('categories')
+        instance = Book(**dict(attrs))
+        # self.context['request'].method # method
+        try:
+            instance.clean()
+            return attrs
+        except ValidationError as error:
+            raise serializers.ValidationError(serializers.as_serializer_error(error))
+
     def create(self, validated_data):
         """Create and return a new Book instance,
         given the validated data.
         """
-        # Pops authors and categories because they are many to many field
-        authors = validated_data.pop('authors')
-        categories = validated_data.pop('categories')
+        instance = Book.objects.create(**validated_data)
 
-        instance = Book(**validated_data)
-
-        try:
-            instance.clean()
-            instance.save()
-        except ValidationError as error:
-            raise serializers.ValidationError(serializers.as_serializer_error(error))
-
-        for author in authors:
+        for author in self.authors:
             instance.authors.add(author)
-        for category in categories:
+        for category in self.categories:
             instance.categories.add(category)
         return instance
+
+    # def validate(self, attrs):
+    #     m2m = {'authors': attrs.pop('authors'),
+    #            'categories': attrs.pop('categories')}  # pop manytomany fields
+    #     instance = Book(**dict(attrs))
+
+    #     try:
+    #         instance.clean()
+    #         attrs.update(m2m)
+    #         return attrs
+    #     except ValidationError as error:
+    #         raise serializers.ValidationError(serializers.as_serializer_error(error))
+
+    # def create(self, validated_data):
+    #     """Create and return a new Book instance,
+    #     given the validated data.
+    #     """
+    #     # Pops authors and categories because they are many to many field
+    #     authors = validated_data.pop('authors')
+    #     categories = validated_data.pop('categories')
+
+    #     instance = Book.objects.create(**validated_data)
+
+    #     for author in authors:
+    #         instance.authors.add(author)
+    #     for category in categories:
+    #         instance.categories.add(category)
+    #     return instance
 
     def delete(self, pk):
         """Delete a Book instance"""

@@ -53,12 +53,14 @@ def clean_series_order(self):
             raise ValidationError(
                 {"serie_order": "If the book is from a serie, it must have serie_order"})
         else:
-            from .models import Serie  # To avoid circular import
-            orders = Serie.objects.get(id=self.serie.id).list_order_books()
+            # Exclude the instance itself so it doesn't throw an error when updating a book
+            from .models import Book  # To avoid circular import
+            books = Book.objects.filter(serie=self.serie).exclude(isbn=self.isbn)
+            orders = [book.serie_order for book in books]
             if self.serie_order in orders:
                 raise ValidationError(
-                    {"serie_order": f"This order in the serie is already taken. \
-                       Used orders: {orders}"})
+                    {"serie_order": f"This order in the serie is already taken.\
+                      Used orders: {orders}"})
 
 
 @deconstructible
