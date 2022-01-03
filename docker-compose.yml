@@ -30,5 +30,11 @@ services:
       - "8000:8000"
     depends_on: #links:
       - db
+  vue:
+    build: ./frontend
+    image: vueapp:0.0.1
+    container_name: "vue-app"
+    ports:
+      - "8080:8080"
 volumes:
     libdb:
