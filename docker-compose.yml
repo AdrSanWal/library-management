@@ -23,12 +23,13 @@ services:
     build: .
     command: bash -c "python3 library/manage.py migrate &&
                       python3 library/manage.py runserver 0.0.0.0:8000"
+    container_name: "django-library"
     restart: on-failure
     volumes:
       - .:/code
     ports:
       - "8000:8000"
-    depends_on: #links:
+    depends_on: #links: 
       - db
   vue:
     build: ./frontend
@@ -36,5 +37,12 @@ services:
     container_name: "vue-app"
     ports:
       - "8080:8080"
+    restart: always
+    volumes:
+      - ./frontend:/app
+    environment:
+      - CHOKIDAR_USEPOLLING=true  
+    depends_on: #links:
+      - django
 volumes:
-    libdb:
+  dblib:
