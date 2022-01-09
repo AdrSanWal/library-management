@@ -1,7 +1,7 @@
 <template>
-    <div class="authors">
+    <div class="series">
         <br>
-        <ItemsTable items="authors" :headers="headersTable"/>
+        <ItemsTable items="series" :headers="headersTable"/>
     </div>
 </template>
 
@@ -9,16 +9,13 @@
 import ItemsTable from '@/components/ItemsTable'
 
 export default {
-    name: 'AuthorsTable',
+    name: 'SeriessTable',
     components: {
         ItemsTable
     },
     setup() {
         const headersTable = {
-            'Name': 'full_name',
-            'Pseudonym': 'pseudonym',
-            'Born': 'born',
-            'Died': 'died'
+            'Name': 'name',
         }
 
         return { headersTable }
