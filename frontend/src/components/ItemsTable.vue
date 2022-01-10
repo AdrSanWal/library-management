@@ -1,15 +1,15 @@
 <template>
     <div class="container">
         <h2>List of {{ items }}</h2>
-        Pages: {{ pages }}
+
         <table id="table">
             <thead id="t-head">
                 <tr>
                     <th>#</th>
                     <th v-for="(value, key, index) of headers"
                         :key="index"
-                        @click="sortedBy=value">
-                            {{ key }} <i class="fas fa-sort-down"></i>
+                        @click="sortField=value;sortByField(value)">
+                            {{ key }} <i :class="['fas', 'fa-sort-down', {'active': value===sortField}]"></i>
                     </th>
                     <th class="h-right">
                         Add <i class="fas fa-external-link-alt"></i>
@@ -95,16 +95,16 @@ export default {
     props: {
         items: String,
         headers: Object,
+        sort: String,
     },
     setup(props) {
         const items = props.items
         const headers = props.headers
 
         const show = ref(false)
+        const sortField = ref(props.sort)
 
         const cols = Object.keys(headers).length + 1
-
-        const sortedBy = ref('title')
 
         const path = `api/catalog/${items}/`
 
@@ -117,7 +117,8 @@ export default {
                 getDataPage,
                 changePage,
                 changeLinks,
-                changeRows } = usePaginationTable(path, sortedBy.value)
+                changeRows,
+                sortByField } = usePaginationTable(path)
 
         return { cols,
                  items,
@@ -132,8 +133,9 @@ export default {
                  changePage,
                  changeLinks,
                  changeRows,
-                 sortedBy,
-                 show }
+                 show,
+                 sortField,
+                 sortByField }
     }
 }
 </script>
@@ -158,6 +160,14 @@ thead {
 #t-head {
     opacity: 0.7;
     background-color: var(--color-nav);
+}
+
+th>.fa-sort-down {
+    opacity: 0.3;
+}
+
+th>.active {
+    opacity: 1;
 }
 
 th {

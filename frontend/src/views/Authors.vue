@@ -1,7 +1,9 @@
 <template>
     <div class="authors">
         <br>
-        <ItemsTable items="authors" :headers="headersTable"/>
+        <ItemsTable items="authors"
+                    :headers="headersTable"
+                    :sort="defaulSort"/>
     </div>
 </template>
 
@@ -21,7 +23,9 @@ export default {
             'Died': 'died'
         }
 
-        return { headersTable }
+        const defaulSort = 'full_name'
+
+        return { headersTable, defaulSort }
     }
 }
 </script>

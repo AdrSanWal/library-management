@@ -1,7 +1,7 @@
-import { ref, reactive, toRefs, onMounted } from 'vue'
+import { reactive, toRefs, onMounted } from 'vue'
 import useApi from '@/composables/useApi'
 
-export default function (path, sortedBy) {
+export default function (path) {
     // range array generator
     const initialLinks = 3
     const range = (start, length=initialLinks) => Array.from(
@@ -39,8 +39,12 @@ export default function (path, sortedBy) {
         return arr
     })
 
+    let sortByField = (field => {
+        data.json = sortBy(data.json, field)
+        getDataPage(data.actualPage)
+    })
+
     let getDataPage = (page => {
-        data.json = sortBy(data.json, sortedBy)
         let start = (page * data.rowsPage) - data.rowsPage
         let end = (page * data.rowsPage)
         data.actualPage = page  // update actualPage value
@@ -75,6 +79,6 @@ export default function (path, sortedBy) {
         getDataPage(data.actualPage)
     }
   
-    return { ...toRefs(data), getDataPage, changePage, changeRows }
+    return { ...toRefs(data), getDataPage, changePage, changeRows, sortByField }
 
 }
