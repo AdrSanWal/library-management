@@ -1,7 +1,9 @@
 <template>
     <div class="series">
         <br>
-        <ItemsTable items="series" :headers="headersTable"/>
+        <ItemsTable items="series"
+                    :headers="headersTable"
+                    :sort="defaulSort"/>
     </div>
 </template>
 
@@ -18,7 +20,9 @@ export default {
             'Name': 'name',
         }
 
-        return { headersTable }
+        const defaulSort = 'name'
+
+        return { headersTable, defaulSort }
     }
 }
 </script>

@@ -1,7 +1,9 @@
 <template>
     <div class="books">
         <br>
-        <ItemsTable items="books" :headers="headersTable"/>
+        <ItemsTable items="books"
+                    :headers="headersTable"
+                    :sort="defaulSort"/>
     </div>
 </template>
 
@@ -22,7 +24,9 @@ export default {
             'Available': 'available',
         }
 
-        return { headersTable }
+        const defaulSort = 'title'
+
+        return { headersTable, defaulSort }
     }
 }
 </script>
