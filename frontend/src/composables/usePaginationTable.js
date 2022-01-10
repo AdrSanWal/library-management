@@ -13,12 +13,14 @@ export default function (path, sortedBy) {
         pages: 1,
         actualPage: 1,
         json: [],
-        arrayLinks: range(1, numLinks.value) 
+        arrayLinks: range(1, numLinks.value),
+        results: 0
     })
 
     onMounted( async () => {
         const { json_response } = await useApi('get', path)
         data.json = json_response.value
+        data.results = data.json.length
         data.pages = Math.ceil(data.json.length / data.rowsPage)
         numLinks.value = Math.min(numLinks.value, data.pages)
 
@@ -64,12 +66,9 @@ export default function (path, sortedBy) {
         data.rowsPage = rows
         data.pages = Math.ceil(data.json.length / data.rowsPage)
         numLinks.value = Math.min(numLinks.value, data.pages)
-        // If we change to more rows, it will be less pages. If we are on a high
-        // page, it may be that with the change that page no longer exists
-        data.actualPage = Math.min(data.actualPage, data.pages)
-        if (!data.arrayLinks.includes(data.actualPage)) {
-            data.arrayLinks = range(data.pages - numLinks.value, data.pages)
-        }
+        data.actualPage = 1
+        data.arrayLinks = range(1, data.pages)
+
         getDataPage(data.actualPage)
     }
   

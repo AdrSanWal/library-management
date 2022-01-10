@@ -3,11 +3,12 @@
         <h2>List of {{ items }}</h2>
 
         <table id="table">
-            <thead>
+
+            <thead id="t-head">
                 <tr>
                     <th>#</th>
                     <th v-for="(value, key, index) of headers" :key="index">{{ key }}</th>
-                    <th class="add">
+                    <th class="h-right">
                         Add <i class="fas fa-external-link-alt"></i>
                     </th>  
                 </tr>
@@ -15,21 +16,43 @@
 
             <tbody>
                 <tr v-for="(item, index) of dataPage" :key="index">
-                    <td>{{ index +1 }}</td>
+                    <td>{{ (index + (rowsPage * (actualPage - 1 ))) + 1}}</td>
                     <td v-for="(value, key, index) of headers" :key="index">{{ item[value] }}</td>
                     <td class="exclude">
-                        <button class="btn-edit btn-lst"><i class="fa-solid fa-pen-to-square"></i></button>
-                        <button class="btn-del btn-lst"><i class="fa-solid fa-trash-can"></i></button>
+                        <div class="btn">
+                            <button class="btn-edit btn-lst"><i class="fa-solid fa-pen-to-square"></i></button>
+                            <button class="btn-del btn-lst"><i class="fa-solid fa-trash-can"></i></button>
+                        </div>
                     </td>
                 </tr>
             </tbody>
- 
-            <tfoot>
-                <br>
+
+            <br>
+
+            <tfoot id="t-foot">
                 <tr>
-                    <td colspan="2" class="exclude">Page {{ actualPage }} of {{ pages }}</td>
+                    <td :colspan="cols" id="t-subfoot">
+                        <div class="f-item">{{ results }}  Results</div>
+                        <div class="f-item right">Page {{ actualPage }} of {{ pages }}</div>
+                    </td>
+                    <td class="h-right">
+                        <div class="dropdown" @mouseenter="show=true" @mouseleave="show=false">
+                            <div id="selectRows">
+                                <p>Rows <i class="fas fa-caret-down"></i></p>
+                            </div>
+                            <transition name="rows">
+                                <ul v-if="show" class="changeRows">
+                                    <li v-for="(n, i) in [5,10,25]"
+                                        :key="i"
+                                        @click="changeRows(n)">{{n}} rows
+                                    </li>
+                                </ul>
+                            </transition>
+                        </div>
+                    </td>
                 </tr>
             </tfoot>
+
         </table>
 
         <br>
@@ -74,6 +97,10 @@ export default {
         const items = props.items
         const headers = props.headers
 
+        const show = ref(false)  // change to false when works
+
+        const cols = Object.keys(headers).length + 1
+
         const sortedBy = ref('title')
 
         const path = `api/catalog/${items}/`
@@ -83,29 +110,34 @@ export default {
                 pages,
                 actualPage,
                 arrayLinks,
+                results,
                 getDataPage,
                 changePage,
                 changeLinks,
                 changeRows } = usePaginationTable(path, sortedBy.value)
 
 
-        return { items,
+        return { cols,
+                 items,
                  headers,
                  rowsPage,
                  dataPage,
                  pages,
                  actualPage,
                  arrayLinks,
+                 results,
                  getDataPage,
                  changePage,
                  changeLinks,
                  changeRows,
-                 sortedBy }
+                 sortedBy,
+                 show }
     }
 }
 </script>
 
 <style scope>
+
 
 /* Tables ------------------------------------------------------------ Tables */
 
@@ -117,10 +149,13 @@ table {
 }
 
 thead {
-    background-color: var(--color-nav);
-    opacity: 0.5;
     color: whitesmoke;
     font-size: larger;
+}
+
+#t-head {
+    opacity: 0.7;
+    background-color: var(--color-nav);
 }
 
 th {
@@ -133,16 +168,20 @@ td {
 }
 
 tr:nth-child(even){
-    background-color: #faddc2;
+    background-color: #d8941746;
 }
 
 tbody>tr:hover {
     background-color: rgb(221, 221, 221);
 }
 
+.btn {
+    display: flex;
+}
+
 .btn-lst {
-    padding: 4px;
-    width: 25px;
+    padding: 8px;
+    width: 30px;
 }
 
 .exclude {
@@ -155,9 +194,65 @@ button {
     width: 100px;
 }
 
-.add {
-    background-color:var(--color-btn);
+.h-right {
+    background-color: var(--color-btn);
 }
+
+.h-right:hover {
+    background-color: var(--color-hover);
+    color:black;
+}
+
+/* Table foot ---------------------------------------------------- Table foot */
+
+#t-foot {
+    opacity: 0.6;
+    background-color: var(--color-nav);
+    color: whitesmoke;
+    font-size: larger;
+    font-weight: bold;
+}
+
+.f-item {
+    display: inline-flex;
+
+}
+
+/* Change rows -------------------------------------------------- Change rows */
+
+#selectRows > p {
+    margin: 1px;
+    height: 25px;
+}
+
+.right {
+    float: right;
+}
+
+.changeRows {
+    position: absolute;
+    width: 108px;
+    margin: 6px 0 0 -20px;
+    padding: 0;
+    list-style-type: none;
+    transform-origin: top;
+    transition: transform 0.5s ease-in-out;
+
+}
+
+li {
+    
+    padding: 10px;
+    color:black;
+    background: var(--color-hover);
+    border-bottom: solid thin var(--color-nav);
+    border-left: solid medium var(--color-nav);
+  }
+
+.rows-enter, .rows-leave-to{
+    transform: scaleY(0);
+}
+
 
 /* Pagination ---------------------------------------------------- Pagination */
 
@@ -166,17 +261,17 @@ button {
 }
 
 .pagination a {
-  color: var(--color-nav);
-  float: left;
-  padding: 8px 16px;
-  text-decoration: none;
-  border: 1px solid rgb(214, 211, 211);
-  margin: 0 2px;
+    color: var(--color-nav);
+    float: left;
+    padding: 8px 16px;
+    text-decoration: none;
+    border: 1px solid rgb(214, 211, 211);
+    margin: 0 2px;
 }
 
 .pagination a.active {
-  background-color: var(--color-btn);
-  color: white;
+    background-color: var(--color-btn);
+    color: white;
 }
 
 .page-item {
