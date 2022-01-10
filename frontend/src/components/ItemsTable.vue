@@ -1,13 +1,16 @@
 <template>
     <div class="container">
         <h2>List of {{ items }}</h2>
-
+        Pages: {{ pages }}
         <table id="table">
-
             <thead id="t-head">
                 <tr>
                     <th>#</th>
-                    <th v-for="(value, key, index) of headers" :key="index">{{ key }}</th>
+                    <th v-for="(value, key, index) of headers"
+                        :key="index"
+                        @click="sortedBy=value">
+                            {{ key }} <i class="fas fa-sort-down"></i>
+                    </th>
                     <th class="h-right">
                         Add <i class="fas fa-external-link-alt"></i>
                     </th>  
@@ -97,7 +100,7 @@ export default {
         const items = props.items
         const headers = props.headers
 
-        const show = ref(false)  // change to false when works
+        const show = ref(false)
 
         const cols = Object.keys(headers).length + 1
 
@@ -115,7 +118,6 @@ export default {
                 changePage,
                 changeLinks,
                 changeRows } = usePaginationTable(path, sortedBy.value)
-
 
         return { cols,
                  items,
