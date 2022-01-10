@@ -15,6 +15,7 @@
     --color-nav: rgb(45, 34, 83);
     --btn-radius: 5px;
     --font-fam: monospace;
+    --color-hover: rgb(221, 211, 211);
 }
 
 #app {
@@ -52,7 +53,7 @@
 }
 
 #nav a:hover {
-    background-color: rgb(212, 211, 211);
+    background-color: var(--color-hover);
     color: black;
 }
 
