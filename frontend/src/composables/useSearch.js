@@ -14,8 +14,9 @@ export default function (query) {
         const getData = ( async (items, field) => {
             const path = `api/catalog/${items}/?q=${query}`
             const resp = await useApi('get', path)
+            const results = resp.json_response.value // .slice(0,5)
             
-            return resp.json_response.value.map(x => ({"id": x['id'], "field": x[field]}))
+            return results.map(x => ({"id": x['id'], "field": x[field]}))
         })
 
         if (query === '') {

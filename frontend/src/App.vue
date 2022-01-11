@@ -15,7 +15,7 @@
     --color-nav: rgb(45, 34, 83);
     --btn-radius: 5px;
     --font-fam: monospace;
-    --color-hover: rgb(221, 211, 211);
+    --color-hover: rgb(221, 221, 221);
 }
 
 #app {

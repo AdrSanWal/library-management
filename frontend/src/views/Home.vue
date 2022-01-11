@@ -6,6 +6,7 @@
                 type="text"
                 placeholder="&#xF002; Search"
                 v-model="query"
+                autocomplete="off"
                 @keyup="search(query)">
         </div>
 

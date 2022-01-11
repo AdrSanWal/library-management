@@ -184,7 +184,7 @@ tr:nth-child(even){
 }
 
 tbody>tr:hover {
-    background-color: rgb(221, 221, 221);
+    background-color: var(--color-hover);
 }
 
 .btn {
@@ -277,7 +277,7 @@ li {
     float: left;
     padding: 8px 16px;
     text-decoration: none;
-    border: 1px solid rgb(214, 211, 211);
+    border: 1px solid var(--color-hover);
     margin: 0 2px;
 }
 
