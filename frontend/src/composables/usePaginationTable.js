@@ -32,10 +32,11 @@ export default function (path) {
 
     let sortBy = ((arr, field) => {
         arr.sort(function (a, b) {
-            var fieldA = a[field];
-            var fieldB = b[field];
-            return (fieldA < fieldB) ? -1 : (fieldA > fieldB) ? 1 : 0;
-          });
+            return (a[field]===b[field]) ? 0
+            : (b[field]===null || b[field]==='') ? 1
+            : (a[field]===null || a[field]==='') ? -1
+            : (a[field] < b[field]) ? -1 : 1;
+        })
         return arr
     })
 
