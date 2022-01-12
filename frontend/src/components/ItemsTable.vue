@@ -1,7 +1,6 @@
 <template>
     <div class="container">
         <h2>List of {{ items }}</h2>
-
         <table id="table">
             <thead id="t-head">
                 <tr>
@@ -20,7 +19,12 @@
             <tbody>
                 <tr v-for="(item, index) of dataPage" :key="index">
                     <td>{{ (index + (rowsPage * (actualPage - 1 ))) + 1}}</td>
-                    <td v-for="(value, key, index) of headers" :key="index">{{ item[value] }}</td>
+                    <!--<td v-for="(value, key, index) of headers" :key="index">{{ transform(item[value]) }}</td>-->
+                    <td v-for="(value, key, index) of headers" :key="index">
+                        {{ transform(items, item[value], key) }}
+                        <i class="fas fa-check" v-if="item[value]===true"></i>
+                        <i class="fas fa-times" v-if="item[value]===false"></i>
+                    </td>
                     <td class="exclude">
                         <div class="btn">
                             <button class="btn-edit btn-lst"><i class="fa-solid fa-pen-to-square"></i></button>
@@ -88,7 +92,7 @@
 
 <script>
 import usePaginationTable from '@/composables/usePaginationTable'
-import { ref } from 'vue'
+import { ref, onMounted, reactive } from 'vue'
 
 export default {
     name: 'ItemsTable',
@@ -108,6 +112,40 @@ export default {
 
         const path = `api/catalog/${items}/`
 
+        const related = reactive({
+            series: [],
+            categories: []
+        })
+
+        onMounted( async () => {
+            if (items==='books') {
+                related.series = await getRelatedData('series')
+                related.categories = await getRelatedData('categories')
+            }
+        })
+
+        const transform = ((items, value, field) => {  // Transform data
+            if (items!=='books') {
+                return value
+            } else {
+                if (value===true || value===false) {
+                    return ''
+                } else {
+                    if (field==='Serie') {
+                        let serie = related.series.find(x => x.id === value)
+                        return serie ? serie.name : null
+
+                    } else if (field==='Categories') {
+                        let categories = related.categories.filter(x => Object.values(value).includes(x.id))
+                        console.log(categories.map(x => x.name))
+
+                        return categories ? categories.map(x => x.name).join(', ') : null
+                    }
+                }
+            }    
+            return value
+         })
+
         const { rowsPage,
                 dataPage,
                 pages,
@@ -118,7 +156,8 @@ export default {
                 changePage,
                 changeLinks,
                 changeRows,
-                sortByField } = usePaginationTable(path)
+                sortByField,
+                getRelatedData } = usePaginationTable(path, sortField)
 
         return { cols,
                  items,
@@ -135,7 +174,8 @@ export default {
                  changeRows,
                  show,
                  sortField,
-                 sortByField }
+                 sortByField,
+                 transform }
     }
 }
 </script>
@@ -149,7 +189,7 @@ table {
     text-align: left;
     cursor:pointer;
     table-layout: fixed;
-    max-width: 60%;
+    max-width: 80%;
 }
 
 thead {
@@ -172,11 +212,11 @@ th>.active {
 
 th {
     padding: 10px 20px;
-    /*min-width: 55px;*/
 }
 
 td {
     padding: 5px 20px;
+    max-width: 600px;
 }
 
 tr:nth-child(even){
@@ -228,6 +268,14 @@ button {
 .f-item {
     display: inline-flex;
 
+}
+
+.fa-check {
+    color: green;
+}
+
+.fa-times {
+    color:red;
 }
 
 /* Change rows -------------------------------------------------- Change rows */

@@ -67,6 +67,11 @@ li {
     font-size: large;
 }
 
+li:hover {
+    background-color: rgb(201, 195, 195);
+    cursor: pointer;
+}
+
 .matches-leave-to {
     transform: scaleY(0);
 }
