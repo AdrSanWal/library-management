@@ -1,7 +1,7 @@
 import { reactive, toRefs, onMounted } from 'vue'
 import useApi from '@/composables/useApi'
 
-export default function (path) {
+export default function (path, sortField) {
     // range array generator
     const initialLinks = 3
     const range = (start, length=initialLinks) => Array.from(
@@ -22,7 +22,7 @@ export default function (path) {
 
     onMounted( async () => {
         const { json_response } = await useApi('get', path)
-        data.json = json_response.value
+        data.json = sortBy(json_response.value, sortField.value) // sort by default field
         data.results = data.json.length
         data.pages = Math.ceil(data.json.length / data.rowsPage)
         data.numLinks = Math.min(data.numLinks, data.pages)
@@ -44,6 +44,7 @@ export default function (path) {
         data.json = sortBy(data.json, field)
         getDataPage(data.actualPage)
     })
+
 
     let getDataPage = (page => {
         let start = (page * data.rowsPage) - data.rowsPage
@@ -79,7 +80,17 @@ export default function (path) {
 
         getDataPage(data.actualPage)
     }
+
+    const getRelatedData = (async field => {
+        const response = await useApi('get', `api/catalog/${field}/`)
+        return response.json_response.value
+    })
   
-    return { ...toRefs(data), getDataPage, changePage, changeRows, sortByField }
+    return { ...toRefs(data),
+                getDataPage,
+                changePage,
+                changeRows,
+                sortByField,
+                getRelatedData }
 
 }

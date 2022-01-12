@@ -12,8 +12,8 @@ class BookViewSet(ModelViewSet):
     def get_queryset(self):
         """Return all Books except if there are query parameters"""
         request = self.request.GET
-        if 'title' in request:
-            return Book.objects.filter(title__icontains=request['title'])
+        if 'q' in request:
+            return Book.objects.filter(title__icontains=request['q'])
         if 'serie' in request:
             return Book.objects.filter(serie=request['serie'])
         if 'author' in request:
