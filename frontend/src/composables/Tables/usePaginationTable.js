@@ -1,13 +1,13 @@
 import { reactive, toRefs, onMounted } from 'vue'
-import useApi from '@/composables/useApi'
+import { sortByField } from '@/composables/Tables/useSortTable'
 
-export default function (path, sortField) {
+
+export default function (dataJson, sortField) {
     // range array generator
     const initialLinks = 3
     const range = (start, length=initialLinks) => Array.from(
         { length: length}, (_, i) => start + i
     )
-    
     
     const data = reactive({
         numLinks: initialLinks,
@@ -15,42 +15,17 @@ export default function (path, sortField) {
         dataPage: [],
         pages: 1,
         actualPage: 1,
-        json: [],
         arrayLinks: range(1, initialLinks),
         results: 0
     })
 
     onMounted( async () => {
-        const { json_response } = await useApi('get', path)
-        data.json = sortBy(json_response.value, sortField.value) // sort by default field
-        data.results = data.json.length
-        data.pages = Math.ceil(data.json.length / data.rowsPage)
+        console.log('aqui', dataJson)
+        data.results = dataJson.length
+        data.pages = Math.ceil(dataJson.length / data.rowsPage)
         data.numLinks = Math.min(data.numLinks, data.pages)
-
+        dataJson = sortByField(dataJson, sortField.value)
         getDataPage(data.actualPage)
-    })
-
-    let sortBy = ((arr, field) => {
-        arr.sort(function (a, b) {
-            return (a[field]===b[field]) ? 0
-            : (b[field]===null || b[field]==='') ? 1
-            : (a[field]===null || a[field]==='') ? -1
-            : (a[field] < b[field]) ? -1 : 1;
-        })
-        return arr
-    })
-
-    let sortByField = (field => {
-        data.json = sortBy(data.json, field)
-        getDataPage(data.actualPage)
-    })
-
-
-    let getDataPage = (page => {
-        let start = (page * data.rowsPage) - data.rowsPage
-        let end = (page * data.rowsPage)
-        data.actualPage = page  // update actualPage value
-        data.dataPage = data.json.slice(start, end)
     })
 
     const changePage = (direction) => {
@@ -81,16 +56,17 @@ export default function (path, sortField) {
         getDataPage(data.actualPage)
     }
 
-    const getRelatedData = (async field => {
-        const response = await useApi('get', `api/catalog/${field}/`)
-        return response.json_response.value
+    let getDataPage = (page => {
+        let start = (page * data.rowsPage) - data.rowsPage
+        let end = (page * data.rowsPage)
+        data.actualPage = page  // update actualPage value
+        data.dataPage = data.json.slice(start, end)
+
     })
-  
+
     return { ...toRefs(data),
                 getDataPage,
                 changePage,
-                changeRows,
-                sortByField,
-                getRelatedData }
+                changeRows }
 
 }

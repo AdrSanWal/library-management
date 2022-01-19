@@ -1,12 +1,12 @@
 <template>
   <div id="nav">
     <router-link class="home" :to="{name: 'Home'}"><i class="fa-solid fa-house-chimney"></i> Home</router-link> |
-    <router-link :to="{name: 'Authors'}">Authors</router-link>
-    <router-link :to="{name: 'Categories'}">Categories</router-link>
-    <router-link :to="{name: 'Series'}">Series</router-link>
-    <router-link :to="{name: 'Books'}">Books</router-link>
+    <router-link :to="{name: 'Items', params: {items: 'authors', id: 'list'}}">Authors</router-link>
+    <router-link :to="{name: 'Items', params: {items: 'categories', id: 'list'}}">Categories</router-link>
+    <router-link :to="{name: 'Items', params: {items: 'series', id: 'list'}}">Series</router-link>
+    <router-link :to="{name: 'Items', params: {items: 'books', id: 'list'}}">Books</router-link>
   </div>
-  <router-view/>
+  <router-view :key="$route.fullPath"/>
 </template>
 
 <style>
@@ -73,10 +73,11 @@ button {
     border-radius: var(--btn-radius);
     background-color: var(--color-btn);
     color: whitesmoke;
-    padding: 3px;
     margin: 2px;
     cursor: pointer;
     border:none;
+    padding: 5px;
+    text-align: center;
 }
 
 button:hover {

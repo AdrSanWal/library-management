@@ -76,6 +76,11 @@ class BookSerializer(serializers.ModelSerializer):
     """Serializer of book model"""
     available = serializers.BooleanField(initial=True)
 
+    # to show text in api, not ids
+    authors = serializers.StringRelatedField(many=True)
+    serie = serializers.StringRelatedField(many=False)
+    categories = serializers.StringRelatedField(many=True)
+
     class Meta:
 
         model = Book
@@ -90,6 +95,8 @@ class BookSerializer(serializers.ModelSerializer):
             'serie',
             'serie_order',
             'available',
+            'loan_date',
+            'expected_return_date',
         ]
 
     def validate(self, attrs):
@@ -116,34 +123,6 @@ class BookSerializer(serializers.ModelSerializer):
         for category in self.categories:
             instance.categories.add(category)
         return instance
-
-    # def validate(self, attrs):
-    #     m2m = {'authors': attrs.pop('authors'),
-    #            'categories': attrs.pop('categories')}  # pop manytomany fields
-    #     instance = Book(**dict(attrs))
-
-    #     try:
-    #         instance.clean()
-    #         attrs.update(m2m)
-    #         return attrs
-    #     except ValidationError as error:
-    #         raise serializers.ValidationError(serializers.as_serializer_error(error))
-
-    # def create(self, validated_data):
-    #     """Create and return a new Book instance,
-    #     given the validated data.
-    #     """
-    #     # Pops authors and categories because they are many to many field
-    #     authors = validated_data.pop('authors')
-    #     categories = validated_data.pop('categories')
-
-    #     instance = Book.objects.create(**validated_data)
-
-    #     for author in authors:
-    #         instance.authors.add(author)
-    #     for category in categories:
-    #         instance.categories.add(category)
-    #     return instance
 
     def delete(self, pk):
         """Delete a Book instance"""

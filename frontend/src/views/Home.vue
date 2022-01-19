@@ -12,10 +12,10 @@
 
         <div class="table">
 
-            <DropdownSearch item="Author" :data="json_authors"/>
-            <DropdownSearch item="Categories" :data="json_categories"/>
-            <DropdownSearch item="Series" :data="json_series"/>
-            <DropdownSearch item="Books" :data="json_books"/>
+            <DropdownSearch item="Author" :data="jsonAuthors"/>
+            <DropdownSearch item="Categories" :data="jsonCategories"/>
+            <DropdownSearch item="Series" :data="jsonSeries"/>
+            <DropdownSearch item="Books" :data="jsonBooks"/>
 
         </div>
     </div>
@@ -35,16 +35,16 @@ export default {
     setup() {
         const query = ref('')
 
-        const { json_authors,
-                json_books,
-                json_categories,
-                json_series,
+        const { jsonAuthors,
+                jsonBooks,
+                jsonCategories,
+                jsonSeries,
                 search } = useSearch(query)
 
-        return { json_authors,
-                 json_books,
-                 json_categories,
-                 json_series,
+        return { jsonAuthors,
+                 jsonBooks,
+                 jsonCategories,
+                 jsonSeries,
                  search,
                  query }
     }
