@@ -35,9 +35,31 @@
                 </tr>
             </tbody>
 
-
             <br>
 
+            <tfoot id="t-foot">
+                <tr>
+                    <td :colspan="cols" id="t-subfoot">
+                        <div class="f-item">{{ results }}  Results</div>
+                        <div class="f-item right">Page {{ actualPage }} of {{ pages }}</div>
+                    </td>
+                    <td class="h-right">
+                        <div class="dropdown" @mouseenter="show=true" @mouseleave="show=false">
+                            <div id="selectRows">
+                                <p>Rows <i class="fas fa-caret-down"></i></p>
+                            </div>
+                            <transition name="rows">
+                                <ul v-if="show" class="changeRows">
+                                    <li v-for="(n, i) in [5,10,25]"
+                                        :key="i"
+                                        @click="changeRows(n)">{{n}} rows
+                                    </li>
+                                </ul>
+                            </transition>
+                        </div>
+                    </td>
+                </tr>
+            </tfoot>
 
         </table>
 
@@ -47,7 +69,9 @@
 <script>
 import usePaginationTable from '@/composables/Tables/usePaginationTable'
 import { sortByField } from '@/composables/Tables/useSortTable'
+import useApi from '@/composables/useApi'
 import { ref } from 'vue'
+import { useRouter } from 'vue-router'
 
 
 export default {
@@ -60,19 +84,37 @@ export default {
     },
     setup(props, { emit }) {
 
-
+        const router = useRouter()
 
         const show = ref(false)
         const cols = Object.keys(props.headers).length + 1
 
+        const goToDetail = ((id) => {
+            if (props.items==='books') {
+                router.push({name: 'Items', params: {id: id}})
+            } else {
+                console.log('otro')
+            }
+        })
 
-
-        
+        const { rowsPage,
+                dataPage,
+                pages,
+                actualPage,
+                arrayLinks,
+                results,
+                getDataPage,
+                changePage,
+                changeLinks,
+                changeRows, getInfo } = usePaginationTable(props.data)
 
         return { show,
                  cols,
-                 sortByField
-                }
+                 sortByField,
+                 results,
+                 actualPage,
+                 pages,
+                 goToDetail }
     }
 }
 </script>

@@ -14,7 +14,7 @@ export default {
         data: Object,
     },
     setup(props) {
-        console.log('props', props)
+
     }
 }
 </script>

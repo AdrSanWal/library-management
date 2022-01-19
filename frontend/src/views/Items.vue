@@ -81,8 +81,10 @@ export default {
         let path
         if (itemsSelection.id==='list') {
             path = `${itemsSelection.item}/`
-        } else {
+        } else if (itemsSelection.item==='books') {
             path = `${itemsSelection.item}/${itemsSelection.id}/`
+        } else {
+            path = `books/?${itemsSelection.item}=${itemsSelection.id}`
         }
 
         const res = await useApi('get', path)

@@ -14,12 +14,12 @@ class BookViewSet(ModelViewSet):
         request = self.request.GET
         if 'q' in request:
             return Book.objects.filter(title__icontains=request['q'])
-        if 'serie' in request:
-            return Book.objects.filter(serie=request['serie'])
-        if 'author' in request:
-            return Book.objects.filter(author=request['author'])
-        if 'category' in request:
-            return Book.objects.filter(categories=request['category'])
+        if 'series' in request:
+            return Book.objects.filter(serie=request['series'])
+        if 'authors' in request:
+            return Book.objects.filter(authors=request['authors'])
+        if 'categories' in request:
+            return Book.objects.filter(categories=request['categories'])
         if 'available' in request:
             return Book.objects.filter(available=request['available'])
         return self.queryset
