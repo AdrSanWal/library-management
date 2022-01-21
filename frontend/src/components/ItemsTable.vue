@@ -7,8 +7,8 @@
                     <th>#</th>
                     <th v-for="(value, key, index) of headers"
                         :key="index"
-                        @click="sortField=value;sortByField(data, value)">
-                            {{ key }} <i :class="['fas', 'fa-sort-down', {'active': value===sortField}]"></i>
+                        @click="query.sortField=value;$emit('changeData', query)">
+                            {{ key }} <i :class="['fas', 'fa-sort-down', {'active': value===query.sortField}]"></i>
                     </th>
                     <th class="h-right">
                         Add <i class="fas fa-external-link-alt"></i>
@@ -17,7 +17,7 @@
             </thead>
 
             <tbody>
-                <tr v-for="(item, index) of data"
+                <tr v-for="(item, index) of data.results"
                     :key="index"
                     @click="$router.push({name: 'Items', params: {id: item.id}})">
                     <td>1</td>
@@ -25,13 +25,12 @@
                         :key="index">
                         <span>{{ item[value] }}</span>
                     </td>
-
-                    <td class="exclude">
+                    <td class="exclude" @click.stop>
                         <div class="btn">
                             <button class="btn-edit btn-lst"><i class="fa-solid fa-pen-to-square"></i></button>
                             <button class="btn-del btn-lst"><i class="fa-solid fa-trash-can"></i></button>
                         </div>
-                    </td> 
+                    </td>
                 </tr>
             </tbody>
 
@@ -40,8 +39,8 @@
             <tfoot id="t-foot">
                 <tr>
                     <td :colspan="cols" id="t-subfoot">
-                        <div class="f-item">{{ results }}  Results</div>
-                        <div class="f-item right">Page {{ actualPage }} of {{ pages }}</div>
+                        <div class="f-item">{{ data.count }}  Results</div>
+                        <div class="f-item right">Page TODO of TODO</div>
                     </td>
                     <td class="h-right">
                         <div class="dropdown" @mouseenter="show=true" @mouseleave="show=false">
@@ -52,7 +51,7 @@
                                 <ul v-if="show" class="changeRows">
                                     <li v-for="(n, i) in [5,10,25]"
                                         :key="i"
-                                        @click="changeRows(n)">{{n}} rows
+                                        @click="query.rows=n;$emit('changeData', query)">{{n}} rows
                                     </li>
                                 </ul>
                             </transition>
@@ -68,9 +67,8 @@
 
 <script>
 import usePaginationTable from '@/composables/Tables/usePaginationTable'
-import { sortByField } from '@/composables/Tables/useSortTable'
 import useApi from '@/composables/useApi'
-import { ref } from 'vue'
+import { onMounted, ref, reactive, toRefs } from 'vue'
 import { useRouter } from 'vue-router'
 
 
@@ -78,43 +76,17 @@ export default {
     name: 'ItemsTable',
     props: {
         items: String,
+        query: Object,
         data: Object,
         headers: Object,
-        sortField: String,
     },
-    setup(props, { emit }) {
-
-        const router = useRouter()
+    setup(props) {
 
         const show = ref(false)
         const cols = Object.keys(props.headers).length + 1
 
-        const goToDetail = ((id) => {
-            if (props.items==='books') {
-                router.push({name: 'Items', params: {id: id}})
-            } else {
-                console.log('otro')
-            }
-        })
-
-        const { rowsPage,
-                dataPage,
-                pages,
-                actualPage,
-                arrayLinks,
-                results,
-                getDataPage,
-                changePage,
-                changeLinks,
-                changeRows, getInfo } = usePaginationTable(props.data)
-
         return { show,
-                 cols,
-                 sortByField,
-                 results,
-                 actualPage,
-                 pages,
-                 goToDetail }
+                 cols }
     }
 }
 </script>

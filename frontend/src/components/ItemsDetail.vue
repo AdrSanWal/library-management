@@ -8,13 +8,14 @@
 
 <script>
 export default {
-    name: 'BookDetail',
+    name: 'ItemsDetail',
     props: {
         id: String,
         data: Object,
     },
     setup(props) {
-
+        //console.log(props)
+        return { }
     }
 }
 </script>

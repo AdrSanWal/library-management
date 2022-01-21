@@ -1,4 +1,4 @@
-import { reactive, toRefs, onMounted } from 'vue'
+import { reactive, toRefs } from 'vue'
 import { sortByField } from '@/composables/Tables/useSortTable'
 
 
@@ -8,7 +8,7 @@ export default function (dataJson) {
     const range = (start, length=initialLinks) => Array.from(
         { length: length}, (_, i) => start + i
     )
-    
+  
     const data = reactive({
         numLinks: initialLinks,
         rowsPage: 10,

@@ -1,13 +1,16 @@
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
+from rest_framework.filters import OrderingFilter
 
-from . import serializers
+from . import serializers, pagination
 from core.models import Book, Author, Category, Serie
 
 
 class BookViewSet(ModelViewSet):
     queryset = Book.objects.all()
     serializer_class = serializers.BookSerializer
+    pagination_class = pagination.SectionsSetPagination
+    filter_backends = (OrderingFilter,)
 
     def get_queryset(self):
         """Return all Books except if there are query parameters"""
@@ -28,6 +31,8 @@ class BookViewSet(ModelViewSet):
 class AuthorViewSet(ModelViewSet):
     queryset = Author.objects.all()
     serializer_class = serializers.AuthorSerializer
+    pagination_class = pagination.SectionsSetPagination
+    filter_backends = (OrderingFilter,)
 
     def get_queryset(self):
         """Return all Authors except if there is q in the parameters"""
@@ -40,6 +45,8 @@ class AuthorViewSet(ModelViewSet):
 class CategoryViewSet(ModelViewSet):
     queryset = Category.objects.all()
     serializer_class = serializers.CategorySerializer
+    pagination_class = pagination.SectionsSetPagination
+    filter_backends = (OrderingFilter,)
 
     def get_queryset(self):
         """Return all Categories except if there is q in the parameters"""
@@ -52,6 +59,8 @@ class CategoryViewSet(ModelViewSet):
 class SerieViewSet(ModelViewSet):
     queryset = Serie.objects.all()
     serializer_class = serializers.SerieSerializer
+    pagination_class = pagination.SectionsSetPagination
+    filter_backends = (OrderingFilter,)
 
     def get_queryset(self):
         """Return all Series except if there is q in the parameters"""
