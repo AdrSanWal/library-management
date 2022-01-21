@@ -94,7 +94,7 @@ export default {
                 path = `${itemsSelection.item}/?ordering=${queryData.sortField}&rows=${queryData.rows}&page=${queryData.page}`
                 resp = (await useApi('get', path)).jsonResponse.value
                 data.results = resp.results
-                data.count = resp.count
+                data.count = resp.countItemsOnPage
                 data.previous = resp.previous
                 data.next = resp.next
             } else if (itemsSelection.item==='books') {
@@ -107,6 +107,7 @@ export default {
             } else {
                 path = `books/?${itemsSelection.item}=${itemsSelection.id}`
                 resp = (await useApi('get', path)).jsonResponse.value
+                console.log(resp)
                 data.results = resp.results
                 data.count = resp.count
                 data.previous = resp.previous

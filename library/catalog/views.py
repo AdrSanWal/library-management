@@ -9,7 +9,7 @@ from core.models import Book, Author, Category, Serie
 class BookViewSet(ModelViewSet):
     queryset = Book.objects.all()
     serializer_class = serializers.BookSerializer
-    pagination_class = pagination.SectionsSetPagination
+    pagination_class = pagination.CustomPagePagination
     filter_backends = (OrderingFilter,)
 
     def get_queryset(self):
@@ -31,7 +31,7 @@ class BookViewSet(ModelViewSet):
 class AuthorViewSet(ModelViewSet):
     queryset = Author.objects.all()
     serializer_class = serializers.AuthorSerializer
-    pagination_class = pagination.SectionsSetPagination
+    pagination_class = pagination.CustomPagePagination
     filter_backends = (OrderingFilter,)
 
     def get_queryset(self):
@@ -45,7 +45,7 @@ class AuthorViewSet(ModelViewSet):
 class CategoryViewSet(ModelViewSet):
     queryset = Category.objects.all()
     serializer_class = serializers.CategorySerializer
-    pagination_class = pagination.SectionsSetPagination
+    pagination_class = pagination.CustomPagePagination
     filter_backends = (OrderingFilter,)
 
     def get_queryset(self):
@@ -59,7 +59,7 @@ class CategoryViewSet(ModelViewSet):
 class SerieViewSet(ModelViewSet):
     queryset = Serie.objects.all()
     serializer_class = serializers.SerieSerializer
-    pagination_class = pagination.SectionsSetPagination
+    pagination_class = pagination.CustomPagePagination
     filter_backends = (OrderingFilter,)
 
     def get_queryset(self):
