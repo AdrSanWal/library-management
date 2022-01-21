@@ -18,6 +18,7 @@ class CustomPagePagination(PageNumberPagination):
         first = self.page.start_index()
         last = self.page.end_index()
         count = last - first + 1
+        data = data if data else None
         return Response({
             'pages': self.page.paginator.num_pages,
             'count': self.page.paginator.count,

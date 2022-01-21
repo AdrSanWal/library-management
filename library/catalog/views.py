@@ -16,15 +16,15 @@ class BookViewSet(ModelViewSet):
         """Return all Books except if there are query parameters"""
         request = self.request.GET
         if 'q' in request:
-            return Book.objects.filter(title__icontains=request['q'])
+            return self.queryset.filter(title__icontains=request['q'])
         if 'series' in request:
-            return Book.objects.filter(serie=request['series'])
+            return self.queryset.filter(serie=request['series'])
         if 'authors' in request:
-            return Book.objects.filter(authors=request['authors'])
+            return self.queryset.filter(authors=request['authors'])
         if 'categories' in request:
-            return Book.objects.filter(categories=request['categories'])
+            return self.queryset.filter(categories=request['categories'])
         if 'available' in request:
-            return Book.objects.filter(available=request['available'])
+            return self.queryset.filter(available=request['available'])
         return self.queryset
 
 
@@ -38,7 +38,7 @@ class AuthorViewSet(ModelViewSet):
         """Return all Authors except if there is q in the parameters"""
         request = self.request.GET
         if 'q' in request:
-            return Author.objects.filter(full_name__icontains=request['q'])
+            return self.queryset.filter(full_name__icontains=request['q'])
         return self.queryset
 
 
@@ -52,7 +52,7 @@ class CategoryViewSet(ModelViewSet):
         """Return all Categories except if there is q in the parameters"""
         request = self.request.GET
         if 'q' in request:
-            return Category.objects.filter(name__icontains=request['q'])
+            return self.queryset.filter(name__icontains=request['q'])
         return self.queryset
 
 
@@ -66,5 +66,5 @@ class SerieViewSet(ModelViewSet):
         """Return all Series except if there is q in the parameters"""
         request = self.request.GET
         if 'q' in request:
-            return Serie.objects.filter(name__icontains=request['q'])
+            return self.queryset.filter(name__icontains=request['q'])
         return self.queryset
