@@ -66,10 +66,7 @@
 </template>
 
 <script>
-import usePaginationTable from '@/composables/Tables/usePaginationTable'
-import useApi from '@/composables/useApi'
-import { onMounted, ref, reactive, toRefs } from 'vue'
-import { useRouter } from 'vue-router'
+import { ref } from 'vue'
 
 
 export default {

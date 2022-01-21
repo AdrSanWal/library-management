@@ -16,8 +16,8 @@
 
 <script>
 import useApi from '@/composables/useApi'
-import ItemsTable from '@/components/ItemsTable'
-import ItemsDetail from '@/components/ItemsDetail'
+import ItemsTable from '@/components/Items/ItemsTable'
+import ItemsDetail from '@/components/Items/ItemsDetail'
 import { useRoute } from 'vue-router'
 import { toRefs, reactive, onMounted } from 'vue'
 
