@@ -16,9 +16,8 @@ export default async function (method, path, options=null) {
         headers:{
             'Content-Type': 'application/json'
             },
-        options
+        ...options
     }
-
     const res = await fetch(apiUrl, opt)
     jsonResponse.value = await res.json()
     response.value = res

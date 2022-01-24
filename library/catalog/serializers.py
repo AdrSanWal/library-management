@@ -12,6 +12,7 @@ class AuthorSerializer(serializers.ModelSerializer):
     class Meta:
         model = Author
         fields = '__all__'
+        read_only_fields = ('id',)
 
     def delete(self, pk):
         """Delete a Author instance"""
@@ -39,6 +40,7 @@ class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
         fields = '__all__'
+        read_only_fields = ('id',)
 
     def create(self, validated_data):
         """Create and return a new Category instance,
@@ -58,6 +60,7 @@ class SerieSerializer(serializers.ModelSerializer):
     class Meta:
         model = Serie
         fields = '__all__'
+        read_only_fields = ('id',)
 
     def create(self, validated_data):
         """Create and return a new Serie instance,
@@ -98,12 +101,15 @@ class BookSerializer(serializers.ModelSerializer):
             'loan_date',
             'expected_return_date',
         ]
+        read_only_fields = ('id',)
 
     def validate(self, attrs):
         # Pops authors and categories because they are many to many field
         # and store them in self.authors and self.categories
-        self.authors = attrs.pop('authors')
-        self.categories = attrs.pop('categories')
+        if 'authors' in attrs:
+            self.authors = attrs.pop('authors')
+        if 'categories' in attrs:    
+            self.categories = attrs.pop('categories')
         instance = Book(**dict(attrs))
         # self.context['request'].method # method
         try:
@@ -133,3 +139,10 @@ class BookSerializer(serializers.ModelSerializer):
     def update(self, instance, validated_data):
         """Update a book instance"""
         return super().update(instance, validated_data)
+
+    # def partial_update(self, request, *args, **kwargs):
+    #     book_object = self.get_object()
+
+    #     book_object.save()
+
+    #     return Response(book_object)

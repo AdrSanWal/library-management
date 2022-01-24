@@ -6,7 +6,7 @@
         <div class="col vert">
             <div id="book-title">
                 <p id="title">{{ book.title }}</p>
-                <p id="isAvailable"
+                <p id="isAvailableAdv"
                     :class="{'bck-green':book.available, 'bck-red':!book.available}" >{{ changeIsAvailable(book.available) }}</p>
             </div>
             <div id="book-info">
@@ -41,6 +41,33 @@
                 <br>
                 <hr>
                 <br>
+                <div id="isNotAvl"
+                    v-if="!book.available">
+                    <table>
+                        <tr>
+                            <th>Loan date</th>
+                            <td>{{ book.loan_date }}</td>
+                        </tr>
+                        <tr>
+                            <th>Return date</th>
+                            <td>{{ book.expected_return_date }}</td>
+                        </tr>
+                    </table>
+                    <button id="cancel" class="button bck-red"
+                        @click="changeLoan(true)">
+                        Cancel loan
+                    </button>
+                </div>
+                <div id="isAvl"
+                    v-if="book.available">
+                    <button id="reserve" class="button bck-green"
+                        @click="changeLoan(false)">
+                        Reserve
+                    </button>
+                    {{ book.loan_date }}
+                    <br>
+                    {{ book.expected_return_date }}
+                </div>
 
             </div>
         </div>
@@ -48,19 +75,31 @@
 </template>
 
 <script>
+import useApi from '@/composables/useApi'
+
 export default {
     name: 'ItemBook',
     props: {
         book: Object,
     },
-    setup() {
+    setup(props) {
 
         const changeIsAvailable = ((value) => {
             const transformText = {'true': 'Available', 'false': 'Not Availabe'}
             return transformText[value]
         })
 
-        return { changeIsAvailable }
+        const changeLoan = (async (value) => {
+            const path = `books/${props.book.id}/`
+            props.book.available = value
+
+            const { jsonResponse } = await useApi('PATCH', path, {body: JSON.stringify({'available': props.book.available})})
+
+            props.book.loan_date = jsonResponse.value.loan_date
+            props.book.expected_return_date = jsonResponse.value.expected_return_date
+        })
+
+        return { changeIsAvailable, changeLoan }
     }
 }
 </script>
@@ -108,8 +147,10 @@ export default {
     font-weight: bolder;
 }
 
-#isAvailable {
+#isAvailableAdv {
     color:whitesmoke;
+    font-size: medium;
+    font-weight: bold;
     padding: 5px;
 }
 
@@ -118,11 +159,11 @@ export default {
     padding:10px;
 }
 
-#book-table {
+table {
     text-align: justify;
 }
 
-#book-table>tr>th {
+table>tr>th {
     width:100px;
     vertical-align: top;
 }
@@ -134,6 +175,23 @@ export default {
 hr {
     border: 1px solid var(--color-btn);
     opacity: 0.5;
+}
+
+#isNotAvl {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+#cancel {
+    font-weight: bold;
+    border: 1px solid rgb(161, 17, 17);
+}
+
+#reserve {
+    width: 80%;
+    font-weight: bold;
+    border: 1px solid rgb(32, 114, 25);
 }
 
 </style>
