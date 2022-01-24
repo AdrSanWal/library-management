@@ -34,6 +34,8 @@
 
 .disabled {
     opacity: 0.4;
+    cursor: default !important;
+    pointer-events: none;
 }
 
 /* Navbar ------------------------------------------------------------ Navbar */
@@ -85,11 +87,11 @@ button:hover {
     /*border: 2px solid gray;*/
 }
 
-.btn-del {
+.bck-red {
     background-color: red;
 }
 
-.btn-edit {
+.bck-green {
     background-color: green;
 }
 

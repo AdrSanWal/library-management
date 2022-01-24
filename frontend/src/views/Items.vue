@@ -10,7 +10,10 @@
 
         <ItemsDetail v-if="id!=='list'"
             :id="id"
-            :data="data"/>
+            :data="data"
+            :origin="item"
+            :thumbnails="thumbnails"
+            @changeData="reloadData"/>
     </div>
 </template>
 
@@ -29,6 +32,11 @@ export default {
         ItemsDetail,
     },
     setup() {
+
+        const thumbnails = reactive({
+            number: 6,
+            page: 1,
+        })
         
         const route = useRoute()
 
@@ -47,7 +55,7 @@ export default {
         const queryData = reactive({
             sortField: initialSortFields[itemsSelection.item],
             rows: 5,  // num of initial rows
-            page: 1
+            page: 1,
         })
 
 
@@ -78,44 +86,52 @@ export default {
         let path
         const data = reactive({
             results: [],
-            count: 0,
+            totalPages: 1,
+            totalItems: 0,
+            firstItemOnPage: 0,
+            lastItemOnPage: 0,
+            currentPage: 1,
             previous: null,
             next: null,
         })
 
         onMounted( async () => {
-            reloadData(queryData)
+            reloadData()
         })
 
-        const reloadData = (async (query) => {  // TODO rehacer
-            
+        const reloadData = (async () => {
+
             let resp
             if (itemsSelection.id==='list') {
                 path = `${itemsSelection.item}/?ordering=${queryData.sortField}&rows=${queryData.rows}&page=${queryData.page}`
                 resp = (await useApi('get', path)).jsonResponse.value
-                data.results = resp.results
-                data.count = resp.countItemsOnPage
-                data.previous = resp.previous
-                data.next = resp.next
+                Object.keys(data).forEach((key) => {
+                    data[key] = resp[key]
+                })
+
             } else if (itemsSelection.item==='books') {
                 path = `${itemsSelection.item}/${itemsSelection.id}/`
                 resp = (await useApi('get', path)).jsonResponse.value
                 data.results = resp
-                data.count = 1
+                data.totalPages = 1
                 data.previous = null
                 data.next = null
             } else {
-                path = `books/?${itemsSelection.item}=${itemsSelection.id}`
+                path = `books/?${itemsSelection.item}=${itemsSelection.id}&rows=${thumbnails.number}&page=${thumbnails.page}`
                 resp = (await useApi('get', path)).jsonResponse.value
-                console.log(resp)
-                data.results = resp.results
-                data.count = resp.count
-                data.previous = resp.previous
-                data.next = resp.next
+                Object.keys(data).forEach((key) => {
+                    data[key] = resp[key]
+                })
             }
         })
 
-        return { data, headersData, ...toRefs(itemsSelection), queryData, reloadData }
+
+        return { data,
+                 headersData,
+                 ...toRefs(itemsSelection),
+                 thumbnails,
+                 queryData,
+                 reloadData }
     }
 }
 </script>

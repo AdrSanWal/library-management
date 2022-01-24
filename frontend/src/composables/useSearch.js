@@ -14,7 +14,7 @@ export default function (query) {
         const getData = ( async (items, field) => {
             const path = `${items}/?q=${query}`
             const resp = await useApi('get', path)
-            const results = resp.jsonResponse.value.results // .slice(0,5)
+            const results = resp.jsonResponse.value // .slice(0,5)
             return results.map(x => ({"id": x['id'], "field": x[field]}))
 
         })

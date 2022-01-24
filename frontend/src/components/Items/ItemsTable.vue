@@ -7,7 +7,7 @@
                     <th>#</th>
                     <th v-for="(value, key, index) of headers"
                         :key="index"
-                        @click="query.sortField=value;$emit('changeData', query)">
+                        @click="query.sortField=value;emitChanges()">
                             {{ key }} <i :class="['fas', 'fa-sort-down', {'active': value===query.sortField}]"></i>
                     </th>
                     <th class="h-right">
@@ -20,15 +20,15 @@
                 <tr v-for="(item, index) of data.results"
                     :key="index"
                     @click="$router.push({name: 'Items', params: {id: item.id}})">
-                    <td>1</td>
+                    <td>{{ (index + (query.rows * (data.currentPage - 1 ))) + 1}}</td>
                     <td v-for="(value, key, index) of headers"
                         :key="index">
                         <span>{{ item[value] }}</span>
                     </td>
                     <td class="exclude" @click.stop>
                         <div class="btn">
-                            <button class="btn-edit btn-lst"><i class="fa-solid fa-pen-to-square"></i></button>
-                            <button class="btn-del btn-lst"><i class="fa-solid fa-trash-can"></i></button>
+                            <button class="bck-green btn-lst"><i class="fa-solid fa-pen-to-square"></i></button>
+                            <button class="bck-red btn-lst"><i class="fa-solid fa-trash-can"></i></button>
                         </div>
                     </td>
                 </tr>
@@ -39,8 +39,8 @@
             <tfoot id="t-foot">
                 <tr>
                     <td :colspan="cols" id="t-subfoot">
-                        <div class="f-item">{{ data.count }}  Results</div>
-                        <div class="f-item right">Page TODO of TODO</div>
+                        <div class="f-item">{{ data.firstItemOnPage }}-{{ data.lastItemOnPage }} of {{ data.totalItems }}</div>
+                        <div class="f-item right">Page {{ query.page }} of {{ data.totalPages }}</div>
                     </td>
                     <td class="h-right">
                         <div class="dropdown" @mouseenter="show=true" @mouseleave="show=false">
@@ -51,7 +51,7 @@
                                 <ul v-if="show" class="changeRows">
                                     <li v-for="(n, i) in [5,10,25]"
                                         :key="i"
-                                        @click="query.rows=n;$emit('changeData', query)">{{n}} rows
+                                        @click="query.rows=n;emitChanges()">{{n}} rows
                                     </li>
                                 </ul>
                             </transition>
@@ -62,11 +62,47 @@
 
         </table>
 
+        <br>
+
+        <!-- Page navigation numbers. If there is only one page, it is not displayed -->
+        <nav aria-label="Page navigation example" v-if="data.totalPages > 1">
+                
+            <div class="pagination">
+                
+                <a @click="query.page--;emitChanges()"
+                    style="color:red"
+                    :class="['page-item', {'disabled': data.previous===null}]">
+                        <i class="fas fa-chevron-left"></i>
+                </a>
+                <!-- <a @click="clickPageLinks('<')"
+                    :class="['page-item', {'disabled': data.previous===null}]">
+                        <i class="fas fa-chevron-left"></i>
+                </a> -->
+
+                <a @click="query.page=pageNumber;emitChanges()"
+                    v-for="pageNumber in arrayLinks"
+                    :key="pageNumber"
+                    :class="['page-item', {'active': pageNumber===data.currentPage}]">
+                        {{ pageNumber }}
+                </a>
+
+                <!-- <a @click="clickPageLinks('>')"
+                    :class="['page-item', {'disabled': data.next===null}]">
+                        <i class="fas fa-chevron-right"></i>
+                </a> -->
+                <a @click="props.query.page++;emitChanges()"
+                    style="color:red"
+                    :class="['page-item', {'disabled': data.next===null}]">
+                        <i class="fas fa-chevron-right"></i>
+                </a>
+            </div>
+        </nav>
+
     </div>
 </template>
 
 <script>
-import { ref } from 'vue'
+import { ref, reactive, toRefs } from 'vue'
 
 
 export default {
@@ -77,13 +113,29 @@ export default {
         data: Object,
         headers: Object,
     },
-    setup(props) {
+    setup(props, { emit }) {
 
         const show = ref(false)
         const cols = Object.keys(props.headers).length + 1
 
+        const links = reactive({
+            startLink: 1,
+            numberOfLinks: 3,
+            arrayLinks: [],
+        })
+
+        links.arrayLinks = Array.from(
+            {length: links.numberOfLinks}, (_, i) => links.startLink + i
+        )
+
+        const emitChanges = ((action) => {
+            emit('changeData', props.query)
+        })
+
         return { show,
-                 cols }
+                 cols,
+                 emitChanges,
+                 ...toRefs(links) }
     }
 }
 </script>
