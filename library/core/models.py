@@ -134,4 +134,4 @@ class Book(models.Model):
         return list_qs
 
     def __str__(self):
-        return f'{self.isbn}, {self.title}, {self.book_writers()}'
+        return f'{self.isbn}, {self.title}, {self.list_authors()}'

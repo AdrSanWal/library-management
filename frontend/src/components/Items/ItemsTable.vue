@@ -3,12 +3,12 @@
         <h2>List of {{ items }}</h2>
         <table id="table">
             <thead id="t-head">
-                <tr>
+                <tr class="headers">
                     <th>#</th>
                     <th v-for="(value, key, index) of headers"
                         :key="index"
-                        @click="sortField=value;sortByField(value)">
-                            {{ key }} <i :class="['fas', 'fa-sort-down', {'active': value===sortField}]"></i>
+                        @click="query.sortField=value;emitChanges()">
+                            {{ key }} <i :class="['fas', 'fa-sort-down', {'active': value===query.sortField}]"></i>
                     </th>
                     <th class="h-right">
                         Add <i class="fas fa-external-link-alt"></i>
@@ -17,18 +17,18 @@
             </thead>
 
             <tbody>
-                <tr v-for="(item, index) of dataPage" :key="index">
-                    <td>{{ (index + (rowsPage * (actualPage - 1 ))) + 1}}</td>
-                    <!--<td v-for="(value, key, index) of headers" :key="index">{{ transform(item[value]) }}</td>-->
-                    <td v-for="(value, key, index) of headers" :key="index">
-                        {{ transform(items, item[value], key) }}
-                        <i class="fas fa-check" v-if="item[value]===true"></i>
-                        <i class="fas fa-times" v-if="item[value]===false"></i>
+                <tr v-for="(item, index) of data.results"
+                    :key="index"
+                    @click="$router.push({name: 'Items', params: {id: item.id}})">
+                    <td>{{ (index + (query.rows * (data.currentPage - 1 ))) + 1}}</td>
+                    <td v-for="(value, key, index) of headers"
+                        :key="index">
+                        <span>{{ item[value] }}</span>
                     </td>
-                    <td class="exclude">
+                    <td class="exclude" @click.stop>
                         <div class="btn">
-                            <button class="btn-edit btn-lst"><i class="fa-solid fa-pen-to-square"></i></button>
-                            <button class="btn-del btn-lst"><i class="fa-solid fa-trash-can"></i></button>
+                            <button class="bck-green btn-lst"><i class="fa-solid fa-pen-to-square"></i></button>
+                            <button class="bck-red btn-lst"><i class="fa-solid fa-trash-can"></i></button>
                         </div>
                     </td>
                 </tr>
@@ -39,8 +39,8 @@
             <tfoot id="t-foot">
                 <tr>
                     <td :colspan="cols" id="t-subfoot">
-                        <div class="f-item">{{ results }}  Results</div>
-                        <div class="f-item right">Page {{ actualPage }} of {{ pages }}</div>
+                        <div class="f-item">{{ data.firstItemOnPage }}-{{ data.lastItemOnPage }} of {{ data.totalItems }}</div>
+                        <div class="f-item right">Page {{ query.page }} of {{ data.totalPages }}</div>
                     </td>
                     <td class="h-right">
                         <div class="dropdown" @mouseenter="show=true" @mouseleave="show=false">
@@ -51,7 +51,7 @@
                                 <ul v-if="show" class="changeRows">
                                     <li v-for="(n, i) in [5,10,25]"
                                         :key="i"
-                                        @click="changeRows(n)">{{n}} rows
+                                        @click="query.rows=n;emitChanges()">{{n}} rows
                                     </li>
                                 </ul>
                             </transition>
@@ -63,25 +63,36 @@
         </table>
 
         <br>
+
         <!-- Page navigation numbers. If there is only one page, it is not displayed -->
-        <nav aria-label="Page navigation example" v-if="pages > 1">
+        <nav aria-label="Page navigation example" v-if="data.totalPages > 1">
                 
             <div class="pagination">
-
-                <a @click="changePage('<')"
-                    :class="['page-item', {'disabled': actualPage===1}]">
+                
+                <a @click="query.page--;emitChanges()"
+                    style="color:red"
+                    :class="['page-item', {'disabled': data.previous===null}]">
                         <i class="fas fa-chevron-left"></i>
                 </a>
+                <!-- <a @click="clickPageLinks('<')"
+                    :class="['page-item', {'disabled': data.previous===null}]">
+                        <i class="fas fa-chevron-left"></i>
+                </a> -->
 
-                <a @click="getDataPage(page)"
-                    v-for="page in arrayLinks"
-                    :key="page"
-                    :class="['page-item', {'active': page===actualPage}]">
-                        {{ page }}
+                <a @click="query.page=pageNumber;emitChanges()"
+                    v-for="pageNumber in arrayLinks"
+                    :key="pageNumber"
+                    :class="['page-item', {'active': pageNumber===data.currentPage}]">
+                        {{ pageNumber }}
                 </a>
 
-                <a @click="changePage('>')"
-                    :class="['page-item', {'disabled': actualPage===pages}]">
+                <!-- <a @click="clickPageLinks('>')"
+                    :class="['page-item', {'disabled': data.next===null}]">
+                        <i class="fas fa-chevron-right"></i>
+                </a> -->
+                <a @click="props.query.page++;emitChanges()"
+                    style="color:red"
+                    :class="['page-item', {'disabled': data.next===null}]">
                         <i class="fas fa-chevron-right"></i>
                 </a>
             </div>
@@ -91,91 +102,40 @@
 </template>
 
 <script>
-import usePaginationTable from '@/composables/usePaginationTable'
-import { ref, onMounted, reactive } from 'vue'
+import { ref, reactive, toRefs } from 'vue'
+
 
 export default {
     name: 'ItemsTable',
     props: {
         items: String,
+        query: Object,
+        data: Object,
         headers: Object,
-        sort: String,
     },
-    setup(props) {
-        const items = props.items
-        const headers = props.headers
+    setup(props, { emit }) {
 
         const show = ref(false)
-        const sortField = ref(props.sort)
+        const cols = Object.keys(props.headers).length + 1
 
-        const cols = Object.keys(headers).length + 1
-
-        const path = `api/catalog/${items}/`
-
-        const related = reactive({
-            series: [],
-            categories: []
+        const links = reactive({
+            startLink: 1,
+            numberOfLinks: 3,
+            arrayLinks: [],
         })
 
-        onMounted( async () => {
-            if (items==='books') {
-                related.series = await getRelatedData('series')
-                related.categories = await getRelatedData('categories')
-            }
+        links.arrayLinks = Array.from(
+            {length: links.numberOfLinks}, (_, i) => links.startLink + i
+        )
+
+        const emitChanges = ((action) => {
+            emit('changeData', props.query)
         })
 
-        const transform = ((items, value, field) => {  // Transform data
-            if (items!=='books') {
-                return value
-            } else {
-                if (value===true || value===false) {
-                    return ''
-                } else {
-                    if (field==='Serie') {
-                        let serie = related.series.find(x => x.id === value)
-                        return serie ? serie.name : null
-
-                    } else if (field==='Categories') {
-                        let categories = related.categories.filter(x => Object.values(value).includes(x.id))
-                        console.log(categories.map(x => x.name))
-
-                        return categories ? categories.map(x => x.name).join(', ') : null
-                    }
-                }
-            }    
-            return value
-         })
-
-        const { rowsPage,
-                dataPage,
-                pages,
-                actualPage,
-                arrayLinks,
-                results,
-                getDataPage,
-                changePage,
-                changeLinks,
-                changeRows,
-                sortByField,
-                getRelatedData } = usePaginationTable(path, sortField)
-
-        return { cols,
-                 items,
-                 headers,
-                 rowsPage,
-                 dataPage,
-                 pages,
-                 actualPage,
-                 arrayLinks,
-                 results,
-                 getDataPage,
-                 changePage,
-                 changeLinks,
-                 changeRows,
-                 show,
-                 sortField,
-                 sortByField,
-                 transform }
+        return { show,
+                 cols,
+                 emitChanges,
+                 ...toRefs(links) }
     }
 }
 </script>
@@ -185,11 +145,11 @@ export default {
 
 /* Tables ------------------------------------------------------------ Tables */
 
-table {
-    text-align: left;
+#table {
     cursor:pointer;
+    text-align: left;
     table-layout: fixed;
-    max-width: 80%;
+    max-width: 85%;
 }
 
 thead {
@@ -200,6 +160,10 @@ thead {
 #t-head {
     opacity: 0.7;
     background-color: var(--color-nav);
+}
+
+.headers {
+    height: 60px;
 }
 
 th>.fa-sort-down {
@@ -214,12 +178,12 @@ th {
     padding: 10px 20px;
 }
 
-td {
+#table td {
     padding: 5px 20px;
     max-width: 600px;
 }
 
-tr:nth-child(even){
+#table tr:nth-child(even){
     background-color: #d8941746;
 }
 
@@ -242,7 +206,6 @@ tbody>tr:hover {
 }
 
 button {
-    padding: 5px;
     width: 100px;
 }
 
@@ -300,7 +263,7 @@ button {
 
 }
 
-li {
+.changeRows>li {
     
     padding: 10px;
     color:black;

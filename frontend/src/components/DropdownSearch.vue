@@ -1,10 +1,10 @@
 <template>
     <transition name="matches">
         <div class="drpdwn" v-if="data[0]">
-            <div class="col">
+            <div class="col-drp">
                 <p>{{ item }}</p>
             </div>
-            <div class="col">
+            <div class="col-drp">
                 <ul class="list">
                     <li v-for="(x) of data" :key="x.id">{{ x.field }}</li>
                 </ul>
@@ -29,7 +29,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
     
 .drpdwn {
     flex-direction: row;
@@ -41,11 +41,11 @@ export default {
     transition: transform 0.5s ease-in-out;
 }
 
-.col {
+.col-drp {
     width: 300px;
 }
 
-.col>p {
+.col-drp>p {
 
     background-color: var(--color-nav);
     color:whitesmoke;
@@ -55,19 +55,19 @@ export default {
 
 }
 
-.col>ul {
+.col-drp>ul {
     background-color: var(--color-hover);
     list-style-type: none;
     margin: 0;
     padding: 0;
 }
 
-li {
+.list>li {
     padding: 15px 10px;
     font-size: large;
 }
 
-li:hover {
+.list>li:hover {
     background-color: rgb(201, 195, 195);
     cursor: pointer;
 }
