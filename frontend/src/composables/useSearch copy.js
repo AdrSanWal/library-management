@@ -4,15 +4,13 @@ import useApi from '@/composables/useApi'
 export default function (query) {
     
     const data = reactive({
-        jsonResults: [],
+        jsonAuthors: [],
+        jsonBooks: [],
+        jsonCategories: [],   
+        jsonSeries: [],
     })
 
-    const search = async (params, query) => {
-        console.log('params', params)
-
-        console.log('query', query)
-
-
+    const search = async query => {
         const getData = ( async (items, field) => {
             const path = `${items}/?q=${query}`
             const resp = await useApi('get', path)
@@ -24,7 +22,10 @@ export default function (query) {
         if (query === '') {
             Object.keys(data).forEach((i) => data[i] = []);  // set all in data to []
         } else {
-        data.jsonResults = await getData('authors', 'full_name')
+        data.jsonAuthors = await getData('authors', 'full_name')
+        data.jsonBooks = await getData('books', 'title')
+        data.jsonCategories = await getData('categories', 'name')
+        data.jsonSeries = await getData('series', 'name')
         }
     }
 

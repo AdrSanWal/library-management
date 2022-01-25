@@ -5,6 +5,7 @@
                 :book="data.results"/>
         </div>
         <div class="books-container" v-if="origin!=='books'">
+
             <div id="t-prev"
                 :class="['changePage', {'disabled': !data.previous}]"
                 @click="thumbnails.page--;$emit('changeData')">
