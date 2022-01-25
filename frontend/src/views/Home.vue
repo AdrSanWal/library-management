@@ -33,16 +33,12 @@
 </template>
 
 <script>
-import DropdownSearch from '@/components/DropdownSearch'
 import useApi from '@/composables/useApi'
 import { toRefs, reactive } from 'vue'
 
 
 export default {
     name: 'Home',
-    components: {
-        DropdownSearch,
-    },
     setup() {
         const itemsFields = {
             'books': 'title',
@@ -77,16 +73,8 @@ export default {
 
 <style scoped>
 
-.container {
-    
-}
-
 
 /* Finder ------------------------------------------------------------ Finder */
-
-/* #finder {
-
-}*/
 
 #fnd { 
     font-family: monospace, Fontawesome;
@@ -120,7 +108,7 @@ export default {
 }
 
 p.selected {
-    border-bottom: 2px solid var(--color-nav);
+    border-bottom: 3px solid var(--color-btn);
 }
 
 /* Dropdowns ------------------------------------------------------ Dropdowns */
