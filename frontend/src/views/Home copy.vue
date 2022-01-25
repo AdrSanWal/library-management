@@ -33,14 +33,11 @@
                             @click="page++;search()">
                             <i class="fas fa-chevron-right"></i>
                         </div>
-                    </div>
 
                         <ul class="list">
-                            <li v-for="x of jsonResults"
-                                :key="x.id"
-                                @click="$router.push({name: 'Items', params: {items: itemsSelected, id: x.id}})">{{ x.field }}</li>
+                            <li v-for="x of jsonResults" :key="x.id">{{ x.field }}</li>
                         </ul>
-                    
+                    </div>
                 </div>
             </transition>
         </div>
@@ -90,12 +87,7 @@ export default {
                 }
             }
         }
-
-        const goTo = ((clicked) => {
-            console.log(clicked)
-        })
-
-        return { itemsFields, ...toRefs(data), ...toRefs(pagSearch), search, goTo }
+        return { itemsFields, ...toRefs(data), ...toRefs(pagSearch), search }
     }
 }
 </script>
@@ -104,10 +96,6 @@ export default {
 
 
 /* Finder ------------------------------------------------------------ Finder */
-
-.finder {
-    width: var(--width-fnd);
-}
 
 #fnd { 
     font-family: monospace, Fontawesome;
@@ -152,20 +140,14 @@ p.selected {
 
 .drpdwn {
 
+    margin: 15px;
     padding: 0;
     list-style-type: none;
     transform-origin: top;
     transition: transform 0.5s ease-in-out;
 }
 
-.col-drp {
-    display: flex;
-    justify-content: space-between;
-    gap: 0px;
-}
-
 .col-drp>p {
-    width: 100%;
     background-color: var(--color-nav);
     color:whitesmoke;
     padding: 10px;
@@ -174,7 +156,7 @@ p.selected {
     height: 20px;
 }
 
-.list {
+.col-drp>ul {
     background-color: var(--color-hover);
     list-style-type: none;
     margin: 0;
@@ -199,16 +181,15 @@ p.selected {
 /* Pagination ---------------------------------------------------- Pagination */
 
 .disabled {
-    background-color: var(--color-nav) !important;
-    color: var(--color-nav)!important;
-    opacity: 1;
+    opacity:0;
 }
 
 .changePage {
+    position: absolute;
     background-color: var(--color-btn);
-    width: 30px;
     height: 20px;
     padding: 10px;
+    width: 12px;
     color: whitesmoke;
     font-size: larger;
     align-self: center;
@@ -221,15 +202,20 @@ p.selected {
 }
 
 .changePage i {
+    display: flex;
+    align-self: center;
+    justify-self: center;
     font-size:larger;
 }
 
 .t-prev {
+    transform: translateX(-110%);
     border-radius: 5px 0px 0px 5px;
 }
 
 .t-next {
-    border-radius: 0px 5px 5px 0px;
+
+    transform: translateX(110%);
 }
 
 </style>

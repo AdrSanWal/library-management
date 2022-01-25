@@ -139,10 +139,3 @@ class BookSerializer(serializers.ModelSerializer):
     def update(self, instance, validated_data):
         """Update a book instance"""
         return super().update(instance, validated_data)
-
-    # def partial_update(self, request, *args, **kwargs):
-    #     book_object = self.get_object()
-
-    #     book_object.save()
-
-    #     return Response(book_object)
