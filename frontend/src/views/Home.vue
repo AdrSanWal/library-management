@@ -12,7 +12,7 @@
                 placeholder="&#xF002; Search"
                 v-model="query"
                 autocomplete="off"
-                @keyup="search()">
+                @keyup="page=1;search()">
         </div>
 
         <div class="results">
