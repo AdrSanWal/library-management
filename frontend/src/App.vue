@@ -16,6 +16,7 @@
     --btn-radius: 5px;
     --font-fam: monospace;
     --color-hover: rgb(221, 221, 221);
+    --width-fnd: 500px;
 }
 
 #app {

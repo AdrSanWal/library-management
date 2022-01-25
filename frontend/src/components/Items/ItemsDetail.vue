@@ -5,6 +5,7 @@
                 :book="data.results"/>
         </div>
         <div class="books-container" v-if="origin!=='books'">
+
             <div id="t-prev"
                 :class="['changePage', {'disabled': !data.previous}]"
                 @click="thumbnails.page--;$emit('changeData')">
@@ -66,7 +67,7 @@ export default {
     background-color: var(--color-hover);
     height: 60px;
     width: 60px;
-    color: whitesmoke;
+    color: rgb(145, 145, 145);
     border-radius: 100%;
     border:1px solid var(--color-nav);
     font-size: xx-large;

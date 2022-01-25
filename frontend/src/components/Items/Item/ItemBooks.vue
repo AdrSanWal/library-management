@@ -5,8 +5,6 @@
 </template>
 
 <script>
-import { inject } from 'vue'
-
 export default {
     name: 'ItemBooks',
     props: {

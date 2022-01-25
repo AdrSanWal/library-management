@@ -8,7 +8,7 @@
                     <th v-for="(value, key, index) of headers"
                         :key="index"
                         @click="query.sortField=value;emitChanges()">
-                            {{ key }} <i :class="['fas', 'fa-sort-down', {'active': value===query.sortField}]"></i>
+                            {{ key }} <i :class="['fas', 'fa-sort-down', {'selected': value===query.sortField}]"></i>
                     </th>
                     <th class="h-right">
                         Add <i class="fas fa-external-link-alt"></i>
@@ -82,7 +82,7 @@
                 <a @click="query.page=pageNumber;emitChanges()"
                     v-for="pageNumber in arrayLinks"
                     :key="pageNumber"
-                    :class="['page-item', {'active': pageNumber===data.currentPage}]">
+                    :class="['page-item', {'selected': pageNumber===data.currentPage}]">
                         {{ pageNumber }}
                 </a>
 
@@ -120,7 +120,7 @@ export default {
 
         const links = reactive({
             startLink: 1,
-            numberOfLinks: 3,
+            numberOfLinks: 5,
             arrayLinks: [],
         })
 
@@ -170,7 +170,7 @@ th>.fa-sort-down {
     opacity: 0.3;
 }
 
-th>.active {
+th>.selected {
     opacity: 1;
 }
 
@@ -292,7 +292,7 @@ button {
     margin: 0 2px;
 }
 
-.pagination a.active {
+.pagination a.selected {
     background-color: var(--color-btn);
     color: white;
 }

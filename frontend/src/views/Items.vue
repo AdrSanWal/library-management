@@ -54,7 +54,7 @@ export default {
 
         const queryData = reactive({
             sortField: initialSortFields[itemsSelection.item],
-            rows: 5,  // num of initial rows
+            rows: 10,  // num of initial rows
             page: 1,
         })
 
