@@ -108,7 +108,7 @@ class BookSerializer(serializers.ModelSerializer):
         # and store them in self.authors and self.categories
         if 'authors' in attrs:
             self.authors = attrs.pop('authors')
-        if 'categories' in attrs:    
+        if 'categories' in attrs:
             self.categories = attrs.pop('categories')
         instance = Book(**dict(attrs))
         # self.context['request'].method # method
