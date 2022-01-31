@@ -1,9 +1,10 @@
-from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.filters import OrderingFilter
 
 from . import serializers, pagination
 from core.models import Book, Author, Category, Serie
+from rest_framework.response import Response
+from rest_framework import status
 
 
 class BookViewSet(ModelViewSet):
@@ -38,7 +39,7 @@ class AuthorViewSet(ModelViewSet):
         """Return all Authors except if there is q in the parameters"""
         request = self.request.GET
         if 'q' in request:
-            return self.queryset.filter(full_name__icontains=request['q'])
+            return self.queryset.filter(name__icontains=request['q'])
         return self.queryset
 
 

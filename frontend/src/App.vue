@@ -17,6 +17,8 @@
     --font-fam: monospace;
     --color-hover: rgb(221, 221, 221);
     --width-fnd: 500px;
+    --margin-top: 50px;
+    --color-light: rgb(235, 235, 235);
 }
 
 #app {

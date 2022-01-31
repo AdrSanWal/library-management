@@ -5,7 +5,7 @@
             :items="item"
             :query="queryData"
             :data="data"
-            :headers="headersData[item]"
+            :headers="itemsHeaders[item]"
             @changeData="reloadData"/>
 
         <ItemsDetail v-if="id!=='list'"
@@ -18,11 +18,12 @@
 </template>
 
 <script>
+import useItemsInfo from '@/composables/useItemsInfo'
 import useApi from '@/composables/useApi'
 import ItemsTable from '@/components/Items/ItemsTable'
 import ItemsDetail from '@/components/Items/ItemsDetail'
 import { useRoute } from 'vue-router'
-import { toRefs, reactive, onMounted } from 'vue'
+import { toRefs, reactive, onMounted, ref } from 'vue'
 
 
 export default {
@@ -34,7 +35,7 @@ export default {
     setup() {
 
         const thumbnails = reactive({
-            number: 6,
+            number: Math.floor((window.innerWidth-321)/234),
             page: 1,
         })
         
@@ -45,44 +46,14 @@ export default {
             item: route.params.items,
         })
 
-        const initialSortFields = {
-            'books': 'title',
-            'authors': 'full_name',
-            'categories': 'name',
-            'series': 'name',
-        }
+        const { itemsSortFields, itemsHeaders } = useItemsInfo()
 
         const queryData = reactive({
-            sortField: initialSortFields[itemsSelection.item],
+            sortField: itemsSortFields[itemsSelection.item],
             rows: 10,  // num of initial rows
             page: 1,
         })
-
-
-        const headersData = {
-            'books': {
-                'Isbn': 'isbn',
-                'Title': 'title',
-                'Authors': 'authors',
-                'Serie': 'serie',
-                'Categories': 'categories',
-                'Available': 'available'
-            },
-            'authors': {
-                'Name': 'full_name',
-                'Pseudonym': 'pseudonym',
-                'Born': 'born',
-                'Died': 'died',
-            },
-            'categories': {
-                'Name': 'name',
-                'Description': 'description'
-            },
-            'series': {
-                'Name': 'name',
-            },     
-        }
-        
+       
         let path
         const data = reactive({
             results: [],
@@ -91,8 +62,8 @@ export default {
             firstItemOnPage: 0,
             lastItemOnPage: 0,
             currentPage: 1,
-            previous: null,
-            next: null,
+            previous: false,
+            next: false,
         })
 
         onMounted( async () => {
@@ -114,8 +85,8 @@ export default {
                 resp = (await useApi('get', path)).jsonResponse.value
                 data.results = resp
                 data.totalPages = 1
-                data.previous = null
-                data.next = null
+                data.previous = false
+                data.next = false
             } else {
                 path = `books/?${itemsSelection.item}=${itemsSelection.id}&rows=${thumbnails.number}&page=${thumbnails.page}`
                 resp = (await useApi('get', path)).jsonResponse.value
@@ -127,7 +98,7 @@ export default {
 
 
         return { data,
-                 headersData,
+                 itemsHeaders,
                  ...toRefs(itemsSelection),
                  thumbnails,
                  queryData,

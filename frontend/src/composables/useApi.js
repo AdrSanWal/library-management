@@ -1,6 +1,7 @@
 import { ref } from 'vue'
 
 export default async function (method, path, options=null) {
+
     let response = ref({})
     const jsonResponse = ref(null)
 

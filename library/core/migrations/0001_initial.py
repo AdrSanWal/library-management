@@ -18,7 +18,7 @@ class Migration(migrations.Migration):
             name='Author',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('full_name', models.CharField(max_length=50)),
+                ('name', models.CharField(max_length=50)),
                 ('pseudonym', models.CharField(blank=True, max_length=100, null=True)),
                 ('born', models.DateField(validators=[core.validators.DatesValidator])),
                 ('died', models.DateField(blank=True, null=True, validators=[core.validators.DatesValidator(models.DateField(validators=[core.validators.DatesValidator]))])),
@@ -28,7 +28,7 @@ class Migration(migrations.Migration):
             options={
                 'verbose_name': 'author',
                 'verbose_name_plural': 'authors',
-                'ordering': ['full_name'],
+                'ordering': ['name'],
             },
         ),
         migrations.CreateModel(

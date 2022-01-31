@@ -2,9 +2,9 @@
     <div class="container">
 
         <div id="itemsOptions">
-            <p v-for="(field, items, index) of itemsFields" :key="index"
+            <p v-for="(field, items, index) of itemsSortFields" :key="index"
                 @click="itemsSelected=items;page=1;search()"
-                :class="[{'selected': items===itemsSelected}]">{{ items }}</p>
+                :class="[{'selected': items===itemsSelected}]">{{ capitalize(items) }}</p>
         </div>
         <div id="finder">
             <input id="fnd"
@@ -27,7 +27,7 @@
                             <i class="fas fa-chevron-left"></i>
                         </div>
 
-                        <p>{{ itemsSelected }}</p>
+                        <p>{{ capitalize(itemsSelected) }}</p>
 
                         <div :class="['t-next', 'changePage', {'disabled': page===totalPages}]"
                             @click="page++;search()">
@@ -51,6 +51,8 @@
 </template>
 
 <script>
+import { capitalize } from '@/composables/useHelpFunctions'
+import useItemsInfo from '@/composables/useItemsInfo'
 import useApi from '@/composables/useApi'
 import { toRefs, reactive } from 'vue'
 
@@ -58,11 +60,7 @@ import { toRefs, reactive } from 'vue'
 export default {
     name: 'Home',
     setup() {
-        const itemsFields = {
-            'books': 'title',
-            'authors': 'full_name',
-            'categories': 'name',
-            'series': 'name'}
+        const { itemsSortFields } = useItemsInfo()
 
         const data = reactive({
             itemsSelected: 'books',
@@ -86,16 +84,16 @@ export default {
                 if (Object.keys(results).length === 0) {
                     data.jsonResults = null
                 } else {
-                    data.jsonResults = results.map(x => ({"id": x['id'], "field": x[itemsFields[data.itemsSelected]]}))
+                    data.jsonResults = results.map(x => ({"id": x['id'], "field": x[itemsSortFields[data.itemsSelected]]}))
                 }
             }
         }
 
-        const goTo = ((clicked) => {
-            console.log(clicked)
-        })
-
-        return { itemsFields, ...toRefs(data), ...toRefs(pagSearch), search, goTo }
+        return { itemsSortFields,
+                 ...toRefs(data),
+                 ...toRefs(pagSearch),
+                 search,
+                 capitalize }
     }
 }
 </script>

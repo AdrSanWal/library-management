@@ -45,7 +45,7 @@ def control_digit(numbers, n=0, tot=0):
 
 
 def clean_series_order(self):
-    """If the field field is filled, it checks that series_order is also
+    """If the field serie is filled, it checks that series_order is also
     filled and that it does not already exist for that serie
     """
     if self.serie:
@@ -59,8 +59,7 @@ def clean_series_order(self):
             orders = [book.serie_order for book in books]
             if self.serie_order in orders:
                 raise ValidationError(
-                    {"serie_order": f"This order in the serie is already taken.\
-                      Used orders: {orders}"})
+                    {"serie_order": f"This order in the serie is already taken.\nUsed orders: {orders}"})  
 
 
 @deconstructible
