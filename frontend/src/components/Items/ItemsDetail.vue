@@ -46,8 +46,7 @@ export default {
 <style scoped>
 
 .container {
-    margin-top: 60px;
-
+    margin-top: var(--margin-top);
 }
 
 .book-container {

@@ -52,7 +52,7 @@
     "model": "core.author",
     "pk": 1,
     "fields": {
-      "full_name": "Brandon Sanderson",
+      "name": "Brandon Sanderson",
       "born": "1975-12-03",
       "created": "2021-12-01T11:30:44.767594-06:00",
       "updated": "2021-12-01T11:30:44.767594-06:00"
@@ -62,7 +62,7 @@
     "model": "core.author",
     "pk": 2,
     "fields": {
-      "full_name": "Orson Scott Card",
+      "name": "Orson Scott Card",
       "pseudonym": "Brian Green",
       "born": "1951-08-24",
       "created": "2021-12-01T11:30:44.767594-06:00",
@@ -73,7 +73,7 @@
     "model": "core.author",
     "pk": 3,
     "fields": {
-      "full_name": "Robert Anthony Salvatore",
+      "name": "Robert Anthony Salvatore",
       "pseudonym": "R. A. Salvatore",
       "born": "1959-01-20",
       "created": "2021-12-01T11:30:44.767594-06:00",
@@ -84,7 +84,7 @@
     "model": "core.author",
     "pk": 4,
     "fields": {
-      "full_name": "Arthur Conan Doyle",
+      "name": "Arthur Conan Doyle",
       "born": "1859-05-22",
       "died": "1930-07-07",
       "created": "2021-12-01T11:30:44.767594-06:00",
@@ -95,7 +95,7 @@
     "model": "core.author",
     "pk": 5,
     "fields": {
-      "full_name": "John Michael Scalzi",
+      "name": "John Michael Scalzi",
       "pseudonym": "John Scalzi",
       "born": "1969-05-10",
       "created": "2021-12-01T11:30:44.767594-06:00",
@@ -106,7 +106,7 @@
     "model": "core.author",
     "pk": 6,
     "fields": {
-      "full_name": "George Orwell",
+      "name": "George Orwell",
       "born": "1903-06-25",
       "died": "1950-01-21",
       "created": "2021-12-01T11:30:44.767594-06:00",
@@ -117,7 +117,7 @@
     "model": "core.author",
     "pk": 7,
     "fields": {
-      "full_name": "Margaret Weis",
+      "name": "Margaret Weis",
       "born": "1948-03-16",
       "created": "2021-12-01T11:30:44.767594-06:00",
       "updated": "2021-12-01T11:30:44.767594-06:00"
@@ -127,7 +127,7 @@
     "model": "core.author",
     "pk": 8,
     "fields": {
-      "full_name": "Tracy Raye Hickman",
+      "name": "Tracy Raye Hickman",
       "pseudonym": "Tracy Hickman",
       "born": "1955-11-26",
       "created": "2021-12-01T11:30:44.767594-06:00",

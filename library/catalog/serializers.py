@@ -14,6 +14,14 @@ class AuthorSerializer(serializers.ModelSerializer):
         fields = '__all__'
         read_only_fields = ('id',)
 
+    def validate(self, attrs):
+        instance = Author(**dict(attrs))
+        try:
+            instance.clean()
+            return attrs
+        except ValidationError as error:
+            raise serializers.ValidationError(serializers.as_serializer_error(error))
+
     def delete(self, pk):
         """Delete a Author instance"""
         author = self.get_object(pk)
@@ -24,15 +32,14 @@ class AuthorSerializer(serializers.ModelSerializer):
         """Create and return a new Author instance,
         given the validated data. Gets the error of validate the model
         """
+        # print('ha entrado en create--------------------------------')
         return Author.objects.create(**validated_data)
 
-    def validate(self, attrs):
-        instance = Author(**dict(attrs))
-        try:
-            instance.clean()
-            return attrs
-        except ValidationError as error:
-            raise serializers.ValidationError(serializers.as_serializer_error(error))
+    def update(self, instance, validated_data):
+        """Update and return an Author instance,
+        given the validated data. Gets the error of validate the model
+        """
+        return super().update(instance, validated_data)
 
 
 class CategorySerializer(serializers.ModelSerializer):
@@ -42,18 +49,6 @@ class CategorySerializer(serializers.ModelSerializer):
         fields = '__all__'
         read_only_fields = ('id',)
 
-    def create(self, validated_data):
-        """Create and return a new Category instance,
-        given the validated data.
-        """
-        return Category.objects.create(**validated_data)
-
-    def delete(self, pk):
-        """Delete a Serie instance"""
-        category = self.get_object(pk)
-        category.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
-
 
 class SerieSerializer(serializers.ModelSerializer):
     """Serializer of category model"""
@@ -62,27 +57,41 @@ class SerieSerializer(serializers.ModelSerializer):
         fields = '__all__'
         read_only_fields = ('id',)
 
-    def create(self, validated_data):
-        """Create and return a new Serie instance,
-        given the validated data.
-        """
-        return Serie.objects.create(**validated_data)
 
-    def delete(self, pk):
-        """Delete a Serie instance"""
-        serie = self.get_object(pk)
-        serie.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+# class CustomFields(serializers.RelatedField):
+#     def to_representation(self, instance):
+#         return instance.name
+
+#     def to_internal_value(self, data):
+#         print('data', data.id)
+#         return data
 
 
 class BookSerializer(serializers.ModelSerializer):
     """Serializer of book model"""
     available = serializers.BooleanField(initial=True)
 
+    # authors = CustomFields(many=True, queryset=Author.objects.all())
+    # serie = CustomFields(many=False, queryset=Serie.objects.all(), required=False)
+    # categories = CustomFields(many=True, queryset=Category.objects.all())
+
+    # def to_representation(self, instance):
+    #     return instance.name
+
     # to show text in api, not ids
-    authors = serializers.StringRelatedField(many=True)
-    serie = serializers.StringRelatedField(many=False)
-    categories = serializers.StringRelatedField(many=True)
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        authors = AuthorSerializer(instance.authors.all(), many=True).data
+        representation["authors"] = [author['name'] for author in authors]
+        categories = CategorySerializer(instance.categories.all(), many=True).data
+        representation["categories"] = [category['name'] for category in categories]
+        serie = SerieSerializer(instance.serie, many=False).data
+        representation["serie"] = serie['name']
+        return representation
+
+    def to_internal_value(self, data):
+        print(self)
+        return super().to_internal_value(data)
 
     class Meta:
 
@@ -111,12 +120,17 @@ class BookSerializer(serializers.ModelSerializer):
         if 'categories' in attrs:
             self.categories = attrs.pop('categories')
         instance = Book(**dict(attrs))
-        # self.context['request'].method # method
         try:
             instance.clean()
             return attrs
         except ValidationError as error:
             raise serializers.ValidationError(serializers.as_serializer_error(error))
+
+    def delete(self, pk):
+        """Delete a Book instance"""
+        book = self.get_object(pk)
+        book.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
     def create(self, validated_data):
         """Create and return a new Book instance,
@@ -130,12 +144,6 @@ class BookSerializer(serializers.ModelSerializer):
             instance.categories.add(category)
         return instance
 
-    def delete(self, pk):
-        """Delete a Book instance"""
-        book = self.get_object(pk)
-        book.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
-
     def update(self, instance, validated_data):
-        """Update a book instance"""
+        """Update a Book instance"""
         return super().update(instance, validated_data)

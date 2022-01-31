@@ -17,7 +17,7 @@ class SerieAdmin(admin.ModelAdmin):
 
 
 class AuthorAdmin(admin.ModelAdmin):
-    list_fields = ('full_name', 'pseudonym')
+    list_fields = ('name', 'pseudonym')
     readonly_fields = ('created', 'updated')
 
 

@@ -113,7 +113,7 @@ export default {
     border-radius: 10px;
     border: 3px solid var(--color-nav);
     padding: 15px;
-    background-color: rgb(235, 235, 235);
+    background-color: var(--color-light);
     width: 65%;
 }
 

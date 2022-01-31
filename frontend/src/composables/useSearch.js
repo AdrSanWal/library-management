@@ -8,10 +8,6 @@ export default function (query) {
     })
 
     const search = async (params, query) => {
-        console.log('params', params)
-
-        console.log('query', query)
-
 
         const getData = ( async (items, field) => {
             const path = `${items}/?q=${query}`
@@ -24,7 +20,7 @@ export default function (query) {
         if (query === '') {
             Object.keys(data).forEach((i) => data[i] = []);  // set all in data to []
         } else {
-        data.jsonResults = await getData('authors', 'full_name')
+        data.jsonResults = await getData('authors', 'name')
         }
     }
 

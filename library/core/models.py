@@ -7,8 +7,7 @@ from .validators import DatesValidator, IsbnValidator, clean_author_dates, clean
 
 
 class Author(models.Model):
-
-    full_name = models.CharField(max_length=50)
+    name = models.CharField(max_length=50)
     pseudonym = models.CharField(blank=True, max_length=100, null=True)
     born = models.DateField(validators=[DatesValidator()])
     died = models.DateField(blank=True, null=True, validators=[DatesValidator(born)])
@@ -16,7 +15,7 @@ class Author(models.Model):
     updated = models.DateTimeField(auto_now=True)
 
     class Meta:
-        ordering = ["full_name"]
+        ordering = ["name"]
         verbose_name = "author"
         verbose_name_plural = "authors"
 
@@ -43,8 +42,11 @@ class Author(models.Model):
         clean_author_dates(self)
         return super().clean()
 
+    def save(self, *args, **kwargs):
+        return super().save(*args, **kwargs)
+
     def __str__(self):
-        return self.full_name
+        return self.name
 
 
 class Category(models.Model):
@@ -54,6 +56,7 @@ class Category(models.Model):
     updated = models.DateTimeField(auto_now=True)
 
     class Meta:
+        ordering = ["name"]
         verbose_name = "category"
         verbose_name_plural = "categories"
 
@@ -66,6 +69,11 @@ class Serie(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
+    class Meta:
+        ordering = ["name"]
+        verbose_name = "serie"
+        verbose_name_plural = "series"
+
     def list_order_books(self):
         """Returns a list with the order of books sorted"""
         books = self.rel_serie.all()
@@ -76,7 +84,6 @@ class Serie(models.Model):
 
 
 class Book(models.Model):
-
     isbn = models.CharField(max_length=17,
                             unique=True,
                             validators=[IsbnValidator()])
@@ -102,15 +109,18 @@ class Book(models.Model):
         verbose_name = "book"
         verbose_name_plural = "books"
 
-    def clean(self):
+    def clean(self, *args, **kwargs) -> None:
         clean_series_order(self)
-        return super().clean()
+        return super().clean(*args, **kwargs)
 
     def save(self, *args, **kwargs):
         """If there is no cover, a cover image not available is linked to it.
         If available is set to False, the loan date is set as current, and
         the return date as current plus loan_days
         """
+        if self.serie_order and not self.serie:
+            self.serie_order = None
+
         if not self.cover:
             self.cover = 'https://islandpress.org/sites/default/files/default_book_cover_2015.jpg'
 
@@ -129,8 +139,8 @@ class Book(models.Model):
         return queryset
 
     def list_authors(self):
-        queryset = self.authors.values('full_name')
-        list_qs = [_['full_name'] for _ in queryset]
+        queryset = self.authors.values('name')
+        list_qs = [_['name'] for _ in queryset]
         return list_qs
 
     def __str__(self):
