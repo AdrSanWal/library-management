@@ -25,7 +25,11 @@ Instructions:
 
 3º Access page:
 
-    localhost:8000
+    localhost:8080
+    
+4º Api url:
+
+    localhost:8000/api/catalog 
 
 <br>
 
@@ -40,7 +44,6 @@ There is a simple admin page created, to enter you have to create a superuser::
     python3 manage.py createsuperuser
 
 
-=
 When deleting data I have taken the following considerations:
 
 <ol>
