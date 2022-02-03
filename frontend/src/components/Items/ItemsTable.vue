@@ -1,14 +1,15 @@
 <template>
     <div class="container">
         <h2>List of {{ items }}</h2>
+
         <table id="table">
             <thead id="t-head">
                 <tr class="headers">
                     <th>#</th>
-                    <th v-for="(value, key, index) of headers"
+                    <th v-for="(value, index) of headers"
                         :key="index"
                         @click="query.sortField=value;$emit('changeData', query)">
-                            {{ key }} <i :class="['fas', 'fa-sort-down', {'selected': value===query.sortField}]"></i>
+                            {{ capitalize(value) }} <i :class="['fas', 'fa-sort-down', {'selected': value===query.sortField}]"></i>
                     </th>
                     <th class="h-right"
                         @click="$router.push({name: 'Forms', params: {items: items, option: 'add', id: 'new'}})">
@@ -18,14 +19,21 @@
             </thead>
 
             <tbody>
-                <tr v-for="(item, index) of data.results"
+                <tr v-for="(item, index) of apiData.results"
                     :key="index"
                     @click="$router.push({name: 'Items', params: {id: item.id}})">
-                    <td>{{ (index + (query.rows * (data.currentPage - 1 ))) + 1}}</td>
-                    <td v-for="(value, key, index) of headers"
+
+                    <td>{{ (index + (query.rows * (apiData.currentPage - 1 ))) + 1}}</td>
+                    <td v-for="(col, index) of headers"
                         :key="index">
-                        <span>{{ item[value] }}</span>
+                        <span v-show="!['serie', 'authors', 'categories'].includes(col)">{{ item[col] }}</span>
+                        <span v-if="col==='serie'">{{ item[col].name }}</span>
+                        <ul v-if="col==='authors' || col==='categories'">
+                            <li v-for="it of item[col]" :key="it">{{ it.name }}</li>
+                        </ul>
+
                     </td>
+
                     <td class="exclude" @click.stop>
                         <div class="btn">
                             <button class="bck-green btn-lst"
@@ -37,6 +45,7 @@
                             </button>
                         </div>
                     </td>
+
                 </tr>
             </tbody>
 
@@ -45,8 +54,8 @@
             <tfoot id="t-foot">
                 <tr>
                     <td :colspan="cols" id="t-subfoot">
-                        <div class="f-item">{{ data.firstItemOnPage }}-{{ data.lastItemOnPage }} of {{ data.totalItems }}</div>
-                        <div class="f-item right">Page {{ query.page }} of {{ data.totalPages }}</div>
+                        <div class="f-item">{{ apiData.firstItemOnPage }}-{{ apiData.lastItemOnPage }} of {{ apiData.totalItems }}</div>
+                        <div class="f-item right">Page {{ query.page }} of {{ apiData.totalPages }}</div>
                     </td>
                     <td class="h-right">
                         <div class="dropdown" @mouseenter="show=true" @mouseleave="show=false">
@@ -70,46 +79,44 @@
 
         <br>
         <!-- Page navigation numbers. If there is only one page, it is not displayed -->
-        <nav aria-label="Page navigation example" v-if="data.totalPages > 1">
+        <nav aria-label="Page navigation example" v-if="apiData.totalPages > 1">
                 
             <div class="pagination">
                 
                 <a @click="query.page--;arrayLinks();$emit('changeData', query)"
-                    :class="['page-item', {'disabled': !data.previous}]">
+                    :class="['page-item', {'disabled': !apiData.previous}]">
                         <i class="fas fa-chevron-left"></i>
                 </a>
 
                 <a @click="query.page=pageNumber;$emit('changeData', query)"
                     v-for="pageNumber in arrayLinks()"
                     :key="pageNumber"
-                    :class="['page-item', {'selected': pageNumber===data.currentPage}]">
+                    :class="['page-item', {'selected': pageNumber===apiData.currentPage}]">
                         {{ pageNumber }}
                 </a>
 
                 <a @click="query.page++;arrayLinks();$emit('changeData', query)"
-                    :class="['page-item', {'disabled': !data.next}]">
+                    :class="['page-item', {'disabled': !apiData.next}]">
                         <i class="fas fa-chevron-right"></i>
                 </a>
             </div>
         </nav>
-
     </div>
 </template>
 
 <script>
-import { ref, reactive, toRefs, onMounted } from 'vue'
-
+import { ref, reactive, toRefs } from 'vue'
+import { capitalize } from '@/composables/useHelpFunctions'
 
 export default {
     name: 'ItemsTable',
     props: {
         items: String,
         query: Object,
-        data: Object,
+        apiData: Object,
         headers: Object,
     },
     setup(props, { emit }) {
-
         const show = ref(false)
         const cols = Object.keys(props.headers).length + 1
         const numberOfLinks = 5
@@ -119,7 +126,7 @@ export default {
         })
 
         const arrayLinks = (() => {
-            const n = Math.min(numberOfLinks, props.data.totalPages)
+            const n = Math.min(numberOfLinks, props.apiData.totalPages)
             if (props.query.page>links.startLink + n -1) {
                 links.startLink++
             } else if (props.query.page<links.startLink) {
@@ -131,7 +138,8 @@ export default {
         return { arrayLinks,
                  show,
                  cols,
-                 ...toRefs(links) }
+                 ...toRefs(links),
+                 capitalize }
     }
 }
 </script>

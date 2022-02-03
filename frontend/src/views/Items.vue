@@ -4,13 +4,13 @@
         <ItemsTable v-if="id==='list'"
             :items="item"
             :query="queryData"
-            :data="data"
+            :apiData="apiData"
             :headers="itemsHeaders[item]"
             @changeData="reloadData"/>
 
         <ItemsDetail v-if="id!=='list'"
             :id="id"
-            :data="data"
+            :apiData="apiData"
             :origin="item"
             :thumbnails="thumbnails"
             @changeData="reloadData"/>
@@ -23,11 +23,11 @@ import useApi from '@/composables/useApi'
 import ItemsTable from '@/components/Items/ItemsTable'
 import ItemsDetail from '@/components/Items/ItemsDetail'
 import { useRoute } from 'vue-router'
-import { toRefs, reactive, onMounted, ref } from 'vue'
+import { toRefs, reactive, onMounted } from 'vue'
 
 
 export default {
-    name: 'BooksTable',
+    name: 'Table-Detail',
     components: {
         ItemsTable,
         ItemsDetail,
@@ -54,8 +54,7 @@ export default {
             page: 1,
         })
        
-        let path
-        const data = reactive({
+        const apiData = reactive({
             results: [],
             totalPages: 1,
             totalItems: 0,
@@ -66,38 +65,39 @@ export default {
             next: false,
         })
 
-        onMounted( async () => {
+        onMounted( () => {
             reloadData()
         })
 
         const reloadData = (async () => {
-
+            let path
             let resp
             if (itemsSelection.id==='list') {
                 path = `${itemsSelection.item}/?ordering=${queryData.sortField}&rows=${queryData.rows}&page=${queryData.page}`
                 resp = (await useApi('get', path)).jsonResponse.value
-                Object.keys(data).forEach((key) => {
-                    data[key] = resp[key]
+                Object.keys(apiData).forEach((key) => {
+                    apiData[key] = resp[key]
                 })
 
             } else if (itemsSelection.item==='books') {
                 path = `${itemsSelection.item}/${itemsSelection.id}/`
                 resp = (await useApi('get', path)).jsonResponse.value
-                data.results = resp
-                data.totalPages = 1
-                data.previous = false
-                data.next = false
+                apiData.results = resp
+                apiData.totalPages = 1
+                apiData.previous = false
+                apiData.next = false
+
             } else {
                 path = `books/?${itemsSelection.item}=${itemsSelection.id}&rows=${thumbnails.number}&page=${thumbnails.page}`
                 resp = (await useApi('get', path)).jsonResponse.value
-                Object.keys(data).forEach((key) => {
-                    data[key] = resp[key]
+                Object.keys(apiData).forEach((key) => {
+                    apiData[key] = resp[key]
                 })
             }
         })
 
 
-        return { data,
+        return { apiData,
                  itemsHeaders,
                  ...toRefs(itemsSelection),
                  thumbnails,

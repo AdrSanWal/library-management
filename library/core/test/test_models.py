@@ -126,10 +126,6 @@ class ModelTest(TestCase):
     #     with self.assertRaises(ValidationError):
     #         alter_book.full_clean()
 
-
-
-
-
 #     # def test_book_serie_order_already_exist(self):
 #     #     """Test if fails creating book with an existing serie_order"""
 #     #     test_book = self.test_book.copy()

@@ -1,5 +1,10 @@
 <template>
     <div class="container">
+        {{ itemsRelated.authors }}
+        <br>
+        {{ itemsRelated.categories }}
+        <br>
+        {{ itemsRelated.serie.id }}
         <div class="form">
             <p id="form-title">{{capitalize($route.params.option)}} {{ itemsSingularName[items] }}</p>
 
@@ -27,18 +32,15 @@
                 <div v-if="type==='select'"
                     class="form-select">
                     <input :id="`f-${field}`"
-                        class="form-input"
+                        class="form-input select"
                         :type="type"
-                        v-model="item[field]"
+                        :value="itemsRelated.serie.name"
                         disabled/>
-                    <button class="form-button">
-                        <i class="fas fa-exchange-alt"></i>
-                    </button>
-                    <button class="form-button bck-red">
+                    <button :class="['form-button', 'bck-red', {'disabled': !itemsRelated.serie.name}]">
                         <i class="fas fa-minus"></i>
                     </button>
                     <button class="form-button bck-green">
-                        <i class="fas fa-plus"></i>
+                        <i class="fas fa-exchange-alt"></i>
                     </button>
                 </div>
 
@@ -48,15 +50,16 @@
                         class="form-input select"
                         multiple
                         size="5">
-                        <option v-for="(val, i) of item[field]"
-                            :key="val" :value="val"
-                            @click="prueba(i)"
+                        <option v-for="val of item[field]"
+                            :key="val.id"
+                            :value="val.id"
+                            @click="multiSelectClick(field, val)"
                             class='opt-sel'
-                            :id="`opt-${i}`">
-                                {{ val }}
+                            :id="`opt-${field}-${val.id}`">
+                                {{ val.name }}
                         </option>
                     </select>
-                    <button class="form-button del">
+                    <button :class="['form-button', 'bck-red', {'disabled': itemsRelated[field].length===0}]">
                         <i class="fas fa-minus"></i>
                     </button>
                     <button class="form-button bck-green">
@@ -82,9 +85,9 @@
 <script>
 import useItemsInfo from '@/composables/useItemsInfo'
 import useApi from '@/composables/useApi'
-import { capitalize, compareObjects } from '@/composables/useHelpFunctions'
+import { capitalize } from '@/composables/useHelpFunctions'
 import { useRoute, useRouter } from 'vue-router'
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, reactive } from 'vue'
 
 
 export default {
@@ -99,26 +102,29 @@ export default {
 
         const item = ref({})
         const errors = ref({})
-        const originalItem = ref({})
+
+        const itemsRelated = reactive({
+            serie: '',
+            authors: [],
+            categories: []
+        })
        
         onMounted(async () => {
             if (id!=='new') {
                 const path = `${items}/${id}/`
                 item.value = (await useApi('GET', path)).jsonResponse.value
-                originalItem.value = JSON.parse(JSON.stringify(item.value))
+                itemsRelated.serie = item.value['serie']
             }
         })
 
         const updateInfo = (async () => {
             // checks if there are changes and if there are, returns only those fields
-
             let response
             
             if (id==='new'){
                 const path = `${items}/`
                 response = await useApi('POST', path, {body: JSON.stringify(item.value)})
             } else {
-                // const updates = compareObjects(items, originalItem.value, item.value)
                 const path = `${items}/${id}/`
                 
                 response = await useApi('PUT', path, {body: JSON.stringify(item.value)})
@@ -128,19 +134,21 @@ export default {
             if (response.response.value.status === 400) {
                 // If status = 400 assign the error message
                 errors.value = await response.jsonResponse.value 
-
+                console.log(errors.value)
             } else if (response.response.value.status === 200) {
                 router.go(-1);
             } 
 
         })
 
-        const prueba = ((sel) => {
-            document.getElementById(`opt-${sel}`).selectedIndex = "2"
-            console.log(sel)
+        const multiSelectClick = ((field, val) => {
+            const selected = document.querySelectorAll(`#f-${field} option:checked`);
+            itemsRelated[field] = Array.from(selected).map(e => parseInt(e.value))
+
+
         })
 
-    return { originalItem,
+    return { itemsRelated,
              item,
              items,
              itemsFormFields,
@@ -148,7 +156,7 @@ export default {
              itemsSingularName,
              updateInfo,
              errors,
-             prueba }
+             multiSelectClick }
     }
 }
 </script>
@@ -213,7 +221,7 @@ textarea {
 }
 
 .select {
-    width: 95%;
+    width: 90%;
 }
 
 .form-select {
@@ -251,10 +259,6 @@ textarea {
     font-size: large;
     font-weight: bold;
     padding: 7px 15px;
-}
-
-.del {
-    background-color: red;
 }
 
 

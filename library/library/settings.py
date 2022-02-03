@@ -32,9 +32,9 @@ ALLOWED_HOSTS = []
 
 # To allow CORS permissions
 
-# CORS_ALLOW_ALL_ORIGINS = True  # Permite acceso a todos
+# CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:8080",  # Por ahora solo se lo permito a la app de Vue
+    "http://localhost:8080",
 ]
 
 # Application definition

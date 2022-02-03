@@ -2,18 +2,18 @@
     <div class="container">
         <div class="book-container" v-if="origin==='books'">
             <ItemBook
-                :book="data.results"/>
+                :book="apiData.results"/>
         </div>
         <div class="books-container" v-if="origin!=='books'">
 
             <div id="t-prev"
-                :class="['changePage', {'disabled': !data.previous}]"
+                :class="['changePage', {'disabled': !apiData.previous}]"
                 @click="thumbnails.page--;$emit('changeData')">
                 <i class="fas fa-chevron-left"></i>
             </div>
-            <ItemBooks v-for="book of data.results" :key="book.id" :book="book"/>
+            <ItemBooks v-for="book of apiData.results" :key="book.id" :book="book"/>
             <div id="t-next"
-                :class="['changePage', {'disabled': !data.next}]"
+                :class="['changePage', {'disabled': !apiData.next}]"
                 @click="thumbnails.page++;$emit('changeData')">
                 <i class="fas fa-chevron-right"></i>
             </div>
@@ -33,7 +33,7 @@ export default {
     },
     props: {
         id: String,
-        data: Object,
+        apiData: Object,
         origin: String,
         thumbnails: Object,
     },

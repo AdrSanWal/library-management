@@ -1,3 +1,4 @@
+from calendar import firstweekday
 from datetime import date
 from django.core.exceptions import ValidationError
 
@@ -12,7 +13,7 @@ class AuthorSerializer(serializers.ModelSerializer):
     class Meta:
         model = Author
         fields = '__all__'
-        read_only_fields = ('id',)
+        read_only_fields = ('id', 'created')
 
     def validate(self, attrs):
         instance = Author(**dict(attrs))
@@ -32,7 +33,6 @@ class AuthorSerializer(serializers.ModelSerializer):
         """Create and return a new Author instance,
         given the validated data. Gets the error of validate the model
         """
-        # print('ha entrado en create--------------------------------')
         return Author.objects.create(**validated_data)
 
     def update(self, instance, validated_data):
@@ -47,7 +47,7 @@ class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
         fields = '__all__'
-        read_only_fields = ('id',)
+        read_only_fields = ('id', 'created')
 
 
 class SerieSerializer(serializers.ModelSerializer):
@@ -55,42 +55,25 @@ class SerieSerializer(serializers.ModelSerializer):
     class Meta:
         model = Serie
         fields = '__all__'
-        read_only_fields = ('id',)
-
-
-# class CustomFields(serializers.RelatedField):
-#     def to_representation(self, instance):
-#         return instance.name
-
-#     def to_internal_value(self, data):
-#         print('data', data.id)
-#         return data
+        read_only_fields = ('id', 'created')
 
 
 class BookSerializer(serializers.ModelSerializer):
     """Serializer of book model"""
     available = serializers.BooleanField(initial=True)
 
-    # authors = CustomFields(many=True, queryset=Author.objects.all())
-    # serie = CustomFields(many=False, queryset=Serie.objects.all(), required=False)
-    # categories = CustomFields(many=True, queryset=Category.objects.all())
-
-    # def to_representation(self, instance):
-    #     return instance.name
-
     # to show text in api, not ids
     def to_representation(self, instance):
         representation = super().to_representation(instance)
-        authors = AuthorSerializer(instance.authors.all(), many=True).data
-        representation["authors"] = [author['name'] for author in authors]
-        categories = CategorySerializer(instance.categories.all(), many=True).data
-        representation["categories"] = [category['name'] for category in categories]
-        serie = SerieSerializer(instance.serie, many=False).data
-        representation["serie"] = serie['name']
+        representation["authors"] = AuthorSerializer(instance.authors, many=True).data
+        representation["categories"] = CategorySerializer(instance.categories, many=True).data
+        representation["serie"] = SerieSerializer(instance.serie, many=False).data
         return representation
 
     def to_internal_value(self, data):
-        print(self)
+        data['authors'] = [author['id'] for author in data['authors']]
+        data['categories'] = [category['id'] for category in data['categories']]
+        data['serie'] = data['serie'].get('id', None)  # serie is not required
         return super().to_internal_value(data)
 
     class Meta:
@@ -110,7 +93,7 @@ class BookSerializer(serializers.ModelSerializer):
             'loan_date',
             'expected_return_date',
         ]
-        read_only_fields = ('id',)
+        read_only_fields = ('id', 'created')
 
     def validate(self, attrs):
         # Pops authors and categories because they are many to many field

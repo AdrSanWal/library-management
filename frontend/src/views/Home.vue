@@ -193,6 +193,18 @@ p.selected {
     transform: scaleY(0);
 }
 
+.matches-enter {
+    transform: scaleY(0);
+    height: 0px;
+}
+
+.matches-enter {
+    transform: scaleY(0);
+}
+
+.matches-enter-to {
+    transform: scaleY(1);
+}
 
 /* Pagination ---------------------------------------------------- Pagination */
 

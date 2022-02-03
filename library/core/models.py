@@ -109,9 +109,9 @@ class Book(models.Model):
         verbose_name = "book"
         verbose_name_plural = "books"
 
-    def clean(self, *args, **kwargs) -> None:
+    def clean(self):
         clean_series_order(self)
-        return super().clean(*args, **kwargs)
+        return super().clean()
 
     def save(self, *args, **kwargs):
         """If there is no cover, a cover image not available is linked to it.

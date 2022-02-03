@@ -13,27 +13,27 @@ export default function () {
     }
 
     const itemsHeaders = {
-        'books': {
-            'Isbn': 'isbn',
-            'Title': 'title',
-            'Authors': 'authors',
-            'Serie': 'serie',
-            'Categories': 'categories',
-            'Available': 'available'
-        },
-        'authors': {
-            'Name': 'name',
-            'Pseudonym': 'pseudonym',
-            'Born': 'born',
-            'Died': 'died',
-        },
-        'categories': {
-            'Name': 'name',
-            'Description': 'description'
-        },
-        'series': {
-            'Name': 'name',
-        },     
+        'books': [
+            'isbn',
+            'title',
+            'authors',
+            'serie',
+            'categories',
+            'available'
+        ],
+        'authors': [
+            'name',
+            'pseudonym',
+            'born',
+            'died',
+        ],
+        'categories': [
+            'name',
+            'description'
+        ],
+        'series': [
+            'name',
+         ],     
     }
 
     const itemsFormFields = {

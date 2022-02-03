@@ -19,19 +19,19 @@
                         <th>Authors</th>
                         <td>
                             <ul>
-                                <li v-for="author of book.authors" :key="author">{{ author }}</li>
+                                <li v-for="author of book.authors" :key="author">{{ author.name }}</li>
                             </ul>
                         </td>
                     </tr>
                     <tr>
                         <th>Categories</th>
                             <ul>
-                                <li v-for="category of book.categories" :key="category">{{ category }}</li>
+                                <li v-for="category of book.categories" :key="category">{{ category.name }}</li>
                             </ul>
                     </tr>
                     <tr v-if="book.serie">
                         <th>Serie</th>
-                        <td>{{ book.serie }} ({{ book.serie_order}}º)</td>
+                        <td>{{ book.serie.name }} ({{ book.serie_order}}º)</td>
                     </tr>
                     <tr>
                         <th>Description</th>

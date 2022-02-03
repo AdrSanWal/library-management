@@ -53,6 +53,9 @@ def clean_series_order(self):
             raise ValidationError(
                 {"serie_order": "If the book is from a serie, it must have serie_order"})
         else:
+            if self.serie_order < 1:
+                raise ValidationError(
+                    {"serie_order": "The order must be >= 1"})
             # Exclude the instance itself so it doesn't throw an error when updating a book
             from .models import Book  # To avoid circular import
             books = Book.objects.filter(serie=self.serie).exclude(isbn=self.isbn)
