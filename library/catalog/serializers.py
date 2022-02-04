@@ -1,5 +1,6 @@
 from calendar import firstweekday
 from datetime import date
+from xxlimited import Null
 from django.core.exceptions import ValidationError
 
 from rest_framework import serializers, status
@@ -60,9 +61,6 @@ class SerieSerializer(serializers.ModelSerializer):
 
 class BookSerializer(serializers.ModelSerializer):
     """Serializer of book model"""
-    def __init__(self, *args, **kwargs):
-        print('kwargs', kwargs)
-        super(BookSerializer, self).__init__(*args, **kwargs)
     available = serializers.BooleanField(initial=True)
 
     # to show text in api, not ids
@@ -70,14 +68,15 @@ class BookSerializer(serializers.ModelSerializer):
         representation = super().to_representation(instance)
         representation["authors"] = AuthorSerializer(instance.authors, many=True).data
         representation["categories"] = CategorySerializer(instance.categories, many=True).data
-        representation["serie"] = SerieSerializer(instance.serie, many=False).data
+        if representation["serie"]:
+            representation["serie"] = SerieSerializer(instance.serie, many=False).data
         return representation
 
     def to_internal_value(self, data):
         if not self.partial:
             data['authors'] = [author['id'] for author in data['authors']]
             data['categories'] = [category['id'] for category in data['categories']]
-            data['serie'] = data['serie'].get('id', None)  # serie is not required
+            data['serie'] = data['serie'].get('id', Null)  # serie is not required
         return super().to_internal_value(data)
 
     class Meta:
