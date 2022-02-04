@@ -4,6 +4,7 @@
             <ItemBook
                 :book="apiData.results"/>
         </div>
+
         <div class="books-container" v-if="origin!=='books'">
 
             <div id="t-prev"
@@ -18,6 +19,7 @@
                 <i class="fas fa-chevron-right"></i>
             </div>
         </div>
+
     </div>
 </template>
 

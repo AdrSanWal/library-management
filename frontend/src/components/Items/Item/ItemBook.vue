@@ -29,7 +29,7 @@
                                 <li v-for="category of book.categories" :key="category">{{ category.name }}</li>
                             </ul>
                     </tr>
-                    <tr v-if="book.serie">
+                    <tr v-if="book.serie.name">
                         <th>Serie</th>
                         <td>{{ book.serie.name }} ({{ book.serie_order}}º)</td>
                     </tr>
