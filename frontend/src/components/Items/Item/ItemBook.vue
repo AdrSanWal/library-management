@@ -25,13 +25,15 @@
                     </tr>
                     <tr>
                         <th>Categories</th>
+                        <td>
                             <ul>
                                 <li v-for="category of book.categories" :key="category">{{ category.name }}</li>
                             </ul>
+                        </td>
                     </tr>
-                    <tr v-if="book.serie.name">
+                    <tr v-if="book.serie">
                         <th>Serie</th>
-                        <td>{{ book.serie.name }} ({{ book.serie_order}}º)</td>
+                        <td>{{ book.serie.name }}</td>
                     </tr>
                     <tr>
                         <th>Description</th>
@@ -88,6 +90,8 @@ export default {
             const transformText = {'true': 'Available', 'false': 'Not Availabe'}
             return transformText[value]
         })
+
+        console.log('book.serie', props.book)
 
         const changeLoan = (async (value) => {
             const path = `books/${props.book.id}/`

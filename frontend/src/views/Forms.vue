@@ -1,10 +1,5 @@
 <template>
     <div class="container">
-        {{ itemsRelated.authors }}
-        <br>
-        {{ itemsRelated.categories }}
-        <br>
-        {{ itemsRelated.serie.id }}
         <div class="form">
             <p id="form-title">{{capitalize($route.params.option)}} {{ itemsSingularName[items] }}</p>
 
@@ -34,13 +29,13 @@
                     <input :id="`f-${field}`"
                         class="form-input select"
                         :type="type"
-                        :value="itemsRelated.serie.name"
+                        :value="itemsRelated.serie"
                         disabled/>
-                    <button :class="['form-button', 'bck-red', {'disabled': !itemsRelated.serie.name}]">
+                    <button :class="['form-button', 'bck-red', {'disabled': !itemsRelated.serie}]">
                         <i class="fas fa-minus"></i>
                     </button>
                     <button class="form-button bck-green">
-                        <i class="fas fa-exchange-alt"></i>
+                        <i :class="['fas', {'fa-exchange-alt': itemsRelated.serie, 'fa-plus': !itemsRelated.serie}]" ></i>
                     </button>
                 </div>
 
@@ -113,8 +108,8 @@ export default {
             if (id!=='new') {
                 const path = `${items}/${id}/`
                 item.value = (await useApi('GET', path)).jsonResponse.value
-                if (items==='books') {
-                    itemsRelated.serie = item.value['serie']
+                if (items==='books' && item.value['serie']) {
+                    itemsRelated.serie = item.value['serie'].name
                 }
             }
         })

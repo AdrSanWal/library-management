@@ -75,6 +75,7 @@ export default {
             if (itemsSelection.id==='list') {
                 path = `${itemsSelection.item}/?ordering=${queryData.sortField}&rows=${queryData.rows}&page=${queryData.page}`
                 resp = (await useApi('get', path)).jsonResponse.value
+                console.log('resp', typeof(resp))
                 Object.keys(apiData).forEach((key) => {
                     apiData[key] = resp[key]
                 })
@@ -82,6 +83,7 @@ export default {
             } else if (itemsSelection.item==='books') {
                 path = `${itemsSelection.item}/${itemsSelection.id}/`
                 resp = (await useApi('get', path)).jsonResponse.value
+                console.log(resp)
                 apiData.results = resp
                 apiData.totalPages = 1
                 apiData.previous = false

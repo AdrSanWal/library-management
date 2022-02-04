@@ -3,6 +3,7 @@
 
         <ItemDelete v-if="isDeleteItemVisible" 
             @close="isDeleteItemVisible = false"
+
             :items="items"
             :item="delItem"
             :books="delBooks"/>
@@ -34,7 +35,7 @@
                     <td v-for="(col, index) of headers"
                         :key="index">
                         <span v-show="!['serie', 'authors', 'categories'].includes(col)">{{ item[col] }}</span>
-                        <span v-if="col==='serie'">{{ item[col].name }}</span>
+                        <span v-if="col==='serie' && item[col]">{{ item[col].name }}</span>
                         <ul v-if="col==='authors' || col==='categories'">
                             <li v-for="it of item[col]" :key="it">{{ it.name }}</li>
                         </ul>
@@ -143,7 +144,7 @@ export default {
             delItems.delItem = item
             if (props.items=="authors") {
                 const path = `books/?own=${item.id}`
-                delItems.delBooks = (await useApi('GET', path)).jsonResponse.value.results
+                delItems.delBooks =(await useApi('GET', path)).jsonResponse.value.results
             }
         })
 

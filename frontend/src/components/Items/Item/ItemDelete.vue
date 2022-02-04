@@ -71,7 +71,7 @@ export default {
 
         const confirmDelete = (() => {
             const path = `${props.items}/${props.item.id}/`
-            const { deleteItem } = useApi('DELETE', path)
+            useApi('DELETE', path)
             emit('close')
 
         })
