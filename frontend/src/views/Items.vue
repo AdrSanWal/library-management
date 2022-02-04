@@ -11,7 +11,7 @@
         <ItemsDetail v-if="id!=='list'"
             :id="id"
             :apiData="apiData"
-            :origin="item"
+            :items="item"
             :thumbnails="thumbnails"
             @changeData="reloadData"/>
     </div>

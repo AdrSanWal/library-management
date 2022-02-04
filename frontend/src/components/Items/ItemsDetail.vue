@@ -1,11 +1,11 @@
 <template>
     <div class="container">
-        <div class="book-container" v-if="origin==='books'">
+        <div class="book-container" v-if="items==='books'">
             <ItemBook
                 :book="apiData.results"/>
         </div>
 
-        <div class="books-container" v-if="origin!=='books'">
+        <div class="books-container" v-if="items!=='books' && apiData.results.length!==0">
 
             <div id="t-prev"
                 :class="['changePage', {'disabled': !apiData.previous}]"
@@ -20,10 +20,23 @@
             </div>
         </div>
 
+        <div v-show="apiData.results.length===0"
+            id="no-books">
+            <img src="https://zum-talent.ecore.com.sg/assets/frontend/image/no_result.jpeg" alt="">
+            <h1>This {{itemsSingularName[items]}} has not books yet</h1>
+            <div class="add-book">
+                <h3>Maybe you want to add some one</h3>
+                <i class="fas fa-arrow-right"></i>
+                <button class="bck-green"
+                @click="$router.push({name: 'Forms', params: {items: items, option: 'add', id: 'new'}})">
+                    <i class="fa-solid fa-pen-to-square"></i> Add Book</button>
+            </div>
+        </div>
     </div>
 </template>
 
 <script>
+import useItemsInfo from '@/composables/useItemsInfo'
 import ItemBook from '@/components/Items/Item/ItemBook'
 import ItemBooks from '@/components/Items/Item/ItemBooks'
 
@@ -36,13 +49,16 @@ export default {
     props: {
         id: String,
         apiData: Object,
-        origin: String,
+        items: String,
         thumbnails: Object,
     },
     setup() {
+        const { itemsSingularName } = useItemsInfo()
 
+        return { itemsSingularName }
     }
 }
+
 </script>
 
 <style scoped>
@@ -102,4 +118,17 @@ export default {
 .disabled {
     opacity:0;
 }
+
+.fa-arrow-right {
+    color: var(--color-btn)
+}
+
+.add-book {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    padding: 0px 70px;
+}
+
 </style>
