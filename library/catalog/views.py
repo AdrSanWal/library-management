@@ -23,8 +23,6 @@ class BookViewSet(ModelViewSet):
         if 'authors' in request:
             self.queryset = self.queryset.filter(authors=request['authors'])
         if 'own' in request:
-            from django.db.models import Q
-            # self.queryset = self.queryset.filter(~Q(authors=8), authors=request['own'])
             self.queryset = self.queryset.filter(authors=request['own'])
             own_books = [_.id for _ in self.queryset if _.authors.count() == 1]
             self.queryset = self.queryset.filter(id__in=own_books)
