@@ -77,6 +77,13 @@ When deleting data I have taken the following considerations:
  </li>
 
  <br>
+ <li>Serie:
+  <ul>
+    <li>When deleting a serie, it will be deleted from the books that had it associated and it would be set to null.</li>
+  </ul>
+ </li>
+
+ <br>
 
  <li>Source isbn validation (in spanish) (https://www.isbn-international.org/es/content/%C2%BFqu%C3%A9-es-un-isbn):
 
