@@ -52,6 +52,7 @@ export default {
 .book-container {
     display: flex;
     justify-content: center;
+    width: 65%;
 }
 
 .books-container {

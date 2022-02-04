@@ -114,7 +114,6 @@ export default {
     border: 3px solid var(--color-nav);
     padding: 15px;
     background-color: var(--color-light);
-    width: 65%;
 }
 
 .vert {
