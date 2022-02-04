@@ -113,12 +113,14 @@ export default {
             if (id!=='new') {
                 const path = `${items}/${id}/`
                 item.value = (await useApi('GET', path)).jsonResponse.value
-                itemsRelated.serie = item.value['serie']
+                if (items==='books') {
+                    itemsRelated.serie = item.value['serie']
+                }
             }
         })
 
         const updateInfo = (async () => {
-            // checks if there are changes and if there are, returns only those fields
+
             let response
             
             if (id==='new'){
@@ -131,11 +133,12 @@ export default {
 
             }
 
-            if (response.response.value.status === 400) {
+            const status = response.response.value.status
+            if ( status === 400) {
                 // If status = 400 assign the error message
                 errors.value = await response.jsonResponse.value 
-                console.log(errors.value)
-            } else if (response.response.value.status === 200) {
+
+            } else if (status === 200 || status === 201) {
                 router.go(-1);
             } 
 
@@ -144,8 +147,6 @@ export default {
         const multiSelectClick = ((field, val) => {
             const selected = document.querySelectorAll(`#f-${field} option:checked`);
             itemsRelated[field] = Array.from(selected).map(e => parseInt(e.value))
-
-
         })
 
     return { itemsRelated,

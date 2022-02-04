@@ -49,7 +49,6 @@ class AuthorViewSet(ModelViewSet):
         return self.queryset
 
 
-
 class CategoryViewSet(ModelViewSet):
     queryset = Category.objects.all()
     serializer_class = serializers.CategorySerializer
