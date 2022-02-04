@@ -3,8 +3,6 @@ from rest_framework.filters import OrderingFilter
 
 from . import serializers, pagination
 from core.models import Book, Author, Category, Serie
-from rest_framework.response import Response
-from rest_framework import status
 
 
 class BookViewSet(ModelViewSet):
@@ -14,18 +12,26 @@ class BookViewSet(ModelViewSet):
     filter_backends = (OrderingFilter,)
 
     def get_queryset(self):
-        """Return all Books except if there are query parameters"""
+        """Return all Books except if there are query parameters, in this ViewSet
+        you can combine queries in the same order that they have been declared here
+        """
         request = self.request.GET
         if 'q' in request:
-            return self.queryset.filter(title__icontains=request['q'])
-        if 'series' in request:
-            return self.queryset.filter(serie=request['series'])
-        if 'authors' in request:
-            return self.queryset.filter(authors=request['authors'])
+            self.queryset = self.queryset.filter(title__icontains=request['q'])
         if 'categories' in request:
-            return self.queryset.filter(categories=request['categories'])
+            self.queryset = self.queryset.filter(categories=request['categories'])
+        if 'authors' in request:
+            self.queryset = self.queryset.filter(authors=request['authors'])
+        if 'own' in request:
+            from django.db.models import Q
+            # self.queryset = self.queryset.filter(~Q(authors=8), authors=request['own'])
+            self.queryset = self.queryset.filter(authors=request['own'])
+            own_books = [_.id for _ in self.queryset if _.authors.count() == 1]
+            self.queryset = self.queryset.filter(id__in=own_books)
+        if 'series' in request:
+            self.queryset = self.queryset.filter(serie=request['series'])
         if 'available' in request:
-            return self.queryset.filter(available=request['available'])
+            self.queryset = self.queryset.filter(available=request['available'])
         return self.queryset
 
 
@@ -41,6 +47,7 @@ class AuthorViewSet(ModelViewSet):
         if 'q' in request:
             return self.queryset.filter(name__icontains=request['q'])
         return self.queryset
+
 
 
 class CategoryViewSet(ModelViewSet):

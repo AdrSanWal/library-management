@@ -1,5 +1,12 @@
 <template>
     <div class="container">
+
+        <ItemDelete v-if="isDeleteItemVisible" 
+            @close="isDeleteItemVisible = false"
+            :items="items"
+            :item="delItem"
+            :books="delBooks"/>
+
         <h2>List of {{ items }}</h2>
 
         <table id="table">
@@ -40,7 +47,8 @@
                                 @click="$router.push({name: 'Forms', params: {items: items, option: 'update', id: item.id}})">
                                 <i class="fa-solid fa-pen-to-square"></i>
                             </button>
-                            <button class="bck-red btn-lst">
+                            <button class="bck-red btn-lst"
+                                @click="updateDelItems(item);isDeleteItemVisible=true">
                                 <i class="fa-solid fa-trash-can"></i>
                             </button>
                         </div>
@@ -58,12 +66,12 @@
                         <div class="f-item right">Page {{ query.page }} of {{ apiData.totalPages }}</div>
                     </td>
                     <td class="h-right">
-                        <div class="dropdown" @mouseenter="show=true" @mouseleave="show=false">
+                        <div class="dropdown" @mouseenter="isDropdownVisible=true" @mouseleave="isDropdownVisible=false">
                             <div id="selectRows">
                                 <p>Rows <i class="fas fa-caret-down"></i></p>
                             </div>
                             <transition name="rows">
-                                <ul v-if="show" class="changeRows">
+                                <ul v-if="isDropdownVisible" class="changeRows">
                                     <li v-for="(n, i) in [5,10,25]"
                                         :key="i"
                                         @click="query.page=1;query.rows=n;$emit('changeData', query)">{{n}} rows
@@ -105,11 +113,16 @@
 </template>
 
 <script>
-import { ref, reactive, toRefs } from 'vue'
+import { reactive, toRefs, ref } from 'vue'
 import { capitalize } from '@/composables/useHelpFunctions'
+import ItemDelete from '@/components/Items/Item/ItemDelete'
+import useApi from '@/composables/useApi'
 
 export default {
     name: 'ItemsTable',
+    components: {
+        ItemDelete
+    },
     props: {
         items: String,
         query: Object,
@@ -117,7 +130,23 @@ export default {
         headers: Object,
     },
     setup(props, { emit }) {
-        const show = ref(false)
+        const show = reactive({
+            isDropdownVisible: false,
+            isDeleteItemVisible: false
+        })
+        const delItems = reactive({
+            delItem: {},
+            delBooks: []
+        })
+
+        const updateDelItems = (async(item) => {
+            delItems.delItem = item
+            if (props.items=="authors") {
+                const path = `books/?own=${item.id}`
+                delItems.delBooks = (await useApi('GET', path)).jsonResponse.value.results
+            }
+        })
+
         const cols = Object.keys(props.headers).length + 1
         const numberOfLinks = 5
 
@@ -136,10 +165,12 @@ export default {
         })
 
         return { arrayLinks,
-                 show,
+                 ...toRefs(show),
                  cols,
                  ...toRefs(links),
-                 capitalize }
+                 capitalize,
+                 ...toRefs(delItems),
+                 updateDelItems }
     }
 }
 </script>

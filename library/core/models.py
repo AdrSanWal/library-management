@@ -13,6 +13,9 @@ class Author(models.Model):
     died = models.DateField(blank=True, null=True, validators=[DatesValidator(born)])
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
+    indexes = [
+        models.Index(fields=['name']),
+    ]
 
     class Meta:
         ordering = ["name"]
@@ -22,7 +25,7 @@ class Author(models.Model):
     def get_books(self, authorship):
         """Return a list with the id of books from the author.
         If authorship == 'many' return the books written by the author
-        and those written with another author. If authorship == 'one'
+        and those written with another author. If authorship != 'many'
         returns the books written only by the author.
         """
         books = self.rel_author.all()  # All books from author (self)
@@ -93,7 +96,7 @@ class Book(models.Model):
     description = models.CharField(max_length=1000, blank=True)
     categories = models.ManyToManyField(Category, related_name='rel_category')
     serie = models.ForeignKey(Serie,
-                              on_delete=models.CASCADE,
+                              on_delete=models.SET_NULL,
                               blank=True,
                               null=True,
                               related_name='rel_serie')
@@ -108,6 +111,9 @@ class Book(models.Model):
         ordering = ['id']
         verbose_name = "book"
         verbose_name_plural = "books"
+        indexes = [
+            models.Index(fields=['title']),
+        ]
 
     def clean(self):
         clean_series_order(self)
