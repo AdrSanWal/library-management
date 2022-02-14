@@ -68,7 +68,7 @@ class Category(models.Model):
 
 
 class Serie(models.Model):
-    name = models.CharField(max_length=255, null=True)
+    name = models.CharField(max_length=255)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 

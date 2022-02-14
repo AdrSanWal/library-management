@@ -3,7 +3,7 @@
 
         <ItemDelete v-if="isDeleteItemVisible" 
             @close="isDeleteItemVisible = false"
-
+            @refresh="refresh"
             :items="items"
             :item="delItem"
             :books="delBooks"/>
@@ -16,7 +16,7 @@
                     <th>#</th>
                     <th v-for="(value, index) of headers"
                         :key="index"
-                        @click="query.sortField=value;$emit('changeData', query)">
+                        @click="query.sortField=value;refresh()">
                             {{ capitalize(value) }} <i :class="['fas', 'fa-sort-down', {'selected': value===query.sortField}]"></i>
                     </th>
                     <th class="h-right"
@@ -75,7 +75,7 @@
                                 <ul v-if="isDropdownVisible" class="changeRows">
                                     <li v-for="(n, i) in [5,10,25]"
                                         :key="i"
-                                        @click="query.page=1;query.rows=n;$emit('changeData', query)">{{n}} rows
+                                        @click="query.page=1;query.rows=n;refresh()">{{n}} rows
                                     </li>
                                 </ul>
                             </transition>
@@ -92,19 +92,19 @@
                 
             <div class="pagination">
                 
-                <a @click="query.page--;arrayLinks();$emit('changeData', query)"
+                <a @click="query.page--;arrayLinks();refresh()"
                     :class="['page-item', {'disabled': !apiData.previous}]">
                         <i class="fas fa-chevron-left"></i>
                 </a>
 
-                <a @click="query.page=pageNumber;$emit('changeData', query)"
+                <a @click="query.page=pageNumber;refresh()"
                     v-for="pageNumber in arrayLinks()"
                     :key="pageNumber"
                     :class="['page-item', {'selected': pageNumber===apiData.currentPage}]">
                         {{ pageNumber }}
                 </a>
 
-                <a @click="query.page++;arrayLinks();$emit('changeData', query)"
+                <a @click="query.page++;arrayLinks();refresh()"
                     :class="['page-item', {'disabled': !apiData.next}]">
                         <i class="fas fa-chevron-right"></i>
                 </a>
@@ -114,7 +114,7 @@
 </template>
 
 <script>
-import { reactive, toRefs } from 'vue'
+import { reactive, toRefs, ref } from 'vue'
 import { capitalize } from '@/composables/useHelpFunctions'
 import ItemDelete from '@/components/Items/Item/ItemDelete'
 import useApi from '@/composables/useApi'
@@ -165,13 +165,18 @@ export default {
             return Array.from({length: n}, (_, i) => links.startLink + i)
         })
 
+        const refresh = (() => {
+            emit('changeData')
+        })
+
         return { arrayLinks,
                  ...toRefs(show),
                  cols,
                  ...toRefs(links),
                  capitalize,
                  ...toRefs(delItems),
-                 updateDelItems }
+                 updateDelItems,
+                 refresh }
     }
 }
 </script>
