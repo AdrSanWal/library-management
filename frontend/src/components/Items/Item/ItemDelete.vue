@@ -27,9 +27,9 @@
                         </slot>
                     </section>
 
-                    <section class="modal-body" v-if="items==='authors'">
+                    <section class="modal-body" v-if="books">
                         <slot name="header">
-                            <h3>The next books will be deleted</h3>               
+                            <h3>The next books will be deleted</h3>        
                         </slot>
                         <slot name="body">
                             <ul class="list-group">
@@ -69,12 +69,14 @@ export default {
 
         const { itemsSingularName } = useIetmsInfo()
 
-        const confirmDelete = (() => {
+        const confirmDelete = (async () => {
             const path = `${props.items}/${props.item.id}/`
-            useApi('DELETE', path)
+            await useApi('DELETE', path)
+            await emit('refresh')
             emit('close')
-
         })
+
+        
 
         return { confirmDelete, itemsSingularName }
     }

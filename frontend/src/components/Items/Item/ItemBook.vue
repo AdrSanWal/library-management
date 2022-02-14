@@ -33,7 +33,7 @@
                     </tr>
                     <tr v-if="book.serie">
                         <th>Serie</th>
-                        <td>{{ book.serie.name }}</td>
+                        <td>{{ book.serie.name }} ({{ book.serie_order }}º)</td>
                     </tr>
                     <tr>
                         <th>Description</th>

@@ -71,7 +71,7 @@
             <br>
             <div class="right">
                 <button class="bck-green" @click="updateInfo()">{{ capitalize($route.params.option) }}</button>
-                <button @click="$router.go(-1)">Cancel</button>
+                <button @click="$router.push({name: 'Items', params: {items:items, id: 'list'}})">Cancel</button>
             </div>
         </div>
     </div>

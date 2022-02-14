@@ -23,7 +23,7 @@ import useApi from '@/composables/useApi'
 import ItemsTable from '@/components/Items/ItemsTable'
 import ItemsDetail from '@/components/Items/ItemsDetail'
 import { useRoute } from 'vue-router'
-import { toRefs, reactive, onMounted } from 'vue'
+import { toRefs, reactive, onMounted, ref } from 'vue'
 
 
 export default {
@@ -54,7 +54,7 @@ export default {
             page: 1,
         })
        
-        const apiData = reactive({
+        const apiData = ref({
             results: [],
             totalPages: 1,
             totalItems: 0,
@@ -65,39 +65,42 @@ export default {
             next: false,
         })
 
-        onMounted( () => {
+        onMounted(() => {
             reloadData()
+        })
+
+        const updateApiData = ((resp, updateAll) => {
+            if (updateAll) {
+                Object.keys(apiData.value).forEach((key) => {
+                    apiData.value[key] = resp[key]
+                })
+            } else {
+                apiData.value['results'] = resp
+                apiData.value['totalPages'] = 1
+                apiData.value['previous'] = false
+                apiData.value['next'] = false
+            }
         })
 
         const reloadData = (async () => {
             let path
-            let resp
+            let updateAll
+
             if (itemsSelection.id==='list') {
                 path = `${itemsSelection.item}/?ordering=${queryData.sortField}&rows=${queryData.rows}&page=${queryData.page}`
-                resp = (await useApi('get', path)).jsonResponse.value
-                console.log('resp', typeof(resp))
-                Object.keys(apiData).forEach((key) => {
-                    apiData[key] = resp[key]
-                })
-
+                updateAll = true
             } else if (itemsSelection.item==='books') {
                 path = `${itemsSelection.item}/${itemsSelection.id}/`
-                resp = (await useApi('get', path)).jsonResponse.value
-                console.log(resp)
-                apiData.results = resp
-                apiData.totalPages = 1
-                apiData.previous = false
-                apiData.next = false
-
+                updateAll = false
             } else {
                 path = `books/?${itemsSelection.item}=${itemsSelection.id}&rows=${thumbnails.number}&page=${thumbnails.page}`
-                resp = (await useApi('get', path)).jsonResponse.value
-                Object.keys(apiData).forEach((key) => {
-                    apiData[key] = resp[key]
-                })
+                updateAll = true
             }
-        })
+            
+            const resp = (await useApi('GET', path)).jsonResponse.value
+            updateApiData(resp, updateAll)
 
+        })
 
         return { apiData,
                  itemsHeaders,
