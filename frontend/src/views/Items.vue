@@ -54,7 +54,7 @@ export default {
             page: 1,
         })
        
-        const apiData = ref({
+        const apiData = reactive({
             results: [],
             totalPages: 1,
             totalItems: 0,
@@ -71,14 +71,14 @@ export default {
 
         const updateApiData = ((resp, updateAll) => {
             if (updateAll) {
-                Object.keys(apiData.value).forEach((key) => {
-                    apiData.value[key] = resp[key]
+                Object.keys(apiData).forEach((key) => {
+                    apiData[key] = resp[key]
                 })
             } else {
-                apiData.value['results'] = resp
-                apiData.value['totalPages'] = 1
-                apiData.value['previous'] = false
-                apiData.value['next'] = false
+                apiData.results = resp
+                apiData.totalPages = 1
+                apiData.previous = false
+                apiData.next = false
             }
         })
 

@@ -34,11 +34,14 @@
                     <td>{{ (index + (query.rows * (apiData.currentPage - 1 ))) + 1}}</td>
                     <td v-for="(col, index) of headers"
                         :key="index">
-                        <span v-show="!['serie', 'authors', 'categories'].includes(col)">{{ item[col] }}</span>
+                        <span v-show="!['serie', 'authors', 'categories', 'available'].includes(col)">{{ item[col] }}</span>
                         <span v-if="col==='serie' && item[col]">{{ item[col].name }}</span>
                         <ul v-if="col==='authors' || col==='categories'">
                             <li v-for="it of item[col]" :key="it">{{ it.name }}</li>
                         </ul>
+                        <i v-if="col==='available'"
+                            :class="['fa-solid', {'fa-check':item[col], 'fa-xmark': !item[col]}]">
+                        </i>
 
                     </td>
 
@@ -278,7 +281,7 @@ button {
     color: green;
 }
 
-.fa-times {
+.fa-xmark {
     color:red;
 }
 
