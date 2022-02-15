@@ -1,5 +1,11 @@
 <template>
     <div class="container">
+    <br>
+    <strong>Item:</strong> <p>{{ item }}</p>
+    <strong>Serie:</strong> <p>{{ item.serie }}</p>
+    <strong>Authors:</strong> <p>{{ item.authors }}</p>
+    <strong>Categories:</strong> <p>{{ item.categories }}</p>
+
         <div class="form">
             <p id="form-title">{{capitalize($route.params.option)}} {{ itemsSingularName[items] }}</p>
 
@@ -28,10 +34,11 @@
                     class="form-select">
                     <input :id="`f-${field}`"
                         class="form-input select"
-                        :type="type"
-                        :value="itemsRelated.serie"
+                        type="text"
+                        :value="itemsRelated[field]"
                         disabled/>
-                    <button :class="['form-button', 'bck-red', {'disabled': !itemsRelated.serie}]">
+                    <button :class="['form-button', 'bck-red', {'disabled': !itemsRelated.serie}]"
+                        @click="removeSelected(field, itemsRelated.serie)">
                         <i class="fas fa-minus"></i>
                     </button>
                     <button class="form-button bck-green">
@@ -54,7 +61,8 @@
                                 {{ val.name }}
                         </option>
                     </select>
-                    <button :class="['form-button', 'bck-red', {'disabled': itemsRelated[field].length===0}]">
+                    <button :class="['form-button', 'bck-red', {'disabled': itemsRelated[field].length===0}]"
+                        @click="removeSelected(field, itemsRelated[field])">
                         <i class="fas fa-minus"></i>
                     </button>
                     <button class="form-button bck-green">
@@ -99,7 +107,7 @@ export default {
         const errors = ref({})
 
         const itemsRelated = reactive({
-            serie: '',
+            serie: null,
             authors: [],
             categories: []
         })
@@ -108,6 +116,7 @@ export default {
             if (id!=='new') {
                 const path = `${items}/${id}/`
                 item.value = (await useApi('GET', path)).jsonResponse.value
+                console.log('item', item.value['serie'].name)
                 if (items==='books' && item.value['serie']) {
                     itemsRelated.serie = item.value['serie'].name
                 }
@@ -140,8 +149,25 @@ export default {
         })
 
         const multiSelectClick = ((field, val) => {
-            const selected = document.querySelectorAll(`#f-${field} option:checked`);
-            itemsRelated[field] = Array.from(selected).map(e => parseInt(e.value))
+            if (!itemsRelated[field].includes(val.id)) { 
+                itemsRelated[field].push(val.id);
+            } else {
+                itemsRelated[field].splice(itemsRelated[field].indexOf(val.id), 1);
+            }
+        })
+
+        const removeSelected = ((field, ids) => {
+            //itemsRelated[field] are the name(serie) or the ids(authors, categories) of the options selected when click -
+            if (field==='serie') {
+                itemsRelated.serie = null
+                item.value['serie'] = null
+                item.value['serie_order'] = null
+            } else {
+                ids.forEach(id => {
+                        item.value[field] = item.value[field].filter((item) => item.id !== id);
+                    }
+                )
+            }
         })
 
     return { itemsRelated,
@@ -152,7 +178,8 @@ export default {
              itemsSingularName,
              updateInfo,
              errors,
-             multiSelectClick }
+             multiSelectClick,
+             removeSelected }
     }
 }
 </script>
