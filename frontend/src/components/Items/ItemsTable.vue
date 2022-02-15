@@ -227,7 +227,7 @@ th {
     max-width: 600px;
 }
 
-#table tr:nth-child(even){
+tbody>tr:nth-child(even){
     background-color: #d8941746;
 }
 

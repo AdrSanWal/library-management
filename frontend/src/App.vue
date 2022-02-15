@@ -21,18 +21,22 @@
     --color-light: rgb(235, 235, 235);
 }
 
+body {
+    margin: 0px;
+}
+
 #app {
-  font-family: var(--font-fam);
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
+    font-family: var(--font-fam);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-align: center;
 }
 
 .container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
 }
 
 .disabled {
@@ -44,8 +48,12 @@
 /* Navbar ------------------------------------------------------------ Navbar */
 
 #nav {
+    position: sticky;
+    top: 0px;
+    z-index: 1;
     background-color: var(--color-nav);
     overflow: hidden;
+    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.9);
 }
 
 #nav a {
