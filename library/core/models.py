@@ -82,6 +82,16 @@ class Serie(models.Model):
         books = self.rel_serie.all()
         return sorted([book.serie_order for book in books])
 
+    def delete(self, *args, **kwargs):
+        """When a series is deleted, all series_order of the books
+        in that serie are deleted
+        """
+        books = Book.objects.filter(serie_id=self.id)
+        for book in books:
+            book.serie_order = None
+            book.save()
+        return super().delete(*args, **kwargs)
+
     def __str__(self):
         return self.name
 
