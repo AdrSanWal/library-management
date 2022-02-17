@@ -40,10 +40,15 @@ class AuthorViewSet(ModelViewSet):
     filter_backends = (OrderingFilter,)
 
     def get_queryset(self):
-        """Return all Authors except if there is q in the parameters"""
+        """Return all Authors except if there is q in the parameters.
+        if there is 'not' in the parameters, it will exclude those ids
+        """
         request = self.request.GET
         if 'q' in request:
-            return self.queryset.filter(name__icontains=request['q'])
+            self.queryset = self.queryset.filter(name__icontains=request['q'])
+        if 'not' in request:
+            exclude = [int(x) for x in request['not'].split(',')]
+            self.queryset = self.queryset.exclude(id__in=exclude)
         return self.queryset
 
 
@@ -54,10 +59,15 @@ class CategoryViewSet(ModelViewSet):
     filter_backends = (OrderingFilter,)
 
     def get_queryset(self):
-        """Return all Categories except if there is q in the parameters"""
+        """Return all Categories except if there is q in the parameters.
+        if there is 'not' in the parameters, it will exclude those ids
+        """
         request = self.request.GET
         if 'q' in request:
-            return self.queryset.filter(name__icontains=request['q'])
+            self.queryset = self.queryset.filter(name__icontains=request['q'])
+        if 'not' in request:
+            exclude = [int(x) for x in request['not'].split(',')]
+            self.queryset = self.queryset.exclude(id__in=exclude)
         return self.queryset
 
 
@@ -68,8 +78,13 @@ class SerieViewSet(ModelViewSet):
     filter_backends = (OrderingFilter,)
 
     def get_queryset(self):
-        """Return all Series except if there is q in the parameters"""
+        """Return all Series except if there is q in the parameters.
+        if there is 'not' in the parameters, it will exclude those ids
+        """
         request = self.request.GET
         if 'q' in request:
-            return self.queryset.filter(name__icontains=request['q'])
+            self.queryset = self.queryset.filter(name__icontains=request['q'])
+        if 'not' in request:
+            exclude = [int(x) for x in request['not'].split(',')]
+            self.queryset = self.queryset.exclude(id__in=exclude)
         return self.queryset

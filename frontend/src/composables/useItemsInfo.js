@@ -38,27 +38,27 @@ export default function () {
 
     const itemsFormFields = {
         'books': {
-            'isbn': 'text',
-            'title': 'text',
-            'cover': 'url',
-            'authors': 'multiSelect',
-            'serie': 'select',
-            'serie_order': 'number',
-            'categories': 'multiSelect',
-            'description': 'textArea',
+            'isbn': {'type': 'text', 'value': ''},
+            'title': {'type': 'text', 'value': ''},
+            'cover': {'type': 'url', 'value': ''},
+            'authors': {'type': 'multiSelect', 'value':[]},
+            'serie': {'type': 'select', 'value': ''},
+            'serie_order': {'type': 'number', 'value': ''},
+            'categories': {'type': 'multiSelect', 'value':[]},
+            'description': {'type': 'textArea', 'value': ''},
         },
         'authors': {
-            'name': 'text',
-            'pseudonym': 'text',
-            'born': 'date',
-            'died': 'date',
+            'name': {'type': 'text', 'value': ''},
+            'pseudonym': {'type': 'text', 'value': ''},
+            'born': {'type': 'date', 'value': ''},
+            'died': {'type': 'date', 'value': ''},
         },
         'categories': {
-            'name': 'text',
-            'description': 'textArea',
+            'name': {'type': 'text', 'value': ''},
+            'description': {'type': 'textArea', 'value': ''},
         },
         'series': {
-            'name': 'text',
+            'name': {'type': 'text', 'value': ''},
         }
     }
 
