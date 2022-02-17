@@ -155,4 +155,10 @@ export default {
     font-size: large;
 }
 
+button {
+    padding: 7px 15px;
+    font-size: medium;
+    font-weight: bold;
+}
+
 </style>
