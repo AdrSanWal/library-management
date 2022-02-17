@@ -46,6 +46,7 @@ export default function () {
             'serie_order': {'type': 'number', 'value': ''},
             'categories': {'type': 'multiSelect', 'value':[]},
             'description': {'type': 'textArea', 'value': ''},
+            'available': {'type': 'notShow', 'value': ''},
         },
         'authors': {
             'name': {'type': 'text', 'value': ''},

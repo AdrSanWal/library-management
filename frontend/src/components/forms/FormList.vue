@@ -76,7 +76,6 @@ export default {
 
         const search = (async() => {
             const path = `${props.fieldName}/?&q=${params.query}&rows=5&page=${params.page}${props.excludeQuery}`
-            console.log('path', path)
             data.value = (await useApi('GET', path)).jsonResponse.value
         })
 

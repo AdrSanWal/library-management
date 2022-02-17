@@ -27,9 +27,10 @@
                         </slot>
                     </section>
 
-                    <section class="modal-body" v-if="books">
+                    <section class="modal-body" v-if="books.length!==0">
                         <slot name="header">
-                            <h3>The next books will be deleted</h3>        
+                            <h3>The next books will be deleted</h3>
+    
                         </slot>
                         <slot name="body">
                             <ul class="list-group">
@@ -53,7 +54,6 @@
     </transition>
 </template>
 
-
 <script>
 import useApi from '@/composables/useApi'
 import useIetmsInfo from '@/composables/useItemsInfo'
@@ -75,8 +75,6 @@ export default {
             await emit('refresh')
             emit('close')
         })
-
-        
 
         return { confirmDelete, itemsSingularName }
     }

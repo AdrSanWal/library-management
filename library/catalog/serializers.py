@@ -1,6 +1,3 @@
-from calendar import firstweekday
-from datetime import date
-from xxlimited import Null
 from django.core.exceptions import ValidationError
 
 from rest_framework import serializers, status
@@ -73,14 +70,19 @@ class BookSerializer(serializers.ModelSerializer):
         return representation
 
     def to_internal_value(self, data):
-        if not self.partial:
-            data['authors'] = [author['id'] for author in data['authors']]
-            data['categories'] = [category['id'] for category in data['categories']]
-            data['serie'] = data['serie'].get('id', Null)  # serie is not required
+        if not self.partial:  # for post and put
+
+            data['available'] = True if 'available' not in data else data['available']
+            print(data)
+            data['authors'] = [int(author['id']) for author in data['authors']]
+            data['categories'] = [int(category['id']) for category in data['categories']]
+            if data['serie'] == '':
+                data = {**data, **{'serie': None, 'serie_order': None}}  # serie is not required
+            else:
+                data['serie'] = data['serie']['id']
         return super().to_internal_value(data)
 
     class Meta:
-
         model = Book
         fields = [
             'id',
@@ -108,6 +110,9 @@ class BookSerializer(serializers.ModelSerializer):
         instance = Book(**dict(attrs))
         try:
             instance.clean()
+            if not self.partial:
+                attrs.update({'authors': self.authors})
+                attrs.update({'categories': self.categories})
             return attrs
         except ValidationError as error:
             raise serializers.ValidationError(serializers.as_serializer_error(error))
@@ -117,19 +122,3 @@ class BookSerializer(serializers.ModelSerializer):
         book = self.get_object(pk)
         book.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
-
-    def create(self, validated_data):
-        """Create and return a new Book instance,
-        given the validated data.
-        """
-        instance = Book.objects.create(**validated_data)
-
-        for author in self.authors:
-            instance.authors.add(author)
-        for category in self.categories:
-            instance.categories.add(category)
-        return instance
-
-    def update(self, instance, validated_data):
-        """Update a Book instance"""
-        return super().update(instance, validated_data)

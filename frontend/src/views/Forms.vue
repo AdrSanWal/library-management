@@ -1,6 +1,6 @@
 <template>
     <div class="container">
-    
+
         <FormList v-if="isFormListVisible" 
         @close="isFormListVisible = false"
         :modalList="modalList"
@@ -16,7 +16,8 @@
                 :key="field">
 
                 <label :for="`f-${field}`"
-                    class="form-label">
+                    class="form-label"
+                    v-if="values.type!=='notShow'">
                         {{ capitalize(field) }}
                 </label>
 
@@ -93,7 +94,7 @@ import useItemsInfo from '@/composables/useItemsInfo'
 import FormList from '@/components/forms/FormList'
 import useApi from '@/composables/useApi'
 import { capitalize } from '@/composables/useHelpFunctions'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { onMounted, ref, reactive } from 'vue'
 
 
@@ -104,6 +105,7 @@ export default {
     },
     setup() {
         const route = useRoute()
+        const router = useRouter()
         const items = route.params.items
         const id = route.params.id
 
@@ -129,6 +131,7 @@ export default {
         onMounted(async () => {
             if (id!=='new') {
                 const res = await getData()
+
                 for (let field in res) {
                     if (field in item) {
                         item[field]['value'] = await res[field]
@@ -138,30 +141,30 @@ export default {
 
         })
 
-        // const updateInfo = (async () => {
+        const updateInfo = (async () => {
 
-        //     let response
-            
-        //     if (id==='new'){
-        //         const path = `${items}/`
-        //         response = await useApi('POST', path, {body: JSON.stringify(item.value)})
-        //     } else {
-        //         const path = `${items}/${id}/`
-                
-        //         response = await useApi('PUT', path, {body: JSON.stringify(item.value)})
+            let response
+            let newItem = new Object()
+            Object.keys(item).map(key => {
+                newItem[key] = item[key].value              
+            })
+           
+            if (id==='new'){
+                const path = `${items}/`
+                response = await useApi('POST', path, {body: JSON.stringify(newItem)})
+            } else {
+                const path = `${items}/${id}/`
+                response = await useApi('PUT', path, {body: JSON.stringify(newItem)})
+            }
+            const status = response.response.value.status
+            if ( status === 400) {
+                // If status = 400 assign the error message
+                errors.value = await response.jsonResponse.value 
 
-        //     }
-
-        //     const status = response.response.value.status
-        //     if ( status === 400) {
-        //         // If status = 400 assign the error message
-        //         errors.value = await response.jsonResponse.value 
-
-        //     } else if (status === 200 || status === 201) {
-        //         router.go(-1);
-        //     } 
-
-        // })
+            } else if (status === 200 || status === 201) {
+                router.go(-1);
+            } 
+        })
 
         const removeSelected = ((field) => {
             const selected = document.querySelectorAll(`#f-${field} :checked`)
@@ -184,14 +187,17 @@ export default {
         const addNewValue = (async (field) => {
             if (field==='serie') {
                 fieldName.value = 'series'
-                excludeQuery.value = item[field].value.id ? `&not=${item[field].value.id}` : ''
+                const excludeId = item[field].value.id
+                excludeQuery.value = excludeId ? `&not=${excludeId}` : ''
 
             } else {
                 fieldName.value = field
-                excludeQuery.value = `&not=${item[field].value.map(e => e.id)}`
+                const excludeIds = item[field].value.map(e => e.id)
+                excludeQuery.value = excludeIds.length===0 ? '' : `&not=${excludeIds}`
             }
 
             const path = `${fieldName.value}/?&rows=5&page=${page.value}${excludeQuery.value}`
+            console.log(path)
             modalList.value = (await useApi('GET', path)).jsonResponse.value
             isFormListVisible.value=true
         })
@@ -218,7 +224,8 @@ export default {
              modalList,
              fieldName,
              excludeQuery,
-             addValue }
+             addValue,
+             updateInfo }
     }
 }
 </script>
