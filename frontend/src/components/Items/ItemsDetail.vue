@@ -28,7 +28,7 @@
                 <h3>Maybe you want to add some one</h3>
                 <i class="fas fa-arrow-right"></i>
                 <button class="bck-green"
-                @click="$router.push({name: 'Forms', params: {items: items, option: 'add', id: 'new'}})">
+                @click="$router.push({name: 'Forms', params: {items: 'books', option: 'add', id: 'new'}})">
                     <i class="fa-solid fa-pen-to-square"></i> Add Book</button>
             </div>
         </div>
