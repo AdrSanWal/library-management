@@ -117,7 +117,7 @@
 </template>
 
 <script>
-import { reactive, toRefs, ref } from 'vue'
+import { reactive, toRefs } from 'vue'
 import { capitalize } from '@/composables/useHelpFunctions'
 import ItemDelete from '@/components/Items/Item/ItemDelete'
 import useApi from '@/composables/useApi'
@@ -134,6 +134,7 @@ export default {
         headers: Object,
     },
     setup(props, { emit }) {
+        
         const show = reactive({
             isDropdownVisible: false,
             isDeleteItemVisible: false

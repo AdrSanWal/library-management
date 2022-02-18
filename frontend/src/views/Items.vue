@@ -23,7 +23,7 @@ import useApi from '@/composables/useApi'
 import ItemsTable from '@/components/Items/ItemsTable'
 import ItemsDetail from '@/components/Items/ItemsDetail'
 import { useRoute } from 'vue-router'
-import { toRefs, reactive, onMounted, ref } from 'vue'
+import { toRefs, reactive, onMounted, inject } from 'vue'
 
 
 export default {
@@ -96,7 +96,7 @@ export default {
                 path = `books/?${itemsSelection.item}=${itemsSelection.id}&rows=${thumbnails.number}&page=${thumbnails.page}`
                 updateAll = true
             }
-            
+
             const resp = (await useApi('GET', path)).jsonResponse.value
             updateApiData(resp, updateAll)
 
