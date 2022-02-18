@@ -90,6 +90,7 @@ export default {
     border:1px solid var(--color-nav);
     font-size: xx-large;
     align-self: center;
+    z-index: 1;
 }
 
 .changePage:hover {
