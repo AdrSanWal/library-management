@@ -308,7 +308,6 @@ button {
 }
 
 .changeRows>li {
-    
     padding: 10px;
     color:black;
     background: var(--color-hover);
