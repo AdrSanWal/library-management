@@ -1,4 +1,4 @@
-import { ref } from 'vue'
+import { ref, inject } from 'vue'
 
 export default async function (method, path, options=null) {
     let response = ref({})
@@ -18,10 +18,16 @@ export default async function (method, path, options=null) {
             },
         ...options
     }
+
+    const isLoading = inject('isLoading')
+    isLoading.value = true
+
     const res = await fetch(apiUrl, opt)
     if (res.status===204) {return}
     jsonResponse.value = await res.json()
     response.value = res
+    
+    isLoading.value = false
 
     return { response, jsonResponse }
 }

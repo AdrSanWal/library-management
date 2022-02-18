@@ -96,14 +96,9 @@ export default {
                 path = `books/?${itemsSelection.item}=${itemsSelection.id}&rows=${thumbnails.number}&page=${thumbnails.page}`
                 updateAll = true
             }
-            
-            const isLoading = inject('isLoading')
-            isLoading.value = true
 
             const resp = (await useApi('GET', path)).jsonResponse.value
             updateApiData(resp, updateAll)
-
-            isLoading.value = false
 
         })
 
