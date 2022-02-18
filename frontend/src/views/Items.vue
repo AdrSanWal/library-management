@@ -23,7 +23,7 @@ import useApi from '@/composables/useApi'
 import ItemsTable from '@/components/Items/ItemsTable'
 import ItemsDetail from '@/components/Items/ItemsDetail'
 import { useRoute } from 'vue-router'
-import { toRefs, reactive, onMounted, ref } from 'vue'
+import { toRefs, reactive, onMounted, inject } from 'vue'
 
 
 export default {
@@ -97,8 +97,13 @@ export default {
                 updateAll = true
             }
             
+            const isLoading = inject('isLoading')
+            isLoading.value = true
+
             const resp = (await useApi('GET', path)).jsonResponse.value
             updateApiData(resp, updateAll)
+
+            isLoading.value = false
 
         })
 

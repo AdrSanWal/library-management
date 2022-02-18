@@ -6,8 +6,27 @@
     <router-link :to="{name: 'Items', params: {items: 'series', id: 'list'}}">Series</router-link>
     <router-link :to="{name: 'Items', params: {items: 'books', id: 'list'}}">Books</router-link>
   </div>
+  <LoaderPage v-if="isLoading"/>
   <router-view :key="$route.fullPath"/>
 </template>
+
+<script>
+import LoaderPage from './components/LoaderPage.vue'
+import { ref, provide } from 'vue'
+
+export default{
+    components: { 
+        LoaderPage
+    },
+    setup() {
+        const isLoading = ref(false)
+        provide('isLoading', isLoading)
+
+        return { isLoading }
+    }
+}
+</script>
+
 
 <style>
 :root {
