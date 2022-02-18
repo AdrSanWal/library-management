@@ -72,7 +72,7 @@ class BookSerializer(serializers.ModelSerializer):
     def to_internal_value(self, data):
         if not self.partial:  # for post and put
 
-            data['available'] = True if 'available' not in data else data['available']
+            data['available'] = True if data['available']=='' else data['available']
             print(data)
             data['authors'] = [int(author['id']) for author in data['authors']]
             data['categories'] = [int(category['id']) for category in data['categories']]
