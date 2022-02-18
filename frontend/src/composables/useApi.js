@@ -19,15 +19,15 @@ export default async function (method, path, options=null) {
         ...options
     }
 
-    const isLoading = inject('isLoading')
-    isLoading.value = true
+    //const isLoading = inject('isLoading')
+    //isLoading.value = true
 
     const res = await fetch(apiUrl, opt)
     if (res.status===204) {return}
     jsonResponse.value = await res.json()
     response.value = res
     
-    isLoading.value = false
+    //isLoading.value = false
 
     return { response, jsonResponse }
 }
