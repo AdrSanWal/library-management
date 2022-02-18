@@ -316,6 +316,11 @@ button {
     border-left: solid medium var(--color-nav);
   }
 
+.changeRows>li:hover {
+    color: var(--color-hover);
+    background: var(--color-nav);
+}
+
 .rows-enter, .rows-leave-to{
     transform: scaleY(0);
 }
