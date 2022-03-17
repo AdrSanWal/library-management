@@ -111,6 +111,5 @@ With these premises valid examples would be: 978-12-0687-657-3, 979-24788-86-98-
 
 Pending tasks:
 <ul>
-    <li>Finish editing forms</li>
     <li>User registration and login</li>
 </ul>
